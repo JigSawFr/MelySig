@@ -1,4 +1,15 @@
-Projet-SIG
-==========
+##MelySig
+### Géolocalisation de points d'intérêts sur vos endroits favoris !
 
-Projet Java - Exia.Cesi
+**MelySig** est *système d'information géographique* qui animera vos découvertes du monde :)
+
+####Voici les fonctions principales offertes par ce programme
+* Placement de POI sur des cartes avec diverses informations
+* Gestion des cartes disponibles
+* Création de parcours thématiques
+* Partage entre plusieurs utilisateurs
+* Base de données commune en ligne
+
+*Vous pouvez bien sur procéder à toutes modifications, ajouts ou suppressions concernant les parcours, poi, cartes.*
+
+**Inscrivez-vous dès-maintenant et partez en découverte !**
