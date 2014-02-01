@@ -7,13 +7,17 @@
 package fr.melysig.main;
 
 /**
- *
- * @author Sébastien
+ * Classe principale du programme.
+ * @author Sébastien R.
+ * @since 1.0
  */
 public class MelySig {
 
     /**
-     * @param args the command line arguments
+     * Méthode principale permettant le lancement du programme.
+     * Etant statique, celle-ci est initialisée dès le démarrage.
+     * @param args Arguments de la ligne de commande
+     * @since 1.0
      */
     public static void main(String[] args) {
         /* Mise en place */
