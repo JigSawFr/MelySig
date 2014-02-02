@@ -1,0 +1,10 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}MelySig - Geolocalisation de points d'interets sur vos endroits favoris !
+${licensePrefix}MelySig est systeme d'information geographique qui animera vos decouvertes du monde :)
+${licensePrefix}Copyright 2014 - melysig.exia-nancy.com
+${licensePrefix}Auteurs : Pocecco Julien, Mougenel Gerold, Gaudenot Guillaume & Robert Sebastien.
+<#if licenseLast??>
+${licenseLast}
+</#if>
