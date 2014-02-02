@@ -134,21 +134,23 @@ public class UtilisateurControleur {
     }
 
     /**
-     * Permet d'afficher les détails de l'utilisateur via la vue depuis le modèle
+     * Permet d'afficher les détails de l'utilisateur via la vue depuis le
+     * modèle
      */
     public void miseAjourVue() {
 
         vue.afficherDetailsUtilisateur(modele.getId(), modele.getPseudo(), modele.getMotDePasse(), modele.getNom(), modele.getPrenom(), modele.getEmail());
     }
-    
+
     /**
      * Permet de charger les détails d'un utilisateurs depuis la base de données
+     *
      * @param id identifiant unique de type <code>int</code>
      * @return <code>true</code> si l'utilisateur a été trouvé
      * <br /><code>false</code> dans le cas contraire
      */
     public boolean chargerUtilisateur(int id) {
-        
+
         return modele.chargerUtilisateur(id);
     }
 
