@@ -196,7 +196,7 @@ public class MaBase {
      * Affichage des erreurs du Singleton en console
      *
      * @param message Message d'erreur
-     * @option erreur Code d'erreur
+     * @param erreur Code d'erreur
      */
     private static void gestionErreur(String message, Exception erreur) {
 

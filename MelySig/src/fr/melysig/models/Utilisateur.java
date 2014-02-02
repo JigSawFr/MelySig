@@ -45,7 +45,6 @@ public class Utilisateur {
      * Chargement des <b>informations concernant un utilisateur existant</b>
      * dans la base de données
      *
-     * @author Sébastien R.
      * @param id Identifiant <b>unique</b> de l'utilisateur
      * @return <b>true</b> si l'utilsiateur existe en BDD et a été bien chargé
      * <br/><b>false</b> dans le cas contraire
@@ -60,7 +59,7 @@ public class Utilisateur {
         this.prenom = "Sébastien";
         this.email = "sebastien.robert@viacesi.fr";
         /* Fin de la requête */
-        
+
         return true;
     }
 
