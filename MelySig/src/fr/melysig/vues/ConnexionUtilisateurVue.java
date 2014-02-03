@@ -55,6 +55,7 @@ public class ConnexionUtilisateurVue extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connexion MelySIG");
+        setLocation(new java.awt.Point(900, -767));
         setMaximumSize(new java.awt.Dimension(360, 400));
         setMinimumSize(new java.awt.Dimension(360, 400));
 
