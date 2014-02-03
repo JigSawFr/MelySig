@@ -7,8 +7,11 @@
 package fr.melysig.main;
 
 import fr.melysig.controleurs.UtilisateurControleur;
+import fr.melysig.models.Parcours;
 import fr.melysig.models.Utilisateur;
 import fr.melysig.vues.UtilisateurVue;
+import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  * Classe principale du programme.
@@ -22,6 +25,9 @@ public class MelySig {
     private static Utilisateur modeleMembre;
     private static UtilisateurVue vueMembre;
     private static UtilisateurControleur controleurMembre;
+    private static Parcours monParcours;
+    private static String libelle;
+    private static String description;
 
     /**
      * Méthode principale permettant le lancement du programme. Etant statique,
@@ -51,6 +57,24 @@ public class MelySig {
 
         /* Actualisation des informations affichées */
         controleurMembre.miseAjourVue();
+
+        monParcours = new Parcours();
+
+        /* Saisie clavier console */
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Veuillez saisir le libellé du parcours :");
+        libelle = sc.nextLine();
+        System.out.println("Veuillez saisir la description du parcours :");
+        description = sc.nextLine();
+        
+        /* Ajout en BDD */
+        try {
+            monParcours.ajouterParcours(libelle, description);
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+
+        }
 
     }
 }
