@@ -6,6 +6,7 @@
  */
 package fr.melysig.bdd;
 
+import fr.melysig.models.Principal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ import java.sql.Statement;
  *
  * @author Sébastien R.
  * @since 0.2
- * @version 0.1
+ * @version 0.2
  */
 public class MaBase {
 
@@ -34,6 +35,7 @@ public class MaBase {
      * Objet Déclaration
      */
     private Statement declaration;
+    private static final Principal modelePrincipal = new Principal();
 
     /**
      * Driver nécessaire pour la construction du lien
@@ -66,6 +68,8 @@ public class MaBase {
     /**
      * DEBUG : Permet à la classe d'être plus bavarde sur son travail
      * (true/false)
+     *
+     * @deprecated Remplacé
      */
     private static final boolean debug = true;
 
@@ -213,10 +217,7 @@ public class MaBase {
      * @param message Message de débuggage
      */
     private static void debug(String message) {
-
-        if (debug == true) {
-            System.out.println("DEBUG : " + message);
-        }
+        MaBase.modelePrincipal.debug("SQL", message);
     }
 
 }
