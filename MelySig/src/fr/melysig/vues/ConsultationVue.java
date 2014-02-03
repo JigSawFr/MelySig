@@ -62,22 +62,36 @@ public class ConsultationVue extends javax.swing.JFrame {
         txtThemePOI = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtDescriptionPOI = new javax.swing.JTextArea();
+        boutonModifierPointInteret = new javax.swing.JButton();
+        boutonSupprimerPointInteret = new javax.swing.JButton();
         PanelRecherche = new javax.swing.JPanel();
         labelRecherche = new javax.swing.JLabel();
         txtRecherche = new javax.swing.JTextField();
         ComboRecherche = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
+        PanelParcours = new javax.swing.JPanel();
+        labelParcours = new javax.swing.JLabel();
+        labelLibelleParcours = new javax.swing.JLabel();
+        txtLibelleParcours = new javax.swing.JTextField();
+        labelDescriptionParcours = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtDescriptionParcours = new javax.swing.JTextArea();
+        LibellePointInteretParcours = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        listPointsInteretsParcours = new javax.swing.JList();
+        labelSelectionParcours = new javax.swing.JLabel();
+        ComboboxListParcours = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Consultation - MelySIG");
-        setMinimumSize(new java.awt.Dimension(869, 716));
-        setSize(new java.awt.Dimension(869, 716));
+        setMinimumSize(new java.awt.Dimension(1400, 934));
+        setPreferredSize(new java.awt.Dimension(1400, 934));
 
         PanelHeader.setBackground(new java.awt.Color(204, 255, 102));
 
         logoConnexionUtilisateur.setIcon(new javax.swing.ImageIcon("/Users/Coonax/Desktop/MelySIG-petit.png")); // NOI18N
 
-        LabelCompte.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        LabelCompte.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelCompte.setText("Compte :");
 
         LabelPseudoConnecter.setText("Coonax");
@@ -93,7 +107,7 @@ public class ConsultationVue extends javax.swing.JFrame {
             .addGroup(PanelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(logoConnexionUtilisateur)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 450, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 987, Short.MAX_VALUE)
                 .addComponent(imageLogin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -126,7 +140,7 @@ public class ConsultationVue extends javax.swing.JFrame {
         PanelCarte.setLayout(PanelCarteLayout);
         PanelCarteLayout.setHorizontalGroup(
             PanelCarteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 449, Short.MAX_VALUE)
+            .addGap(0, 970, Short.MAX_VALUE)
         );
         PanelCarteLayout.setVerticalGroup(
             PanelCarteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,6 +154,11 @@ public class ConsultationVue extends javax.swing.JFrame {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        ListPointInteret.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                ListPointInteretValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(ListPointInteret);
         ListPointInteret.getAccessibleContext().setAccessibleParent(PanelPointInteret);
@@ -189,14 +208,14 @@ public class ConsultationVue extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane2)))
                     .addGroup(PanelPointInteretLayout.createSequentialGroup()
-                        .addComponent(boutonPointInteretPrecedent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(boutonPointInteretPrecedent, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(boutonPointInteretSuivant, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelPointInteretLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelNavigation)
-                .addGap(165, 165, 165))
+                .addGap(178, 178, 178))
         );
         PanelPointInteretLayout.setVerticalGroup(
             PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,15 +226,15 @@ public class ConsultationVue extends javax.swing.JFrame {
                     .addComponent(LabelHistorique))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelNavigation)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(boutonPointInteretPrecedent, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addComponent(boutonPointInteretSuivant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(boutonPointInteretPrecedent, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonPointInteretSuivant, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         PanelInformationPointInteret.setBackground(new java.awt.Color(255, 153, 51));
@@ -235,56 +254,90 @@ public class ConsultationVue extends javax.swing.JFrame {
         labelDescriptionPOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelDescriptionPOI.setText("Description :");
 
+        txtLibellePOI.setEditable(false);
+        txtLibellePOI.setForeground(new java.awt.Color(0, 153, 255));
+
+        txtYPOI.setEditable(false);
+        txtYPOI.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        txtYPOI.setForeground(new java.awt.Color(255, 0, 0));
+        txtYPOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
+
+        txtXPOI.setEditable(false);
+        txtXPOI.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        txtXPOI.setForeground(new java.awt.Color(255, 0, 0));
+        txtXPOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
+
         labelLieuPOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelLieuPOI.setText("Lieu :");
+
+        txtLieuPOI.setEditable(false);
+        txtLieuPOI.setForeground(new java.awt.Color(0, 153, 255));
+        txtLieuPOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
 
         labelThemePOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelThemePOI.setText("Theme :");
 
+        txtThemePOI.setEditable(false);
+        txtThemePOI.setForeground(new java.awt.Color(0, 155, 255));
+        txtThemePOI.setToolTipText("");
+        txtThemePOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
+
+        txtDescriptionPOI.setEditable(false);
         txtDescriptionPOI.setColumns(20);
+        txtDescriptionPOI.setForeground(new java.awt.Color(0, 155, 255));
         txtDescriptionPOI.setRows(5);
+        txtDescriptionPOI.setToolTipText("");
+        txtDescriptionPOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
         jScrollPane3.setViewportView(txtDescriptionPOI);
+
+        boutonModifierPointInteret.setText("Modifier");
+
+        boutonSupprimerPointInteret.setText("Supprimer");
 
         javax.swing.GroupLayout PanelInformationPointInteretLayout = new javax.swing.GroupLayout(PanelInformationPointInteret);
         PanelInformationPointInteret.setLayout(PanelInformationPointInteretLayout);
         PanelInformationPointInteretLayout.setHorizontalGroup(
             PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInformationPointInteretLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelInformationPointInteret)
-                .addGap(108, 108, 108))
             .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelDescriptionPOI)
                     .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
-                        .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
-                                .addComponent(labelThemePOI)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtThemePOI, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelInformationPointInteretLayout.createSequentialGroup()
+                        .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInformationPointInteretLayout.createSequentialGroup()
                                 .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelLibellePOI)
                                     .addComponent(labelLieuPOI))
-                                .addGap(18, 18, 18)
-                                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtLieuPOI, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                                    .addComponent(txtLibellePOI))))
-                        .addGap(18, 18, 18)
+                                .addGap(18, 18, 18))
+                            .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                                .addComponent(labelThemePOI)
+                                .addGap(15, 15, 15)))
+                        .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtThemePOI, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(txtLieuPOI, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtLibellePOI, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
-                                .addComponent(labelXPOI)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtXPOI))
-                            .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
-                                .addComponent(labelYPOI)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtYPOI))))
-                    .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
-                        .addComponent(labelDescriptionPOI)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                                .addGap(20, 20, 20)
+                                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                                        .addComponent(labelYPOI)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtYPOI))
+                                    .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                                        .addComponent(labelXPOI)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtXPOI, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInformationPointInteretLayout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(boutonModifierPointInteret, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                    .addComponent(boutonSupprimerPointInteret, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInformationPointInteretLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelInformationPointInteret)
+                .addGap(130, 130, 130))
         );
         PanelInformationPointInteretLayout.setVerticalGroup(
             PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,12 +358,15 @@ public class ConsultationVue extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelThemePOI)
-                    .addComponent(txtThemePOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txtThemePOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boutonModifierPointInteret))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelDescriptionPOI))
-                .addContainerGap(55, Short.MAX_VALUE))
+                    .addComponent(labelDescriptionPOI, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(boutonSupprimerPointInteret, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         PanelRecherche.setBackground(new java.awt.Color(255, 255, 153));
@@ -352,6 +408,99 @@ public class ConsultationVue extends javax.swing.JFrame {
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
+        PanelParcours.setBackground(new java.awt.Color(255, 255, 153));
+
+        labelParcours.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelParcours.setText("Parcours :");
+
+        labelLibelleParcours.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelLibelleParcours.setText("Libelle :");
+
+        txtLibelleParcours.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLibelleParcoursActionPerformed(evt);
+            }
+        });
+
+        labelDescriptionParcours.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelDescriptionParcours.setText("Description :");
+
+        txtDescriptionParcours.setColumns(20);
+        txtDescriptionParcours.setRows(5);
+        jScrollPane4.setViewportView(txtDescriptionParcours);
+
+        LibellePointInteretParcours.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        LibellePointInteretParcours.setText("Points Interets :");
+
+        listPointsInteretsParcours.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane5.setViewportView(listPointsInteretsParcours);
+
+        labelSelectionParcours.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelSelectionParcours.setText("Sélection :");
+
+        ComboboxListParcours.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout PanelParcoursLayout = new javax.swing.GroupLayout(PanelParcours);
+        PanelParcours.setLayout(PanelParcoursLayout);
+        PanelParcoursLayout.setHorizontalGroup(
+            PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelParcoursLayout.createSequentialGroup()
+                .addGroup(PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(PanelParcoursLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelParcours)
+                        .addGap(12, 12, 12))
+                    .addGroup(PanelParcoursLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(PanelParcoursLayout.createSequentialGroup()
+                                .addGroup(PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(PanelParcoursLayout.createSequentialGroup()
+                                        .addComponent(labelLibelleParcours)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                        .addComponent(txtLibelleParcours, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelParcoursLayout.createSequentialGroup()
+                                        .addComponent(labelSelectionParcours)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(ComboboxListParcours, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addGap(32, 32, 32))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelParcoursLayout.createSequentialGroup()
+                                .addComponent(labelDescriptionParcours)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addGroup(PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LibellePointInteretParcours)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+        );
+        PanelParcoursLayout.setVerticalGroup(
+            PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelParcoursLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelParcours)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LibellePointInteretParcours)
+                    .addComponent(labelSelectionParcours)
+                    .addComponent(ComboboxListParcours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelParcoursLayout.createSequentialGroup()
+                        .addGroup(PanelParcoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelLibelleParcours)
+                            .addComponent(txtLibelleParcours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(labelDescriptionParcours)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout PanelBodyLayout = new javax.swing.GroupLayout(PanelBody);
         PanelBody.setLayout(PanelBodyLayout);
         PanelBodyLayout.setHorizontalGroup(
@@ -363,14 +512,17 @@ public class ConsultationVue extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(PanelPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PanelInformationPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(PanelInformationPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PanelParcours, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         PanelBodyLayout.setVerticalGroup(
             PanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelBodyLayout.createSequentialGroup()
-                .addComponent(PanelPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PanelPointInteret, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PanelInformationPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(PanelInformationPointInteret, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PanelParcours, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(PanelBodyLayout.createSequentialGroup()
                 .addComponent(PanelRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -389,9 +541,10 @@ public class ConsultationVue extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(PanelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PanelBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(PanelBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -399,6 +552,15 @@ public class ConsultationVue extends javax.swing.JFrame {
     private void boutonPointInteretPrecedentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonPointInteretPrecedentActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_boutonPointInteretPrecedentActionPerformed
+
+    private void ListPointInteretValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListPointInteretValueChanged
+
+        
+    }//GEN-LAST:event_ListPointInteretValueChanged
+
+    private void txtLibelleParcoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLibelleParcoursActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLibelleParcoursActionPerformed
 
     /**
      * @param args the command line arguments
@@ -437,38 +599,52 @@ public class ConsultationVue extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ComboRecherche;
+    private javax.swing.JComboBox ComboboxListParcours;
     private javax.swing.JLabel LabelCompte;
     private javax.swing.JLabel LabelHistorique;
     private javax.swing.JLabel LabelPseudoConnecter;
+    private javax.swing.JLabel LibellePointInteretParcours;
     private javax.swing.JList ListHistorique;
     private javax.swing.JList ListPointInteret;
     private javax.swing.JPanel PanelBody;
     private javax.swing.JPanel PanelCarte;
     private javax.swing.JPanel PanelHeader;
     private javax.swing.JPanel PanelInformationPointInteret;
+    private javax.swing.JPanel PanelParcours;
     private javax.swing.JPanel PanelPointInteret;
     private javax.swing.JPanel PanelRecherche;
     private javax.swing.JButton boutonDeconnexionUtilisateur;
+    private javax.swing.JButton boutonModifierPointInteret;
     private javax.swing.JButton boutonPointInteretPrecedent;
     private javax.swing.JButton boutonPointInteretSuivant;
+    private javax.swing.JButton boutonSupprimerPointInteret;
     private javax.swing.JLabel imageLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel labelDescriptionPOI;
+    private javax.swing.JLabel labelDescriptionParcours;
     private javax.swing.JLabel labelInformationPointInteret;
     private javax.swing.JLabel labelLibellePOI;
+    private javax.swing.JLabel labelLibelleParcours;
     private javax.swing.JLabel labelLieuPOI;
     private javax.swing.JLabel labelListPointInteret;
     private javax.swing.JLabel labelNavigation;
+    private javax.swing.JLabel labelParcours;
     private javax.swing.JLabel labelRecherche;
+    private javax.swing.JLabel labelSelectionParcours;
     private javax.swing.JLabel labelThemePOI;
     private javax.swing.JLabel labelXPOI;
     private javax.swing.JLabel labelYPOI;
+    private javax.swing.JList listPointsInteretsParcours;
     private javax.swing.JLabel logoConnexionUtilisateur;
     private javax.swing.JTextArea txtDescriptionPOI;
+    private javax.swing.JTextArea txtDescriptionParcours;
     private javax.swing.JTextField txtLibellePOI;
+    private javax.swing.JTextField txtLibelleParcours;
     private javax.swing.JTextField txtLieuPOI;
     private javax.swing.JTextField txtRecherche;
     private javax.swing.JTextField txtThemePOI;
