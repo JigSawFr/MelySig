@@ -34,12 +34,44 @@ public class ConsultationVue extends javax.swing.JFrame {
         LabelCompte = new javax.swing.JLabel();
         LabelPseudoConnecter = new javax.swing.JLabel();
         imageLogin = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        boutonDeconnexionUtilisateur = new javax.swing.JButton();
         PanelBody = new javax.swing.JPanel();
+        PanelCarte = new javax.swing.JPanel();
+        PanelPointInteret = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ListPointInteret = new javax.swing.JList();
+        labelListPointInteret = new javax.swing.JLabel();
+        LabelHistorique = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ListHistorique = new javax.swing.JList();
+        labelNavigation = new javax.swing.JLabel();
+        boutonPointInteretPrecedent = new javax.swing.JButton();
+        boutonPointInteretSuivant = new javax.swing.JButton();
+        PanelInformationPointInteret = new javax.swing.JPanel();
+        labelInformationPointInteret = new javax.swing.JLabel();
+        labelLibellePOI = new javax.swing.JLabel();
+        labelXPOI = new javax.swing.JLabel();
+        labelYPOI = new javax.swing.JLabel();
+        labelDescriptionPOI = new javax.swing.JLabel();
+        txtLibellePOI = new javax.swing.JTextField();
+        txtYPOI = new javax.swing.JTextField();
+        txtXPOI = new javax.swing.JTextField();
+        labelLieuPOI = new javax.swing.JLabel();
+        txtLieuPOI = new javax.swing.JTextField();
+        labelThemePOI = new javax.swing.JLabel();
+        txtThemePOI = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtDescriptionPOI = new javax.swing.JTextArea();
+        PanelRecherche = new javax.swing.JPanel();
+        labelRecherche = new javax.swing.JLabel();
+        txtRecherche = new javax.swing.JTextField();
+        ComboRecherche = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Consultation - MelySIG");
-        setMinimumSize(new java.awt.Dimension(800, 600));
+        setMinimumSize(new java.awt.Dimension(869, 716));
+        setSize(new java.awt.Dimension(869, 716));
 
         PanelHeader.setBackground(new java.awt.Color(204, 255, 102));
 
@@ -52,7 +84,7 @@ public class ConsultationVue extends javax.swing.JFrame {
 
         imageLogin.setIcon(new javax.swing.ImageIcon("/Users/Coonax/Desktop/User-icon.png")); // NOI18N
 
-        jButton1.setText("Deconnexion");
+        boutonDeconnexionUtilisateur.setText("Deconnexion");
 
         javax.swing.GroupLayout PanelHeaderLayout = new javax.swing.GroupLayout(PanelHeader);
         PanelHeader.setLayout(PanelHeaderLayout);
@@ -61,18 +93,16 @@ public class ConsultationVue extends javax.swing.JFrame {
             .addGroup(PanelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(logoConnexionUtilisateur)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 429, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 450, Short.MAX_VALUE)
                 .addComponent(imageLogin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(PanelHeaderLayout.createSequentialGroup()
                         .addComponent(LabelCompte)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(LabelPseudoConnecter)
-                        .addGap(40, 40, 40))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelHeaderLayout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(27, 27, 27))))
+                        .addComponent(LabelPseudoConnecter, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boutonDeconnexionUtilisateur, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         PanelHeaderLayout.setVerticalGroup(
             PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,20 +115,266 @@ public class ConsultationVue extends javax.swing.JFrame {
                             .addComponent(LabelCompte)
                             .addComponent(LabelPseudoConnecter))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(boutonDeconnexionUtilisateur))
                     .addComponent(logoConnexionUtilisateur))
                 .addContainerGap(11, Short.MAX_VALUE))
+        );
+
+        PanelCarte.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout PanelCarteLayout = new javax.swing.GroupLayout(PanelCarte);
+        PanelCarte.setLayout(PanelCarteLayout);
+        PanelCarteLayout.setHorizontalGroup(
+            PanelCarteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 449, Short.MAX_VALUE)
+        );
+        PanelCarteLayout.setVerticalGroup(
+            PanelCarteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        PanelPointInteret.setBackground(new java.awt.Color(153, 204, 255));
+
+        ListPointInteret.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 153, 255)));
+        ListPointInteret.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(ListPointInteret);
+        ListPointInteret.getAccessibleContext().setAccessibleParent(PanelPointInteret);
+
+        labelListPointInteret.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelListPointInteret.setText("Points d'Interets disponibles :");
+
+        LabelHistorique.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        LabelHistorique.setText("Historique :");
+
+        ListHistorique.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 153, 255)));
+        ListHistorique.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(ListHistorique);
+        ListHistorique.getAccessibleContext().setAccessibleParent(PanelPointInteret);
+
+        labelNavigation.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelNavigation.setText("Navigation");
+
+        boutonPointInteretPrecedent.setText("Précédent");
+        boutonPointInteretPrecedent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boutonPointInteretPrecedentActionPerformed(evt);
+            }
+        });
+
+        boutonPointInteretSuivant.setText("Suivant");
+
+        javax.swing.GroupLayout PanelPointInteretLayout = new javax.swing.GroupLayout(PanelPointInteret);
+        PanelPointInteret.setLayout(PanelPointInteretLayout);
+        PanelPointInteretLayout.setHorizontalGroup(
+            PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelPointInteretLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelPointInteretLayout.createSequentialGroup()
+                        .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelListPointInteret)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelPointInteretLayout.createSequentialGroup()
+                                .addComponent(LabelHistorique, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2)))
+                    .addGroup(PanelPointInteretLayout.createSequentialGroup()
+                        .addComponent(boutonPointInteretPrecedent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(boutonPointInteretSuivant, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelPointInteretLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelNavigation)
+                .addGap(165, 165, 165))
+        );
+        PanelPointInteretLayout.setVerticalGroup(
+            PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelPointInteretLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelListPointInteret)
+                    .addComponent(LabelHistorique))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelNavigation)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(PanelPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(boutonPointInteretPrecedent, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addComponent(boutonPointInteretSuivant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        PanelInformationPointInteret.setBackground(new java.awt.Color(255, 153, 51));
+
+        labelInformationPointInteret.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelInformationPointInteret.setText("Information Point Interet :");
+
+        labelLibellePOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelLibellePOI.setText("Libelle :");
+
+        labelXPOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelXPOI.setText("X :");
+
+        labelYPOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelYPOI.setText("Y :");
+
+        labelDescriptionPOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelDescriptionPOI.setText("Description :");
+
+        labelLieuPOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelLieuPOI.setText("Lieu :");
+
+        labelThemePOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelThemePOI.setText("Theme :");
+
+        txtDescriptionPOI.setColumns(20);
+        txtDescriptionPOI.setRows(5);
+        jScrollPane3.setViewportView(txtDescriptionPOI);
+
+        javax.swing.GroupLayout PanelInformationPointInteretLayout = new javax.swing.GroupLayout(PanelInformationPointInteret);
+        PanelInformationPointInteret.setLayout(PanelInformationPointInteretLayout);
+        PanelInformationPointInteretLayout.setHorizontalGroup(
+            PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInformationPointInteretLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelInformationPointInteret)
+                .addGap(108, 108, 108))
+            .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                        .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                                .addComponent(labelThemePOI)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtThemePOI, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelInformationPointInteretLayout.createSequentialGroup()
+                                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelLibellePOI)
+                                    .addComponent(labelLieuPOI))
+                                .addGap(18, 18, 18)
+                                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtLieuPOI, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                                    .addComponent(txtLibellePOI))))
+                        .addGap(18, 18, 18)
+                        .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                                .addComponent(labelXPOI)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtXPOI))
+                            .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                                .addComponent(labelYPOI)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtYPOI))))
+                    .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                        .addComponent(labelDescriptionPOI)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        PanelInformationPointInteretLayout.setVerticalGroup(
+            PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelInformationPointInteretLayout.createSequentialGroup()
+                .addComponent(labelInformationPointInteret, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelLibellePOI)
+                    .addComponent(txtLibellePOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelYPOI)
+                    .addComponent(txtYPOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelXPOI)
+                    .addComponent(txtXPOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelLieuPOI)
+                    .addComponent(txtLieuPOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelThemePOI)
+                    .addComponent(txtThemePOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelDescriptionPOI))
+                .addContainerGap(55, Short.MAX_VALUE))
+        );
+
+        PanelRecherche.setBackground(new java.awt.Color(255, 255, 153));
+
+        labelRecherche.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelRecherche.setText("Recherche :");
+
+        ComboRecherche.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        jLabel1.setText("Résultat :");
+
+        javax.swing.GroupLayout PanelRechercheLayout = new javax.swing.GroupLayout(PanelRecherche);
+        PanelRecherche.setLayout(PanelRechercheLayout);
+        PanelRechercheLayout.setHorizontalGroup(
+            PanelRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelRecherche)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PanelRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ComboRecherche, 0, 129, Short.MAX_VALUE)
+                    .addComponent(txtRecherche))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        PanelRechercheLayout.setVerticalGroup(
+            PanelRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelRecherche)
+                    .addComponent(txtRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ComboRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout PanelBodyLayout = new javax.swing.GroupLayout(PanelBody);
         PanelBody.setLayout(PanelBodyLayout);
         PanelBodyLayout.setHorizontalGroup(
-            PanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            PanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(PanelBodyLayout.createSequentialGroup()
+                .addGroup(PanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PanelCarte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PanelRecherche, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(PanelPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PanelInformationPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         PanelBodyLayout.setVerticalGroup(
             PanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 529, Short.MAX_VALUE)
+            .addGroup(PanelBodyLayout.createSequentialGroup()
+                .addComponent(PanelPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PanelInformationPointInteret, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(PanelBodyLayout.createSequentialGroup()
+                .addComponent(PanelRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PanelCarte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -119,6 +395,10 @@ public class ConsultationVue extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void boutonPointInteretPrecedentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonPointInteretPrecedentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_boutonPointInteretPrecedentActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,12 +436,43 @@ public class ConsultationVue extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox ComboRecherche;
     private javax.swing.JLabel LabelCompte;
+    private javax.swing.JLabel LabelHistorique;
     private javax.swing.JLabel LabelPseudoConnecter;
+    private javax.swing.JList ListHistorique;
+    private javax.swing.JList ListPointInteret;
     private javax.swing.JPanel PanelBody;
+    private javax.swing.JPanel PanelCarte;
     private javax.swing.JPanel PanelHeader;
+    private javax.swing.JPanel PanelInformationPointInteret;
+    private javax.swing.JPanel PanelPointInteret;
+    private javax.swing.JPanel PanelRecherche;
+    private javax.swing.JButton boutonDeconnexionUtilisateur;
+    private javax.swing.JButton boutonPointInteretPrecedent;
+    private javax.swing.JButton boutonPointInteretSuivant;
     private javax.swing.JLabel imageLogin;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel labelDescriptionPOI;
+    private javax.swing.JLabel labelInformationPointInteret;
+    private javax.swing.JLabel labelLibellePOI;
+    private javax.swing.JLabel labelLieuPOI;
+    private javax.swing.JLabel labelListPointInteret;
+    private javax.swing.JLabel labelNavigation;
+    private javax.swing.JLabel labelRecherche;
+    private javax.swing.JLabel labelThemePOI;
+    private javax.swing.JLabel labelXPOI;
+    private javax.swing.JLabel labelYPOI;
     private javax.swing.JLabel logoConnexionUtilisateur;
+    private javax.swing.JTextArea txtDescriptionPOI;
+    private javax.swing.JTextField txtLibellePOI;
+    private javax.swing.JTextField txtLieuPOI;
+    private javax.swing.JTextField txtRecherche;
+    private javax.swing.JTextField txtThemePOI;
+    private javax.swing.JTextField txtXPOI;
+    private javax.swing.JTextField txtYPOI;
     // End of variables declaration//GEN-END:variables
 }
