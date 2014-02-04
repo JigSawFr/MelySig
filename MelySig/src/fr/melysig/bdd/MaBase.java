@@ -6,7 +6,8 @@
  */
 package fr.melysig.bdd;
 
-import fr.melysig.models.Principal;
+import fr.melysig.main.Debug;
+import fr.melysig.main.Erreurs;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,8 +16,7 @@ import java.sql.Statement;
 
 /**
  * <b>Singleton</b> de gestion de la base de données
- * <br />Permet d'intéragir avec la base de données avec une <b>instance
- * unique</b>
+ * <br />Permet d'intéragir avec la base de données avec une <b>instance unique</b>
  * <br /><b>ATTENTION !</b> <u>Le multi-threading n'est pas géré.</u>
  *
  * @author Sébastien R.
@@ -24,18 +24,6 @@ import java.sql.Statement;
  * @version 0.2
  */
 public class MaBase {
-
-    /**
-     * Objet Connection
-     * <br />Membre statique ne contenant qu'une seule instance de la classe
-     * MaBase
-     */
-    private static Connection connexion = null;
-    /**
-     * Objet Déclaration
-     */
-    private Statement declaration;
-    private static final Principal modelePrincipal = new Principal();
 
     /**
      * Driver nécessaire pour la construction du lien
@@ -66,17 +54,29 @@ public class MaBase {
      */
     private static final String motDePasse = "root";
     /**
-     * DEBUG : Permet à la classe d'être plus bavarde sur son travail
-     * (true/false)
+     * DEBUG : Permet à la classe d'être plus bavarde sur son travail (true/false)
      *
      * @deprecated Remplacé
      */
     private static final boolean debug = true;
 
     /**
+     * Objet Connection
+     * <br />Membre statique ne contenant qu'une seule instance de la classe MaBase
+     */
+    private static Connection connexion = null;
+    private static String construction;
+    /**
+     * Objet Déclaration
+     */
+    private Statement declaration;
+    
+    private static final Debug gestionDebug = Debug.obtenirGestionDebug();
+    private static final Erreurs gestionErreurs = Erreurs.obtenirGestionErreurs();
+
+    /**
      * Constructeur de la classe
-     * <br />Celui-ci est vide afin d'empêcher MaBase d'être instancié par
-     * d'autres classes
+     * <br />Celui-ci est vide afin d'empêcher MaBase d'être instancié par d'autres classes
      */
     private MaBase() {
     }
@@ -97,18 +97,15 @@ public class MaBase {
 
     /**
      * Formatage du lien pour la connexion à la base
-     * <br />Récupération de l'origine <code>lien</code>, du serveur
-     * <code>serveur</code>, du <code>port</code> ainsi que du nom de la base de
-     * données <code>base</code> afin de formater le lien nécessaire à la
-     * connexion.
+     * <br />Récupération de l'origine <code>lien</code>, du serveur <code>serveur</code>, du <code>port</code> ainsi que du nom de la base de données <code>base</code> afin de formater le lien nécessaire à la connexion.
      *
-     * @return Un <code>String</code> contenant le lien formaté pour établir la
-     * connexion
+     * @return Un <code>String</code> contenant le lien formaté pour établir la connexion
      *
      */
     private static String obtenirLien() {
-        debug("Création du lien de connexion...");
-        return lien + "://" + serveur + ":" + port + "/" + base;
+        construction = lien + "://" + serveur + ":" + port + "/" + base;
+        debug("Création du lien de connexion... << " + construction + " >>");
+        return construction;
     }
 
     /**
@@ -116,8 +113,10 @@ public class MaBase {
      */
     private static void chargerConnexion() {
         try {
-            debug("Connexion à la base...Création d'une nouvelle instance.");
+            debug("Connexion à la base de données << " + base + " >>...");
+            debug("Création d'une nouvelle instance de connexion.");
             connexion = DriverManager.getConnection(obtenirLien(), identifiant, motDePasse);
+            debug("Connexion établie avec succès.");
         } catch (SQLException erreur) {
             gestionErreur("Impossible de se connecter à la base de données " + obtenirLien(), erreur);
         }
@@ -137,6 +136,7 @@ public class MaBase {
                 debug("Fermeture de la connexion...");
                 connexion.close();
                 connexion = null;
+                debug("Connexion fermée avec succès.");
             } catch (SQLException erreur) {
                 gestionErreur("Impossible de fermer la connexion", erreur);
             }
@@ -146,22 +146,22 @@ public class MaBase {
     /**
      * Retourne l'instance du singleton de la base de données
      * <br />La méthode vérifie si une instance de la connexion existe
-     * <br />Dans le cas contraire, elle charge le driver via
-     * <code>chargerDriver()</code>
+     * <br />Dans le cas contraire, elle charge le driver via <code>chargerDriver()</code>
      * <br />Puis instancie la connexion via <code>chargerConnexion</code>
      *
-     * @return L'objet de type <code>connexion</code> qui représente l'instance
-     * de connexion à la base de données
+     * @return L'objet de type <code>connexion</code> qui représente l'instance de connexion à la base de données
      *
      */
     public static Connection obtenirConnexion() {
 
         if (null == connexion) {
-            debug("Aucune connexion...établissement d'une connexion");
+            debug("Aucune connexion existante.");
+            debug("Tentative d'établissement d'une connexion...");
             chargerDriver();
             chargerConnexion();
         } else {
-            debug("Une connexion est déjà établie ... renvoie de l'instance actuelle.");
+            debug("Une connexion a déjà été établie ...");
+            debug("Renvoie de l'instance actuelle de la connexion.");
         }
         return connexion;
     }
@@ -203,12 +203,7 @@ public class MaBase {
      * @param erreur Code d'erreur
      */
     private static void gestionErreur(String message, Exception erreur) {
-
-        System.out.println(message);
-        if (erreur != null) {
-
-            System.out.println("ERREUR : " + erreur.getMessage());
-        }
+        gestionErreurs.erreur("SQL", message, erreur);
     }
 
     /**
@@ -217,7 +212,7 @@ public class MaBase {
      * @param message Message de débuggage
      */
     private static void debug(String message) {
-        MaBase.modelePrincipal.debug("SQL", message);
+        gestionDebug.debug("SQL", message);
     }
 
 }

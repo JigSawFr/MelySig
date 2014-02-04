@@ -6,11 +6,11 @@
  */
 package fr.melysig.models;
 
-import fr.melysig.bdd.MaBase;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import fr.melysig.main.Debug;
+import fr.melysig.main.Erreurs;
+import fr.melysig.mappages.DAO;
+import fr.melysig.mappages.ParcoursDAO;
+//import java.sql.SQLException;
 
 /**
  * Classe de <b>traitement des Parcours</b>
@@ -35,19 +35,42 @@ public class Parcours {
      */
     private String description;
     /**
-     * Objet de connexion
-     * <br />Obtention de l'instance de connexion
+     * Tableau contenant la liste des points d'intérêts d'un parcours
      */
-    Connection connexion = MaBase.obtenirConnexion();
+    //private ArrayList<PointsInterets> listePointsInterets = new ArrayList<PointsInterets>();
+
     /**
-     * Objet de requête préparée
+     * Création de l'objet DAO pour les parcours
      */
-    PreparedStatement requetePreparee = null;
+    DAO<Parcours> parcoursDAO;
+
+    private static final Debug gestionDebug = Debug.obtenirGestionDebug();
+    private static final Erreurs gestionErreurs = Erreurs.obtenirGestionErreurs();
+
     /**
-     * Requête SQL
+     * Constructeur de la classe Parcours (Polymorphisme)
      */
-    String requeteSql = null;
-    private static final Principal modelePrincipal = new Principal();
+    public Parcours() {
+        this.id = 0;
+        this.libelle = null;
+        this.description = null;
+        this.parcoursDAO = new ParcoursDAO();
+    }
+
+    /**
+     * Constructeur de la classe Parcours (Polymorphisme)
+     *
+     * @param id
+     * @param libelle
+     * @param description
+     */
+    public Parcours(int id, String libelle, String description/*, ArrayList<PointsInterets> listePointsInterets*/) {
+        this.id = id;
+        this.libelle = libelle;
+        this.description = description;
+        /*this.listePointsInterets = listePointsInterets;*/
+        this.parcoursDAO = new ParcoursDAO();
+    }
 
     /**
      * Chargement des <b>informations concernant un parcours existant</b>
@@ -57,15 +80,18 @@ public class Parcours {
      * @return <b>true</b> si le parcours existe
      * <br/><b>false</b> dans le cas contraire
      */
-    public boolean chargerParcours(int id) {
+    public Parcours chargerParcours(int id) {
 
-        /* Requête de récupération des informations sur le parcours */
-        this.id = 1;
-        this.libelle = "Musée";
-        this.description = "Découverte des musées";
-        /* Fin de la requête */
+        debug("Recherche d'un parcours existant...Chargement du n° " + id);
+        Parcours resultat = this.parcoursDAO.chercher(id);
+        return resultat;
+    }
 
-        return true;
+    public Parcours creerParcours(Parcours nouveauParcours) {
+
+        debug("Ajout d'un nouveau parcours");
+        Parcours resultat = this.parcoursDAO.creer(nouveauParcours);
+        return resultat;
     }
 
     /**
@@ -74,57 +100,49 @@ public class Parcours {
      *
      * @param libelle libellé du parcours
      * @param description description du parcours
-     * @return <b>int</b> qui est l'identifiant du nouveau parcours si le
-     * parcours a bien été ajouté
+     * @return <b>int</b> qui est l'identifiant du nouveau parcours si le parcours a bien été ajouté
      * <br/><b>0</b> dans le cas contraire
      * @throws java.sql.SQLException
      */
-    public int ajouterParcours(String libelle, String description) throws SQLException {
-
-        /* Mise en variables des informations du parcours */
-        this.libelle = libelle;
-        this.description = description;
-        debug("Mise en variable du parcours : \n -> Libellé : " + this.libelle + "\n -> Description : " + this.description);
-
-        /* Mise en variable de la requête SQL */
-        this.requeteSql = "INSERT INTO parcours"
-                + "(libelleParcours, descriptionParcours) VALUES"
-                + "(?,?);";
-        debug("Création de la requête SQL.");
-
-        try {
-
-            /* On prépare notre requête */
-            this.requetePreparee = this.connexion.prepareStatement(this.requeteSql);
-            debug("Préparation de la requête SQL.");
-
-            /* On définit les variables de la requête préparée */
-            this.requetePreparee.setString(1, this.libelle);
-            this.requetePreparee.setString(2, this.description);
-            debug("Définition des variables de la requête préparée.");
-
-            /* Execution de la requête SQL */
-            this.requetePreparee.executeUpdate();
-
-            debug("Insertion du parcours avec succès.");
-
-        } catch (SQLException erreur) {
-
-            gestionErreur("Impossible de fermer la connexion", erreur);
-        } finally {
-            if (this.requetePreparee != null) {
-                this.requetePreparee.close();
-                debug("Fermeture de la requête préparée.");
-            }
-
-            if (this.connexion != null) {
-                MaBase.fermerConnexion();
-            }
-        }
-
-        return 0;
-    }
-
+//    public int ajouterParcours(String libelle, String description) throws SQLException {
+//
+//        /* Mise en variables des informations du parcours */
+//        this.libelle = libelle;
+//        this.description = description;
+//        debug("Mise en variable du parcours : \n -> Libellé : " + this.libelle + "\n -> Description : " + this.description);
+//
+//        /* Mise en variable de la requête SQL */
+//        /*this.requeteSql = "INSERT INTO parcours"
+//         + "(libelleParcours, descriptionParcours) VALUES"
+//         + "(?,?);";*/
+//        debug("Création de la requête SQL.");
+//        try {
+//
+//        /* On prépare notre requête */
+//            this.requetePreparee = this.connexion.prepareStatement(this.requeteSql);
+//        debug("Préparation de la requête SQL.");
+//
+//        /* On définit les variables de la requête préparée */
+//            this.requetePreparee.setString(1, this.libelle);
+//        this.requetePreparee.setString(2, this.description);
+//        debug("Définition des variables de la requête préparée.");
+//
+//        /* Execution de la requête SQL */
+//        this.requetePreparee.executeUpdate();
+//        debug("Insertion du parcours avec succès.");
+//        } catch (SQLException erreur) {
+//        gestionErreur("Impossible de fermer la connexion", erreur);
+//        } finally {
+//        if (this.requetePreparee != null) {
+//        this.requetePreparee.close();
+//        debug("Fermeture de la requête préparée.");
+//        }
+//        if (this.connexion != null) {
+//        MaBase.fermerConnexion();
+//        }
+//        }
+//        return 0;
+//    }
     /**
      * Permet d'obtenir l'identifiant unique du parcours
      *
@@ -132,6 +150,10 @@ public class Parcours {
      */
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -176,13 +198,8 @@ public class Parcours {
      * @param message Message d'erreur
      * @param erreur Code d'erreur
      */
-    private static void gestionErreur(String message, Exception erreur) {
-
-        System.out.println(message);
-        if (erreur != null) {
-
-            System.out.println("ERREUR : " + erreur.getMessage());
-        }
+    private static void erreur(String message, Exception erreur) {
+        gestionErreurs.erreur("MDL", "Parcours -> " + message, erreur);
     }
 
     /**
@@ -191,6 +208,22 @@ public class Parcours {
      * @param message Message de débuggage
      */
     private static void debug(String message) {
-        Parcours.modelePrincipal.debug("Parcours", message);
+        gestionDebug.debug("MDL", "Parcours -> " + message);
     }
+
+    /**
+     * Méthode d'affichage de l'objet Parcours
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        String affichage = "\n---- Affichage de l'objet PARCOURS ----\n";
+        affichage += "Identifiant: " + this.getId() + "\n";
+        affichage += "Libellé: " + this.getLibelle() + "\n";
+        affichage += "Description: " + this.getDescription() + "\n";
+        affichage += "---------------------------------------\n";
+        return affichage;
+    }
+
 }

@@ -6,75 +6,82 @@
  */
 package fr.melysig.main;
 
-import fr.melysig.controleurs.UtilisateurControleur;
-import fr.melysig.models.Parcours;
-import fr.melysig.models.Utilisateur;
-import fr.melysig.vues.UtilisateurVue;
-import java.sql.SQLException;
-import java.util.Scanner;
-
 /**
  * Classe principale du programme.
  *
  * @author Sébastien R.
  * @since 0.1
- * @version 0.2
+ * @version 0.3
  */
 public class MelySig {
 
-    private static Utilisateur modeleMembre;
-    private static UtilisateurVue vueMembre;
-    private static UtilisateurControleur controleurMembre;
-    private static Parcours monParcours;
-    private static String libelle;
-    private static String description;
+    /*private boolean debug = true;
+     private boolean erreurs = true;*/
 
+    /*private static Utilisateur modeleMembre;
+     private static UtilisateurVue vueMembre;
+     private static UtilisateurControleur controleurMembre;*/
+    //private static Parcours monParcours;
+    /*private static String libelle;
+     private static String description;*/
+    /*private Parcours modeleParcours;
+     private ParcoursVue vueParcours;
+     private ParcoursControleur controleurParcours;*/
     /**
-     * Méthode principale permettant le lancement du programme. Etant statique,
-     * celle-ci est initialisée dès le démarrage.
+     * Méthode principale permettant le lancement du programme. Etant statique, celle-ci est initialisée dès le démarrage.
      *
      * @param args Arguments de la ligne de commande
      */
     public static void main(String[] args) {
 
+        MVC mainMVC = new MVC();
+
+        /* modeleParcours = new Parcours();
+         vueParcours = new ParcoursVue();*/
+
         /* Instanciation d'un objet utilisateur */
-        modeleMembre = new Utilisateur();
+        //modeleMembre = new Utilisateur();
 
         /* Instanciation d'une vue d'utilisateur */
-        vueMembre = new UtilisateurVue();
+        //vueMembre = new UtilisateurVue();
 
         /* Instanciation du controleur avec un modèle et une vue définie */
-        controleurMembre = new UtilisateurControleur(modeleMembre, vueMembre);
+        //controleurMembre = new UtilisateurControleur(modeleMembre, vueMembre);
 
         /* Chargement des informations de l'utilisateur possédant l'identifiant 1 */
-        controleurMembre.chargerUtilisateur(1);
+        //controleurMembre.chargerUtilisateur(1);
 
         /* Affichage des informations */
-        controleurMembre.miseAjourVue();
+        //controleurMembre.miseAjourVue();
 
         /* Mise à jour des données du membre */
-        controleurMembre.setMotDePasse("GoodJob!");
+        //controleurMembre.setMotDePasse("GoodJob!");
 
         /* Actualisation des informations affichées */
-        controleurMembre.miseAjourVue();
-
-        monParcours = new Parcours();
+        //controleurMembre.miseAjourVue();
 
         /* Saisie clavier console */
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir le libellé du parcours :");
-        libelle = sc.nextLine();
-        System.out.println("Veuillez saisir la description du parcours :");
-        description = sc.nextLine();
-        
+        /*Scanner sc = new Scanner(System.in);
+         System.out.println("Veuillez saisir le libellé du parcours :");
+         libelle = sc.nextLine();
+         System.out.println("Veuillez saisir la description du parcours :");
+         description = sc.nextLine();*/
         /* Ajout en BDD */
-        try {
-            monParcours.ajouterParcours(libelle, description);
-        } catch (SQLException e) {
+        /*try {
+         monParcours.ajouterParcours(libelle, description);
+         } catch (SQLException e) {
 
-            System.out.println(e.getMessage());
+         System.out.println(e.getMessage());
 
-        }
-
+         }*/
+        /*System.out.println("SYSTEM ON");
+         monParcours = new Parcours(); // #1T
+         System.out.println(monParcours.toString());
+         System.out.println("Nos parcours:");
+         for (int i = 1; i <= 3; i++) {
+         monParcours = monParcours.chargerParcours(i);
+         System.out.println("Parcours n°" + monParcours.getId() + "  - " + monParcours.getLibelle() + " " + monParcours.getDescription());
+         }
+         System.out.println(monParcours.toString());*/
     }
 }

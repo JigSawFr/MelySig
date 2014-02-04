@@ -15,23 +15,20 @@ import fr.melysig.vues.UtilisateurVue;
  *
  * @author Sébastien R.
  * @since 0.2
- * @version 0.1
+ * @version 0.1.1
  */
 public class UtilisateurControleur {
 
-    private Utilisateur modele;
-    private UtilisateurVue vue;
+    private final Utilisateur modele;
+    private final UtilisateurVue vue;
 
     /**
      * Constructeur de la classe
-     *
-     * @param modele Modèle requis par le contrôleur
-     * @param vue Vue requise par le contrôleur
      */
-    public UtilisateurControleur(Utilisateur modele, UtilisateurVue vue) {
+    public UtilisateurControleur() {
 
-        this.modele = modele;
-        this.vue = vue;
+        this.modele = new Utilisateur();
+        this.vue = new UtilisateurVue();
     }
 
     /**
@@ -134,8 +131,7 @@ public class UtilisateurControleur {
     }
 
     /**
-     * Permet d'afficher les détails de l'utilisateur via la vue depuis le
-     * modèle
+     * Permet d'afficher les détails de l'utilisateur via la vue depuis le modèle
      */
     public void miseAjourVue() {
 
