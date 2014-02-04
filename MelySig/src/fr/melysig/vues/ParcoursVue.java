@@ -7,7 +7,7 @@
 package fr.melysig.vues;
 
 /**
- * Classe de vue d' <b>affichage des Parcours</b>
+ * Classe de vue d'<b>affichage des Parcours</b>
  * Permet d'afficher et manipuler les parcours via une IHM
  *
  * @author Sébastien R.
@@ -30,9 +30,5 @@ public class ParcoursVue {
         System.out.println("Libellé: " + libelle);
         System.out.println("Description: " + description);
         System.out.println("-----------------------------");
-    }
-
-
-    public ParcoursVue() {
     }
 }
