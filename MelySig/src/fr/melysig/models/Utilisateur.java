@@ -12,7 +12,7 @@ package fr.melysig.models;
  *
  * @author Sébastien R.
  * @since 0.2
- * @version 0.1
+ * @version 0.1.1
  */
 public class Utilisateur {
 
@@ -46,7 +46,7 @@ public class Utilisateur {
      * dans la base de données
      *
      * @param id Identifiant <b>unique</b> de l'utilisateur
-     * @return <b>true</b> si l'utilsiateur existe en BDD et a été bien chargé
+     * @return <b>true</b> si l'utilisateur existe en BDD et a été bien chargé
      * <br/><b>false</b> dans le cas contraire
      */
     public boolean chargerUtilisateur(int id) {
