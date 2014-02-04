@@ -73,8 +73,13 @@ public class MVC {
         /* ---- Commandes de test ---- */
 //        gestionParcours.setLibelle("blabla");
 //        System.out.println(gestionParcours.toString());
-//        gestionParcours.chargerParcours(99);
+//        gestionParcours.chargerParcours(3);
 //        System.out.println(gestionParcours.toString());
+//        gestionParcours.mettreAjourParcours(gestionParcours.getLibelle(), "W33d W33d");
+//        System.out.println(gestionParcours.toString());
+//        gestionParcours.effacerParcours();
+//        System.out.println(gestionParcours.toString());
+        
 //        gestionParcours.afficherDetails();
 //        gestionParcours.chargerParcours(3);
 //        System.out.println(gestionParcours.toString());
