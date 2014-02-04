@@ -98,6 +98,29 @@ public class Parcours {
         Parcours resultat = this.parcoursDAO.creer(nouveauParcours);
         return resultat;
     }
+    
+    /**
+     * Modifier un <b>parcours existant</b> dans la base de données
+     *
+     * @param monParcours objet parcours contenant les données à modifier
+     * @return objet parcours avec l'identifiant unique en base de données
+     */
+    public Parcours mettreAjourParcours(Parcours monParcours) {
+
+        debug("Modification d'un parcours existant.");
+        Parcours resultat = this.parcoursDAO.mettreAjour(monParcours);
+        return resultat;
+    }
+
+    /**
+     * Permet de <b>supprimer un parcours existant</b>
+     * @param monParcours objet parcours contenant l'id du parcours à supprimer
+     */
+    public void effacerParcours(Parcours monParcours) {
+        
+        debug("Suppression d'un parcours existant.");
+        this.parcoursDAO.effacer(monParcours);
+    }
 
     /**
      * Permet d'obtenir l'identifiant unique du parcours
