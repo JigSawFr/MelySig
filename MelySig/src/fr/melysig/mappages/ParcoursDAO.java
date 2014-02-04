@@ -22,6 +22,12 @@ import java.sql.Statement;
  */
 public class ParcoursDAO extends DAO<Parcours> {
 
+    /**
+     * Permet charger les informations d'un parcours
+     *
+     * @param id l'identifiant de type <code>int/</code>
+     * @return
+     */
     @Override
     public Parcours chercher(int id) {
 
@@ -51,6 +57,11 @@ public class ParcoursDAO extends DAO<Parcours> {
         return monParcours;
     }
 
+    /**
+     * Permet de créer un nouveau parcours
+     * @param nouveauParcours Objet Parcours de type <code>Parcours</code>
+     * @return Objet de type <code>Parcours</code> muni de l'ID de la base suite à l'insertion
+     */
     @Override
     public Parcours creer(Parcours nouveauParcours) {
 
@@ -85,6 +96,11 @@ public class ParcoursDAO extends DAO<Parcours> {
         return nouveauParcours;
     }
 
+    /**
+     * Permet de mettre à jour un parcours existant
+     * @param monParcours Objet Parcours de type <code>Parcours</code>
+     * @return Objet de type <code>Parcours</code> muni des nouvelles informations
+     */
     @Override
     public Parcours mettreAjour(Parcours monParcours) {
         try {
@@ -103,9 +119,24 @@ public class ParcoursDAO extends DAO<Parcours> {
         return monParcours;
     }
 
+    /**
+     * Permet de supprimer un parcours existant
+     * @param monParcours Objet Parcours de type <code>Parcours</code>
+     */
     @Override
-    public void effacer(Parcours objet) {
-        throw new UnsupportedOperationException("Fonction non implémenté."); //To change body of generated methods, choose Tools | Templates.
+    public void effacer(Parcours monParcours) {
+        try {
+            this.connexion
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                            ResultSet.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                            "DELETE FROM parcours WHERE idParcours = " + monParcours.getId()
+                    );
+            this.debug("Suppression -> Exécution de la requete SQL...");
+        } catch (SQLException erreur) {
+            this.erreur("Suppression -> Erreur SQL !", erreur);
+        }
     }
 
     /**
