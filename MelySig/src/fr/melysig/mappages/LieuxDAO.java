@@ -94,6 +94,22 @@ public class LieuxDAO extends DAO<Lieux> {
         return nouveauLieux;
     }
     
+  
+    public void effacer(int id) {
+
+        try {
+             this.connexion
+                    .createStatement()
+                        .executeUpdate(
+                            "DELETE * FROM lieux WHERE idLieu = " + id
+                    );
+        } catch (SQLException erreur) {
+            this.erreur("Recherche -> Erreur SQL !", erreur);
+        }
+      
+    }
+    
+    
     @Override
     public Lieux mettreAjour(Lieux objet) {
         throw new UnsupportedOperationException("Fonction non implémenté."); //To change body of generated methods, choose Tools | Templates.
