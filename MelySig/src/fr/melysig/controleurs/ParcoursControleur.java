@@ -39,6 +39,7 @@ public class ParcoursControleur {
 
     /**
      * Permet de charger les données d'un parcours
+     *
      * @param id Identifiant unique du parcours
      * @return l'objet parcours contenant les données chargées
      */
@@ -49,15 +50,37 @@ public class ParcoursControleur {
 
     /**
      * Permet de créer un nouveau parcours
+     *
      * @param libelle libellé du parcours
      * @param description description du parcours
-     * @return 
+     * @return
      */
     public Parcours creerParcours(String libelle, String description) {
         this.modele = new Parcours();
         this.modele.setLibelle(libelle);
         this.modele.setDescription(description);
         return modele.creerParcours(this.modele);
+    }
+
+    /**
+     * Permet de modifier un parcours existant
+     *
+     * @param libelle libellé du parcours
+     * @param description description du parcours
+     * @return
+     */
+    public Parcours mettreAjourParcours(String libelle, String description) {
+        this.modele.setLibelle(libelle);
+        this.modele.setDescription(description);
+        return modele.mettreAjourParcours(this.modele);
+    }
+
+    /**
+     * Permet de supprimer un parcours existant
+     */
+    public void effacerParcours() {
+        this.modele.effacerParcours(this.modele);
+        this.modele = new Parcours();
     }
 
     /**
@@ -71,14 +94,16 @@ public class ParcoursControleur {
 
     /**
      * Permet d'obtenir le libellé du parcours
+     *
      * @return le libellé de type <code>String</code>
      */
     public String getLibelle() {
         return modele.getLibelle();
     }
-    
+
     /**
      * Permet d'obtenir la description du parcours
+     *
      * @return la description de type <code>String</code>
      */
     public String getDescription() {
@@ -87,6 +112,7 @@ public class ParcoursControleur {
 
     /**
      * Permet de définir le libellé du parcours
+     *
      * @param libelle le libellé de type <code>String</code>
      */
     public void setLibelle(String libelle) {
@@ -95,6 +121,7 @@ public class ParcoursControleur {
 
     /**
      * Permet de définir la description du parcours
+     *
      * @param description la description de type <code>String</code>
      */
     public void setDescription(String description) {
@@ -110,10 +137,11 @@ public class ParcoursControleur {
 
     /**
      * Permet d'afficher les données de l'objet Parcours
+     *
      * @return les données définit de l'objet
      */
     @Override
     public String toString() {
         return modele.toString();
-    }  
+    }
 }
