@@ -20,7 +20,7 @@ import java.sql.Statement;
  *
  * @author Julien P.
  * @since 0.4
- * @version 0.1
+ * @version 0.1.1
  */
 public class LieuxDAO extends DAO<Lieux> {
     
@@ -94,8 +94,9 @@ public class LieuxDAO extends DAO<Lieux> {
         return nouveauLieux;
     }
     
-  
-    public void effacer(int id) {
+ 
+       @Override
+        public boolean effacer(int id) {
 
         try {
              this.connexion
@@ -106,17 +107,12 @@ public class LieuxDAO extends DAO<Lieux> {
         } catch (SQLException erreur) {
             this.erreur("Recherche -> Erreur SQL !", erreur);
         }
-      
+      return true;
     }
     
     
     @Override
     public Lieux mettreAjour(Lieux objet) {
-        throw new UnsupportedOperationException("Fonction non implémenté."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void effacer(Lieux objet) {
         throw new UnsupportedOperationException("Fonction non implémenté."); //To change body of generated methods, choose Tools | Templates.
     }
 

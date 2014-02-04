@@ -18,7 +18,7 @@ import java.sql.Connection;
  * @author Sébastien R.
  * @param <T> Objet concerné
  * @since 0.3
- * @version 0.1
+ * @version 0.1.1
  */
 public abstract class DAO<T> {
 
@@ -61,7 +61,8 @@ public abstract class DAO<T> {
     /**
      * Permet la supression d'une entrée de la base de données vis à vis d'un objet
      *
-     * @param objet Objet concerné
+     * @param id
+     * @return 
      */
-    public abstract void effacer(T objet);
+    public abstract boolean effacer(int id);
 }
