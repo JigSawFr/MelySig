@@ -18,7 +18,7 @@ import fr.melysig.mappages.LieuxDAO;
  *
  * @author Julien P.
  * @since 0.4
- * @version 0.1
+ * @version 0.1.1
  */
 
 public class Lieux {

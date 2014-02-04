@@ -8,7 +8,7 @@
 package fr.melysig.controleurs;
 
 import fr.melysig.models.Lieux;
-//import fr.melysig.vues.XXXXXX;
+///import fr.melysig.vues.xxxx;
 
 
 /**
@@ -17,12 +17,12 @@ import fr.melysig.models.Lieux;
  *
  * @author Julien P.
  * @since 0.4
- * @version 0.1
+ * @version 0.1.1
  */
 public class LieuxControleur {
     
     private Lieux modele;
-   // private final XXXX vue; 
+    //private final xxxx vue; 
     
     /**
      * Constructeur de la classe
@@ -30,7 +30,7 @@ public class LieuxControleur {
     public LieuxControleur() {
 
         this.modele = new Lieux();
-       // this.vue = new XXXXX();
+        ///this.vue = new xxxx();
     }
     
     public Lieux chargerLieux(int id) {
@@ -78,13 +78,14 @@ public class LieuxControleur {
         modele.setDescription(description);
     }
      
-     public void setIDUtilisateur(String idUtilisateur) {
+     public void setIDUtilisateur(int idUtilisateur) {
         modele.setIDUtilisateur(idUtilisateur);
     }
      
-     public void afficherDetails() {
-        vue.afficherDetails(modele.getId(), modele.getNom(), modele.getCarte(), modele.getDescription(), modele.getidUtilisateur());
+     /*public void afficherDetails() {
+        vue.afficherDetails(modele.getId(), modele.getNom(), modele.getCarte(), modele.getDescription(), modele.getIDUtilisateur());
     }
+     */
      
     @Override
     public String toString() {

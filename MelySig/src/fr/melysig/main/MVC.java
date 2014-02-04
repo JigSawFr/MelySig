@@ -12,9 +12,9 @@ import fr.melysig.controleurs.*;
  * <b>Controleur principal - Initialisation du MVC</b>
  * Permet la mise en relation des controleurs et des vues
  *
- * @author Sébastien R.
+ * @author Sébastien R, Julien P.
  * @since 0.3
- * @version 0.1
+ * @version 0.2
  */
 public class MVC {
 
@@ -29,6 +29,7 @@ public class MVC {
      */
     private final UtilisateurControleur gestionUtilisateur;
     private final ParcoursControleur gestionParcours;
+    private final LieuxControleur gestionLieux;
 //    private final Parcours monParcours;
 
     public MVC() {
@@ -55,6 +56,7 @@ public class MVC {
          */
         this.gestionUtilisateur = new UtilisateurControleur();
         this.gestionParcours = new ParcoursControleur();
+        this.gestionLieux = new LieuxControleur();
 
         /**
          * Information de l'initialisation
