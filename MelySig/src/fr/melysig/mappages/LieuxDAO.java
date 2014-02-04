@@ -20,7 +20,7 @@ import java.sql.Statement;
  *
  * @author Julien P.
  * @since 0.4
- * @version 0.1.1
+ * @version 0.2
  */
 public class LieuxDAO extends DAO<Lieux> {
     
@@ -112,8 +112,22 @@ public class LieuxDAO extends DAO<Lieux> {
     
     
     @Override
-    public Lieux mettreAjour(Lieux objet) {
-        throw new UnsupportedOperationException("Fonction non implémenté."); //To change body of generated methods, choose Tools | Templates.
+    public Lieux mettreAjour(Lieux monLieux) {
+        
+        try {
+            this.connexion
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_UPDATABLE // Possibilité modifier les données de la base via le ResultSet.
+                    ).executeUpdate("UPDATE lieu SET nomLieu = '" + monLieux.getNom() + "',carteLieu ='" + monLieux.getCarte() + "', descriptionLieu = '" + monLieux.getDescription() + "',idUtilisateurLieu ='" + monLieux.getIDUtilisateur() + "' WHERE idLieu = " + monLieux.getId()
+                    );
+            this.debug("Modification -> Exécution de la requete SQL...");
+            monLieux = this.chercher(monLieux.getId());
+            this.debug("Modification -> Le Lieu a été modifié avec succès.");
+        } catch (SQLException erreur) {
+            this.erreur("Modification -> Erreur SQL !", erreur);
+        }
+        return monLieux;
     }
 
     /**
