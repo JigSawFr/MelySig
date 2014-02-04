@@ -10,7 +10,6 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.ParcoursDAO;
-//import java.sql.SQLException;
 
 /**
  * Classe de <b>traitement des Parcours</b>
@@ -18,7 +17,7 @@ import fr.melysig.mappages.ParcoursDAO;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1
+ * @version 0.1.1
  */
 public class Parcours {
 
@@ -87,6 +86,12 @@ public class Parcours {
         return resultat;
     }
 
+    /**
+     * Ajouter un <b>nouveau parcours</b> dans la base de données
+     *
+     * @param nouveauParcours objet parcours contenant les données à ajouter
+     * @return objet parcours avec l'identifiant unique en base de données
+     */
     public Parcours creerParcours(Parcours nouveauParcours) {
 
         debug("Ajout d'un nouveau parcours");
@@ -94,55 +99,6 @@ public class Parcours {
         return resultat;
     }
 
-    /**
-     * Ajouter un <b>nouveau parcours</b>
-     * dans la base de données
-     *
-     * @param libelle libellé du parcours
-     * @param description description du parcours
-     * @return <b>int</b> qui est l'identifiant du nouveau parcours si le parcours a bien été ajouté
-     * <br/><b>0</b> dans le cas contraire
-     * @throws java.sql.SQLException
-     */
-//    public int ajouterParcours(String libelle, String description) throws SQLException {
-//
-//        /* Mise en variables des informations du parcours */
-//        this.libelle = libelle;
-//        this.description = description;
-//        debug("Mise en variable du parcours : \n -> Libellé : " + this.libelle + "\n -> Description : " + this.description);
-//
-//        /* Mise en variable de la requête SQL */
-//        /*this.requeteSql = "INSERT INTO parcours"
-//         + "(libelleParcours, descriptionParcours) VALUES"
-//         + "(?,?);";*/
-//        debug("Création de la requête SQL.");
-//        try {
-//
-//        /* On prépare notre requête */
-//            this.requetePreparee = this.connexion.prepareStatement(this.requeteSql);
-//        debug("Préparation de la requête SQL.");
-//
-//        /* On définit les variables de la requête préparée */
-//            this.requetePreparee.setString(1, this.libelle);
-//        this.requetePreparee.setString(2, this.description);
-//        debug("Définition des variables de la requête préparée.");
-//
-//        /* Execution de la requête SQL */
-//        this.requetePreparee.executeUpdate();
-//        debug("Insertion du parcours avec succès.");
-//        } catch (SQLException erreur) {
-//        gestionErreur("Impossible de fermer la connexion", erreur);
-//        } finally {
-//        if (this.requetePreparee != null) {
-//        this.requetePreparee.close();
-//        debug("Fermeture de la requête préparée.");
-//        }
-//        if (this.connexion != null) {
-//        MaBase.fermerConnexion();
-//        }
-//        }
-//        return 0;
-//    }
     /**
      * Permet d'obtenir l'identifiant unique du parcours
      *
@@ -152,6 +108,10 @@ public class Parcours {
         return id;
     }
 
+    /**
+     * Permet de définir l'identifiant unique du parcours
+     * @param id l'identifiant unique du parcours de type <code>int</code>
+     */
     public void setId(int id) {
         this.id = id;
     }
