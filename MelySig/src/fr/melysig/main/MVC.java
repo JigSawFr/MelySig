@@ -14,13 +14,19 @@ import fr.melysig.controleurs.*;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1
+ * @version 0.1.1
  */
 public class MVC {
 
+    /**
+     * Variables de choix d'affichage
+     */
     private final boolean debug = true;
     private final boolean erreurs = true;
 
+    /**
+     * Objet Singleton issus de méthodes génériques
+     */
     private final Debug gestionDebug;
     private final Erreurs gestionErreurs;
 
@@ -29,7 +35,6 @@ public class MVC {
      */
     private final UtilisateurControleur gestionUtilisateur;
     private final ParcoursControleur gestionParcours;
-//    private final Parcours monParcours;
 
     public MVC() {
 
@@ -64,27 +69,29 @@ public class MVC {
         /**
          * Notre Application
          */
-        //gestionParcours.setLibelle("blabla");
-        //System.out.println(gestionParcours.toString());
-        //gestionParcours.chargerParcours(20);
-        //System.out.println(gestionParcours.toString());
-        //gestionParcours.afficherDetails();
-        //gestionParcours.chargerParcours(3);
-        //System.out.println(gestionParcours.toString());
-        //gestionParcours.afficherDetails();
-        //gestionParcours.creerParcours("Musée de Lorraine", "Y'a rien, c'est le désert numérique !");
-        //System.out.println(gestionParcours.getId());
-        //System.out.println(gestionParcours.toString());
-
-        /**
-         * Listing des différents parcours 
-         */
-        /*String mesParcours = "";
-        for (int i = 1; i <= 21; i++) {
-            gestionParcours.chargerParcours(i);
-            mesParcours += "\n-> Parcours n°" + gestionParcours.getId() + "  - " + gestionParcours.getLibelle() + ", " + gestionParcours.getDescription();
-        }
-        System.out.println(mesParcours);*/
+        
+        /* ---- Commandes de test ---- */
+//        gestionParcours.setLibelle("blabla");
+//        System.out.println(gestionParcours.toString());
+//        gestionParcours.chargerParcours(99);
+//        System.out.println(gestionParcours.toString());
+//        gestionParcours.afficherDetails();
+//        gestionParcours.chargerParcours(3);
+//        System.out.println(gestionParcours.toString());
+//        gestionParcours.afficherDetails();
+//        gestionParcours.creerParcours("Musées du JUIF", "Take your mask");
+//        System.out.println(gestionParcours.getId());
+//        System.out.println(gestionParcours.toString());
+//
+//        /**
+//         * Listing des différents parcours 
+//         */
+//        String mesParcours = "";
+//        for (int i = 1; i <= 21; i++) {
+//            gestionParcours.chargerParcours(i);
+//            mesParcours += "\n-> Parcours n°" + gestionParcours.getId() + "  - " + gestionParcours.getLibelle() + ", " + gestionParcours.getDescription();
+//        }
+//        System.out.println(mesParcours);
     }
 
 }
