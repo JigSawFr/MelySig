@@ -18,7 +18,7 @@ import java.sql.Statement;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1
+ * @version 0.1.1
  */
 public class ParcoursDAO extends DAO<Parcours> {
 
@@ -30,7 +30,6 @@ public class ParcoursDAO extends DAO<Parcours> {
             ResultSet resultats = this.connexion
                     .createStatement(
                             ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
-                            //ResultSet.CONCUR_UPDATABLE // Possibilité modifier les données de la base via le ResultSet.
                             ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
                     ).executeQuery(
                             "SELECT * FROM parcours WHERE idParcours = " + id
@@ -42,9 +41,7 @@ public class ParcoursDAO extends DAO<Parcours> {
                         resultats.getString("descriptionParcours")
                 );
                 this.debug("Recherche -> Parcours localisé dans la base avec succès.");
-            }
-            else
-            {
+            } else {
                 throw new SQLException("Aucun parcours ne correspond à l'identifiant n° " + id + " !");
             }
 
@@ -89,8 +86,21 @@ public class ParcoursDAO extends DAO<Parcours> {
     }
 
     @Override
-    public Parcours mettreAjour(Parcours objet) {
-        throw new UnsupportedOperationException("Fonction non implémenté."); //To change body of generated methods, choose Tools | Templates.
+    public Parcours mettreAjour(Parcours monParcours) {
+        try {
+            this.connexion
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_UPDATABLE // Possibilité modifier les données de la base via le ResultSet.
+                    ).executeUpdate("UPDATE parcours SET libelleParcours = '" + monParcours.getLibelle() + "', descriptionParcours = '" + monParcours.getDescription() + "' WHERE idParcours = " + monParcours.getId()
+                    );
+            this.debug("Modification -> Exécution de la requete SQL...");
+            monParcours = this.chercher(monParcours.getId());
+            this.debug("Modification -> Le parcours a été modifié avec succès.");
+        } catch (SQLException erreur) {
+            this.erreur("Modification -> Erreur SQL !", erreur);
+        }
+        return monParcours;
     }
 
     @Override
