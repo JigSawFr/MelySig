@@ -20,7 +20,7 @@ import java.sql.Statement;
  *
  * @author Julien P.
  * @since 0.4
- * @version 0.2
+ * @version 0.2.1
  */
 public class LieuxDAO extends DAO<Lieux> {
     
@@ -64,7 +64,7 @@ public class LieuxDAO extends DAO<Lieux> {
         try {
             PreparedStatement requetePreparee = this.connexion
                     .prepareStatement(
-                            "INSERT INTO lieu (nomLieu,carteLieu, descriptionLieu,idUtilisateur) VALUES (?,?,?,?)",
+                            "INSERT INTO lieux (nomLieu,carteLieu, descriptionLieu,idUtilisateurLieu) VALUES (?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS // Retourne les lignes affectés
                     );
             requetePreparee.setString(1, nouveauLieux.getNom());
@@ -102,7 +102,7 @@ public class LieuxDAO extends DAO<Lieux> {
              this.connexion
                     .createStatement()
                         .executeUpdate(
-                            "DELETE * FROM lieux WHERE idLieu = " + id
+                            "DELETE FROM lieux WHERE idLieu = " + id
                     );
         } catch (SQLException erreur) {
             this.erreur("Recherche -> Erreur SQL !", erreur);
