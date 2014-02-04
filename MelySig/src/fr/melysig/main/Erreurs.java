@@ -15,19 +15,31 @@ import java.util.Date;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1
+ * @version 0.1.1
  */
 public class Erreurs {
 
     /**
-     * Status du mode d'affichage des erreurs
+     * Statut du mode d'affichage des erreurs
      */
     private boolean erreurs;
+    /**
+     * Horodatage de l'erreur
+     */
     private Date horodatageErreur;
+    /**
+     * Formatage de l'horodatage
+     */
     private DateFormat horodatageFormatErreur;
 
+    /**
+     * Objet (Singleton) de gestion des erreurs
+     */
     private static Erreurs gestionErreurs = null;
 
+    /**
+     * Constructeur du Singleton
+     */
     private Erreurs() {
     }
 
@@ -39,16 +51,29 @@ public class Erreurs {
      * @param erreur Code d'erreur
      */
     public void erreur(String type, String message, Exception erreur) {
-        this.horodatageErreur = new Date();
-        this.horodatageFormatErreur = new SimpleDateFormat("dd/MM/YYYY 'à' HH'h' mm'min' ss's' SSS'ms'");
-        if (erreur != null) {
-            System.out.println("[" + this.horodatageFormatErreur.format(this.horodatageErreur) + "] ERREUR : (" + type + ") - " + message + " (" + erreur.getMessage() + ")");
-            //JOptionPane.showMessageDialog(null,"Oooops Petit problème\n"+e.getMessage(),"Warning",JOptionPane.OK_OPTION);
-        } else {
-            System.out.println("[" + this.horodatageFormatErreur.format(this.horodatageErreur) + "] ERREUR : (" + type + ") - " + message);
+
+        if (this.erreurs == true) {
+
+            this.horodatageErreur = new Date();
+            this.horodatageFormatErreur = new SimpleDateFormat("dd/MM/YYYY 'à' HH'h' mm'min' ss's' SSS'ms'");
+
+            if (erreur != null) {
+
+                System.out.println("[" + this.horodatageFormatErreur.format(this.horodatageErreur) + "] ERREUR : (" + type + ") - " + message + " (" + erreur.getMessage() + ")");
+//            --> A voir plus tard.
+//            JOptionPane.showMessageDialog(null,"Oooops Petit problème\n"+e.getMessage(),"Warning",JOptionPane.OK_OPTION);
+
+            } else {
+                System.out.println("[" + this.horodatageFormatErreur.format(this.horodatageErreur) + "] ERREUR : (" + type + ") - " + message);
+            }
         }
     }
 
+    /**
+     * Renvoi de l'instance actuelle ou création d'une nouvelle
+     *
+     * @return instance de l'objet gérant les ereurs
+     */
     public static Erreurs obtenirGestionErreurs() {
         if (gestionErreurs == null) {
             gestionErreurs = new Erreurs();
@@ -56,6 +81,11 @@ public class Erreurs {
         return gestionErreurs;
     }
 
+    /**
+     * Permet de définir l'affichage ou non des erreurs
+     *
+     * @param erreurs statut des erreurs de type <code>boolean</code>
+     */
     public void setErreurs(boolean erreurs) {
         this.erreurs = erreurs;
     }
