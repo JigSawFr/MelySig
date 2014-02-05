@@ -17,7 +17,7 @@ import fr.melysig.mappages.ParcoursDAO;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1.1
+ * @version 0.1.2
  */
 public class Parcours {
 
@@ -76,8 +76,7 @@ public class Parcours {
      * dans la base de données
      *
      * @param id Identifiant <b>unique</b> du parcours
-     * @return <b>true</b> si le parcours existe
-     * <br/><b>false</b> dans le cas contraire
+     * @return objet de type <code>parcours</code>
      */
     public Parcours chargerParcours(int id) {
 
@@ -94,7 +93,7 @@ public class Parcours {
      */
     public Parcours creerParcours(Parcours nouveauParcours) {
 
-        debug("Ajout d'un nouveau parcours");
+        debug("Ajout d'un nouveau parcours.");
         Parcours resultat = this.parcoursDAO.creer(nouveauParcours);
         return resultat;
     }
@@ -176,7 +175,7 @@ public class Parcours {
     }
 
     /**
-     * Affichage des erreurs du Singleton en console
+     * Affichage des erreurs en console
      *
      * @param message Message d'erreur
      * @param erreur Code d'erreur
@@ -186,7 +185,7 @@ public class Parcours {
     }
 
     /**
-     * Affichage d'informations de débuggage du Singleton en console
+     * Affichage d'informations de débuggage en console
      *
      * @param message Message de débuggage
      */
@@ -197,16 +196,12 @@ public class Parcours {
     /**
      * Méthode d'affichage de l'objet Parcours
      *
-     * @return
+     * @return <code>null</code>
      */
     @Override
     public String toString() {
-        String affichage = "\n---- Affichage de l'objet PARCOURS ----\n";
-        affichage += "Identifiant: " + this.getId() + "\n";
-        affichage += "Libellé: " + this.getLibelle() + "\n";
-        affichage += "Description: " + this.getDescription() + "\n";
-        affichage += "---------------------------------------\n";
-        return affichage;
+        debug("Objet -> Identifiant : " + this.getId() + " | Pseudo : " + this.getLibelle() + " | Mot de passe : " + this.getDescription());
+        return null;
     }
 
 }
