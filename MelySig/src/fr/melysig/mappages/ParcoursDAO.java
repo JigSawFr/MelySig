@@ -31,15 +31,20 @@ public class ParcoursDAO extends DAO<Parcours> {
     @Override
     public Parcours chercher(int id) {
 
+        PreparedStatement requetePreparee;
         Parcours monParcours = new Parcours();
-        try {
-            ResultSet resultats = this.connexion
-                    .createStatement(
+        try { 
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT * FROM parcours WHERE idParcours = ?",
                             ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
                             ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
-                    ).executeQuery(
-                            "SELECT * FROM parcours WHERE idParcours = " + id
                     );
+            requetePreparee.setInt(1, id);
+
+            this.debug("Recherche -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+            
             if (resultats.first()) {
                 monParcours = new Parcours(
                         id,
@@ -59,6 +64,7 @@ public class ParcoursDAO extends DAO<Parcours> {
 
     /**
      * Permet de créer un nouveau parcours
+     *
      * @param nouveauParcours Objet Parcours de type <code>Parcours</code>
      * @return Objet de type <code>Parcours</code> muni de l'ID de la base suite à l'insertion
      */
@@ -98,42 +104,56 @@ public class ParcoursDAO extends DAO<Parcours> {
 
     /**
      * Permet de mettre à jour un parcours existant
+     *
      * @param monParcours Objet Parcours de type <code>Parcours</code>
      * @return Objet de type <code>Parcours</code> muni des nouvelles informations
      */
     @Override
     public Parcours mettreAjour(Parcours monParcours) {
+        
+        PreparedStatement requetePreparee;
         try {
-            this.connexion
-                    .createStatement(
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "UPDATE parcours SET libelleParcours = ?, descriptionParcours = ? WHERE idParcours = ?",
                             ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
                             ResultSet.CONCUR_UPDATABLE // Possibilité modifier les données de la base via le ResultSet.
-                    ).executeUpdate("UPDATE parcours SET libelleParcours = '" + monParcours.getLibelle() + "', descriptionParcours = '" + monParcours.getDescription() + "' WHERE idParcours = " + monParcours.getId()
                     );
-            this.debug("Modification -> Exécution de la requete SQL...");
-            monParcours = this.chercher(monParcours.getId());
-            this.debug("Modification -> Le parcours a été modifié avec succès.");
+            requetePreparee.setString(1, monParcours.getLibelle());
+            requetePreparee.setString(2, monParcours.getDescription());
+            requetePreparee.setInt(3, monParcours.getId());
+            this.debug("Mise à jour -> Exécution de la requete SQL...");
+            int lignes = requetePreparee.executeUpdate();
+            if (lignes == 0) {
+                throw new SQLException("Mise à jour -> Le parcours n'as pas été mis à jour.");
+            }
+            this.debug("Mise à jour -> Le parcours a été modifié avec succès.");
         } catch (SQLException erreur) {
-            this.erreur("Modification -> Erreur SQL !", erreur);
+            this.erreur("Mise à jour -> Erreur SQL !", erreur);
         }
         return monParcours;
     }
 
     /**
      * Permet de supprimer un parcours existant
+     *
      * @param monParcours Objet Parcours de type <code>Parcours</code>
      */
     @Override
     public void effacer(Parcours monParcours) {
+        
+        PreparedStatement requetePreparee;
         try {
-            this.connexion
-                    .createStatement(
-                            ResultSet.TYPE_SCROLL_INSENSITIVE, 
-                            ResultSet.CONCUR_UPDATABLE
-                    ).executeUpdate(
-                            "DELETE FROM parcours WHERE idParcours = " + monParcours.getId()
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "DELETE FROM parcours WHERE idParcours = ?"
                     );
+            requetePreparee.setInt(1, monParcours.getId());
             this.debug("Suppression -> Exécution de la requete SQL...");
+            int lignes = requetePreparee.executeUpdate();
+            if (lignes == 0) {
+                throw new SQLException("Le parcours n'as pas été supprimé.");
+            }
         } catch (SQLException erreur) {
             this.erreur("Suppression -> Erreur SQL !", erreur);
         }
