@@ -63,6 +63,15 @@ public class ParcoursControleur {
     }
 
     /**
+     * Permet de modifier un parcours existant (Polymorphisme)
+     *
+     * @return
+     */
+    public Parcours mettreAjourParcours() {
+        return modele.mettreAjourParcours(this.modele);
+    }
+
+    /**
      * Permet de modifier un parcours existant
      *
      * @param libelle libellé du parcours
@@ -79,6 +88,17 @@ public class ParcoursControleur {
      * Permet de supprimer un parcours existant
      */
     public void effacerParcours() {
+        this.modele.effacerParcours(this.modele);
+        this.modele = new Parcours();
+    }
+    
+    /**
+     * Permet de supprimer un parcours existant (Polymorphisme)
+     * @param id Identifiant du parcours à supprimer
+     */
+    public void effacerParcours(int id) {
+        this.modele = new Parcours();
+        this.modele.chargerParcours(id);
         this.modele.effacerParcours(this.modele);
         this.modele = new Parcours();
     }
@@ -134,7 +154,6 @@ public class ParcoursControleur {
 //    public void afficherDetails() {
 //        vue.afficherDetails(modele.getId(), modele.getLibelle(), modele.getDescription());
 //    }
-
     /**
      * Permet d'afficher les données de l'objet Parcours
      *

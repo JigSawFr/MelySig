@@ -87,11 +87,31 @@ public class UtilisateursControleur {
         this.modele.setEmail(email);
         return modele.mettreAjourUtilisateur(this.modele);
     }
-
-    /**
+    
+        /**
+     * Permet de mettre à jour un utilisateur existant (Polymorphisme)
+     *
+     * @return l'objet Utilisateurs contenant les donnéees mises à jour
+     */
+    public Utilisateurs mettreAjourUtilisateur() {
+        return modele.mettreAjourUtilisateur(this.modele);
+    }
+    
+        /**
      * Permet de supprimer un utilisateur existant
      */
     public void effacerUtilisateur() {
+        this.modele.effacerUtilisateur(this.modele);
+        this.modele = new Utilisateurs();
+    }
+
+    /**
+     * Permet de supprimer un utilisateur existant (Polymorphisme)
+     * @param id Identifiant de l'utilisateur à effacer
+     */
+    public void effacerUtilisateur(int id) {
+        this.modele = new Utilisateurs();
+        this.modele.chargerUtilisateur(id);
         this.modele.effacerUtilisateur(this.modele);
         this.modele = new Utilisateurs();
     }
