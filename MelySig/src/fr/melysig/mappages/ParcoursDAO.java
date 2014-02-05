@@ -18,7 +18,7 @@ import java.sql.Statement;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1.3
+ * @version 0.1.4
  */
 public class ParcoursDAO extends DAO<Parcours> {
 
@@ -65,7 +65,7 @@ public class ParcoursDAO extends DAO<Parcours> {
     /**
      * Permet de créer un nouveau parcours
      *
-     * @param nouveauParcours Objet Parcours de type <code>Parcours</code>
+     * @param nouveauParcours Objet de type <code>Parcours</code>
      * @return Objet de type <code>Parcours</code> muni de l'ID de la base suite à l'insertion
      */
     @Override
@@ -105,7 +105,7 @@ public class ParcoursDAO extends DAO<Parcours> {
     /**
      * Permet de mettre à jour un parcours existant
      *
-     * @param monParcours Objet Parcours de type <code>Parcours</code>
+     * @param monParcours Objet de type <code>Parcours</code>
      * @return Objet de type <code>Parcours</code> muni des nouvelles informations
      */
     @Override
@@ -137,7 +137,7 @@ public class ParcoursDAO extends DAO<Parcours> {
     /**
      * Permet de supprimer un parcours existant
      *
-     * @param monParcours Objet Parcours de type <code>Parcours</code>
+     * @param monParcours Objet de type <code>Parcours</code>
      */
     @Override
     public void effacer(Parcours monParcours) {
@@ -158,21 +158,13 @@ public class ParcoursDAO extends DAO<Parcours> {
             } else if (lignes > 1) {
                 throw new SQLException("Plusieurs parcours ont été supprimés ?? Pas normal tout ça...");
             }
-            else if (lignes == 1)
-            {
-                this.debug("Suppression -> Le parcours n°" + monParcours.getId() + " a bien été supprimé !");
-            }
-            else if (lignes > 1)
-            {
-                throw new SQLException("Plusieurs parcours ont été supprimés ?? Pas normal tout ça...");
-            }
         } catch (SQLException erreur) {
             this.erreur("Suppression -> Erreur SQL !", erreur);
         }
     }
 
     /**
-     * Affichage d'informations de débuggage du Singleton en console
+     * Affichage d'informations de débuggage en console
      *
      * @param message Message de débuggage
      */
@@ -181,7 +173,7 @@ public class ParcoursDAO extends DAO<Parcours> {
     }
 
     /**
-     * Affichage des erreurs du Singleton en console
+     * Affichage des erreurs du en console
      *
      * @param message Message d'erreur
      * @param erreur Code d'erreur
