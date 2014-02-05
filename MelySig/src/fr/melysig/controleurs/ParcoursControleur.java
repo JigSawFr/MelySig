@@ -131,9 +131,9 @@ public class ParcoursControleur {
     /**
      * Permet d'afficher les détails du parcours
      */
-    public void afficherDetails() {
-        vue.afficherDetails(modele.getId(), modele.getLibelle(), modele.getDescription());
-    }
+//    public void afficherDetails() {
+//        vue.afficherDetails(modele.getId(), modele.getLibelle(), modele.getDescription());
+//    }
 
     /**
      * Permet d'afficher les données de l'objet Parcours
