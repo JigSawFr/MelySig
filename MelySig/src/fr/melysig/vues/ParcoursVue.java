@@ -12,23 +12,6 @@ package fr.melysig.vues;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1
+ * @version 0.1.1
  */
-public class ParcoursVue {
-
-    /**
-     * Permet d'afficher les informations concernant un membre
-     *
-     * @param id Identifiant unique de l'utilisateur
-     * @param libelle
-     * @param description
-     */
-    public void afficherDetails(int id, String libelle, String description) {
-
-        System.out.println("-----------------------------");
-        System.out.println("ID: " + id);
-        System.out.println("Libellé: " + libelle);
-        System.out.println("Description: " + description);
-        System.out.println("-----------------------------");
-    }
-}
+public class ParcoursVue {}
