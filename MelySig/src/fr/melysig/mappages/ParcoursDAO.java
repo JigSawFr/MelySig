@@ -158,7 +158,17 @@ public class ParcoursDAO extends DAO<Parcours> {
             } else if (lignes > 1) {
                 throw new SQLException("Plusieurs parcours ont été supprimés ?? Pas normal tout ça...");
             }
+            else if (lignes == 1)
+            {
+                this.debug("Suppression -> Le parcours n°" + monParcours.getId() + " a bien été supprimé !");
+//                return true;
+            }
+            else if (lignes > 1)
+            {
+                throw new SQLException("Plusieurs parcours ont été supprimés ?? Pas normal tout ça...");
+            }
         } catch (SQLException erreur) {
+//            return false;
             this.erreur("Suppression -> Erreur SQL !", erreur);
         }
     }
