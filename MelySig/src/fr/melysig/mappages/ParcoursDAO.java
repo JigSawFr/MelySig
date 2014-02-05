@@ -18,7 +18,7 @@ import java.sql.Statement;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1.1
+ * @version 0.1.3
  */
 public class ParcoursDAO extends DAO<Parcours> {
 
@@ -33,7 +33,7 @@ public class ParcoursDAO extends DAO<Parcours> {
 
         PreparedStatement requetePreparee;
         Parcours monParcours = new Parcours();
-        try { 
+        try {
             requetePreparee = this.connexion
                     .prepareStatement(
                             "SELECT * FROM parcours WHERE idParcours = ?",
@@ -44,7 +44,7 @@ public class ParcoursDAO extends DAO<Parcours> {
 
             this.debug("Recherche -> Exécution de la requete SQL...");
             ResultSet resultats = requetePreparee.executeQuery();
-            
+
             if (resultats.first()) {
                 monParcours = new Parcours(
                         id,
@@ -110,7 +110,7 @@ public class ParcoursDAO extends DAO<Parcours> {
      */
     @Override
     public Parcours mettreAjour(Parcours monParcours) {
-        
+
         PreparedStatement requetePreparee;
         try {
             requetePreparee = this.connexion
@@ -141,7 +141,7 @@ public class ParcoursDAO extends DAO<Parcours> {
      */
     @Override
     public void effacer(Parcours monParcours) {
-        
+
         PreparedStatement requetePreparee;
         try {
             requetePreparee = this.connexion
@@ -153,6 +153,10 @@ public class ParcoursDAO extends DAO<Parcours> {
             int lignes = requetePreparee.executeUpdate();
             if (lignes == 0) {
                 throw new SQLException("Le parcours n'as pas été supprimé.");
+            } else if (lignes == 1) {
+                this.debug("Suppression -> Le parcours n°" + monParcours.getId() + " a bien été supprimé !");
+            } else if (lignes > 1) {
+                throw new SQLException("Plusieurs parcours ont été supprimés ?? Pas normal tout ça...");
             }
         } catch (SQLException erreur) {
             this.erreur("Suppression -> Erreur SQL !", erreur);
