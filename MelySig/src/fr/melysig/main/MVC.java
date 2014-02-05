@@ -7,6 +7,8 @@
 package fr.melysig.main;
 
 import fr.melysig.controleurs.*;
+import fr.melysig.models.*;
+import fr.melysig.vues.*;
 
 /**
  * <b>Controleur principal - Initialisation du MVC</b>
@@ -33,8 +35,8 @@ public class MVC {
     /**
      * Déclaration des sous-controleurs
      */
-    private final UtilisateurControleur gestionUtilisateur;
-    private final ParcoursControleur gestionParcours;
+//    private final UtilisateursControleur gestionUtilisateurs;
+//    private final ParcoursControleur gestionParcours;
 
     public MVC() {
 
@@ -58,8 +60,15 @@ public class MVC {
         /**
          * Instanciation des sous-controleurs
          */
-        this.gestionUtilisateur = new UtilisateurControleur();
-        this.gestionParcours = new ParcoursControleur();
+//        this.gestionUtilisateurs = new UtilisateursControleur();
+//        this.gestionParcours = new ParcoursControleur();
+        ParcoursVue vueParcours = new ParcoursVue();
+        Parcours modeleParcours = new Parcours();
+        ParcoursControleur controleurParcours = new ParcoursControleur(modeleParcours, vueParcours);
+        
+        UtilisateursVue vueUtilisateurs = new UtilisateursVue();
+        Utilisateurs modeleUtilisateurs = new Utilisateurs();
+        UtilisateursControleur controleurUtilisateurs = new UtilisateursControleur(modeleUtilisateurs, vueUtilisateurs);
 
         /**
          * Information de l'initialisation
@@ -71,11 +80,18 @@ public class MVC {
          */
         
         /* ---- Commandes de test ---- */
+//        gestionUtilisateurs.chargerUtilisateur(2);
+//        gestionUtilisateurs.toString();
+//        gestionUtilisateurs.toString();
+//        gestionUtilisateurs.mettreAjourUtilisateur(gestionUtilisateurs.getPseudo(), "tete de gland", gestionUtilisateurs.getNom(), gestionUtilisateurs.getPrenom(), gestionUtilisateurs.getEmail());
+//        gestionUtilisateurs.chargerUtilisateur(3);
+//        gestionUtilisateurs.effacerUtilisateur();
 //        gestionParcours.setLibelle("blabla");
 //        System.out.println(gestionParcours.toString());
-//        gestionParcours.chargerParcours(3);
+//        gestionParcours.creerParcours("Musées des canailles", "On passe tout au karcher !");
+//        gestionParcours.mettreAjourParcours(gestionParcours.getLibelle(), "Les suceurs de bites !");
 //        System.out.println(gestionParcours.toString());
-//        gestionParcours.mettreAjourParcours(gestionParcours.getLibelle(), "W33d W33d");
+//        gestionParcours.chargerParcours(5);
 //        System.out.println(gestionParcours.toString());
 //        gestionParcours.effacerParcours();
 //        System.out.println(gestionParcours.toString());

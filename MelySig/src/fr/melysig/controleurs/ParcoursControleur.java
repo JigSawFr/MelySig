@@ -15,7 +15,7 @@ import fr.melysig.vues.ParcoursVue;
  *
  * @author Sébastien R.
  * @since 0.3
- * @version 0.1.2
+ * @version 0.2.0
  */
 public class ParcoursControleur {
 
@@ -26,16 +26,24 @@ public class ParcoursControleur {
     /**
      * Déclaration de la vue
      */
-    private final ParcoursVue vue;
+    private ParcoursVue vue;
 
     /**
      * Constructeur de la classe
+     *
+     * @param modele
+     * @param vue
      */
-    public ParcoursControleur() {
+    public ParcoursControleur(Parcours modele, ParcoursVue vue) {
 
-        this.modele = new Parcours();
-        this.vue = new ParcoursVue();
+        this.modele = modele;
+        this.vue = vue;
     }
+//    public ParcoursControleur() {
+//
+//        this.modele = new Parcours();
+//        this.vue = new ParcoursVue();
+//    }
 
     /**
      * Permet de charger les données d'un parcours
@@ -91,9 +99,10 @@ public class ParcoursControleur {
         this.modele.effacerParcours(this.modele);
         this.modele = new Parcours();
     }
-    
+
     /**
      * Permet de supprimer un parcours existant (Polymorphisme)
+     *
      * @param id Identifiant du parcours à supprimer
      */
     public void effacerParcours(int id) {

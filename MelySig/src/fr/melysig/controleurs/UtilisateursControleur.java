@@ -26,16 +26,23 @@ public class UtilisateursControleur {
     /**
      * Déclaration de la vue
      */
-    private final UtilisateursVue vue;
+    private UtilisateursVue vue;
 
     /**
      * Constructeur de la classe
+     * @param modele
+     * @param vue
      */
-    public UtilisateursControleur() {
+    public UtilisateursControleur(Utilisateurs modele, UtilisateursVue vue) {
 
-        this.modele = new Utilisateurs();
-        this.vue = new UtilisateursVue();
+        this.modele = modele;
+        this.vue = vue;
     }
+//    public UtilisateursControleur() {
+//
+//        this.modele = new Utilisateurs();
+//        this.vue = new UtilisateursVue();
+//    }
 
     /**
      * Permet de charger les données d'un utilisateur
@@ -87,8 +94,8 @@ public class UtilisateursControleur {
         this.modele.setEmail(email);
         return modele.mettreAjourUtilisateur(this.modele);
     }
-    
-        /**
+
+    /**
      * Permet de mettre à jour un utilisateur existant (Polymorphisme)
      *
      * @return l'objet Utilisateurs contenant les donnéees mises à jour
@@ -96,8 +103,8 @@ public class UtilisateursControleur {
     public Utilisateurs mettreAjourUtilisateur() {
         return modele.mettreAjourUtilisateur(this.modele);
     }
-    
-        /**
+
+    /**
      * Permet de supprimer un utilisateur existant
      */
     public void effacerUtilisateur() {
@@ -107,6 +114,7 @@ public class UtilisateursControleur {
 
     /**
      * Permet de supprimer un utilisateur existant (Polymorphisme)
+     *
      * @param id Identifiant de l'utilisateur à effacer
      */
     public void effacerUtilisateur(int id) {
