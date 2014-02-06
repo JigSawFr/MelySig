@@ -36,7 +36,7 @@ public class MaBase {
     /**
      * Serveur ou hôte de la base
      */
-    private static final String serveur = "localhost";
+    private static final String serveur = "db4free.net";
     /**
      * Port du serveur
      */
@@ -44,15 +44,15 @@ public class MaBase {
     /**
      * Nom de la base
      */
-    private static final String base = "Melany";
+    private static final String base = "melysig";
     /**
      * Identifiant nécessaire pour l'accès
      */
-    private static final String identifiant = "root";
+    private static final String identifiant = "melysig";
     /**
      * Mot de passe nécessaire pour l'accès
      */
-    private static final String motDePasse = "root";
+    private static final String motDePasse = "melysig54";
     /**
      * DEBUG : Permet à la classe d'être plus bavarde sur son travail (true/false)
      *
