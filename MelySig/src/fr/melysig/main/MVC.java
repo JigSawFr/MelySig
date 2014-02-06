@@ -70,6 +70,12 @@ public class MVC {
         Utilisateurs modeleUtilisateurs = new Utilisateurs();
         UtilisateursControleur controleurUtilisateurs = new UtilisateursControleur(modeleUtilisateurs, vueUtilisateurs);
 
+        
+        
+        Lieux lieux = new Lieux();
+        // Appel de la vue.
+        ConsultationVue consultationVue = new ConsultationVue(lieux);
+
         /**
          * Information de l'initialisation
          */

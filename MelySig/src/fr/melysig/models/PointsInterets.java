@@ -314,4 +314,6 @@ public class PointsInterets {
         debug("Objet -> Identifiant : " + this.getId() + " | Coordonnée X : " + this.getX() + " | Coordoonnée Y : " + this.getY() + " | Libellé : " + this.getLibelle()+ " | Description : " + this.getDescription() + " | Lieu : " + this.getLieu() + " | Utilisateur : " + this.getUtilisateur() + " | Thème : " + this.getTheme());
         return null;
     }
+    
+    
 }

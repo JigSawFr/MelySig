@@ -13,7 +13,12 @@ import fr.melysig.carte.MoveDrawableMouseListener;
 import fr.melysig.carte.NonOverlapMoveAdapter;
 import fr.melysig.carte.RectangleDrawable;
 import fr.melysig.carte.SimpleMouseListener;
+import fr.melysig.models.Lieux;
+import fr.melysig.models.PointsInterets;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
@@ -21,20 +26,24 @@ import javax.swing.JTextField;
  *
  * @author Coonax
  */
-public class ConsultationVue extends javax.swing.JFrame {
+public class ConsultationVue extends javax.swing.JFrame implements Observer {
     
+    private Lieux lieux;
     private static JCanvas monCanvas = new JCanvas();
     Dimension dim = new Dimension(20, 20);
     IDrawable rect = new RectangleDrawable(Color.RED, new Point(10, 5),dim);
     private static JTextField txtXPOI = new javax.swing.JTextField();
     private static JTextField txtYPOI = new javax.swing.JTextField();
     
+
 //    private static ConsultationVue gestionConsultation = null;
 
     /**
      * Creates new form ConsultationVue
      */
-    public ConsultationVue() {
+    public ConsultationVue(Lieux lieux) {
+        this.lieux = lieux;
+        lieux.addObserver(this);
         initComponents();
     }
     
@@ -110,21 +119,17 @@ public class ConsultationVue extends javax.swing.JFrame {
         ComboboxListParcours = new javax.swing.JComboBox();
         PanelCarte = new javax.swing.JPanel(new BorderLayout());
         PanelCarte.setBackground(Color.WHITE);
-        monCanvas.setBackground(Color.WHITE);
+        monCanvas.setBackground(new java.awt.Color(169,169,169));
         monCanvas.setPreferredSize(new Dimension(706, 734));
         monCanvas.setMinimumSize(new Dimension(706,734));
         monCanvas.setSize(1700,890);
 
 
-        new SimpleMouseListener(monCanvas);
+        new SimpleMouseListener(monCanvas, lieux);
         new MoveDrawableMouseListener (monCanvas);
         new NonOverlapMoveAdapter(monCanvas);
 
         PanelCarte.add(monCanvas, BorderLayout.CENTER);
-
-
-
-
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -134,14 +139,14 @@ public class ConsultationVue extends javax.swing.JFrame {
 
         PanelHeader.setBackground(new java.awt.Color(204, 255, 102));
 
-        logoConnexionUtilisateur.setIcon(new javax.swing.ImageIcon("/Users/Coonax/Desktop/MelySIG-petit.png")); // NOI18N
+        logoConnexionUtilisateur.setIcon(new javax.swing.ImageIcon("src/fr/melysig/images/logo.png")); // NOI18N
 
         LabelCompte.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelCompte.setText("Compte :");
 
-        LabelPseudoConnecter.setText("Coonax");
+        LabelPseudoConnecter.setText("Pseudo");
 
-        imageLogin.setIcon(new javax.swing.ImageIcon("/Users/Coonax/Desktop/User-icon.png")); // NOI18N
+        imageLogin.setIcon(new javax.swing.ImageIcon("src/fr/melysig/images/utilisateur.png")); // NOI18N
 
         boutonDeconnexionUtilisateur.setText("Deconnexion");
 
@@ -179,9 +184,9 @@ public class ConsultationVue extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
-        PanelBody.setBackground(new java.awt.Color(240, 230, 194));
+        PanelBody.setBackground(new java.awt.Color(230, 230, 230));
 
-        PanelPointInteret.setBackground(new java.awt.Color(153, 204, 255));
+        PanelPointInteret.setBackground(new java.awt.Color(255, 255, 255));
 
         ListPointInteret.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 153, 255)));
         ListPointInteret.setModel(new javax.swing.AbstractListModel() {
@@ -271,7 +276,7 @@ public class ConsultationVue extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        PanelInformationPointInteret.setBackground(new java.awt.Color(255, 153, 51));
+        PanelInformationPointInteret.setBackground(new java.awt.Color(255, 255, 255));
 
         labelInformationPointInteret.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelInformationPointInteret.setText("Information Point Interet :");
@@ -288,15 +293,15 @@ public class ConsultationVue extends javax.swing.JFrame {
         labelDescriptionPOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelDescriptionPOI.setText("Description :");
 
-        txtLibellePOI.setEditable(false);
+        txtLibellePOI.setEditable(true);
         txtLibellePOI.setForeground(new java.awt.Color(0, 153, 255));
 
-        txtYPOI.setEditable(false);
+        txtYPOI.setEditable(true);
         txtYPOI.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         txtYPOI.setForeground(new java.awt.Color(255, 0, 0));
         txtYPOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
 
-        txtXPOI.setEditable(false);
+        txtXPOI.setEditable(true);
         txtXPOI.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         txtXPOI.setForeground(new java.awt.Color(255, 0, 0));
         txtXPOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
@@ -304,19 +309,19 @@ public class ConsultationVue extends javax.swing.JFrame {
         labelLieuPOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelLieuPOI.setText("Lieu :");
 
-        txtLieuPOI.setEditable(false);
+        txtLieuPOI.setEditable(true);
         txtLieuPOI.setForeground(new java.awt.Color(0, 153, 255));
         txtLieuPOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
 
         labelThemePOI.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelThemePOI.setText("Theme :");
 
-        txtThemePOI.setEditable(false);
+        txtThemePOI.setEditable(true);
         txtThemePOI.setForeground(new java.awt.Color(0, 155, 255));
         txtThemePOI.setToolTipText("");
         txtThemePOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
 
-        txtDescriptionPOI.setEditable(false);
+        txtDescriptionPOI.setEditable(true);
         txtDescriptionPOI.setColumns(20);
         txtDescriptionPOI.setForeground(new java.awt.Color(0, 155, 255));
         txtDescriptionPOI.setRows(5);
@@ -403,7 +408,7 @@ public class ConsultationVue extends javax.swing.JFrame {
                 .addGap(15, 15, 15))
         );
 
-        PanelRecherche.setBackground(new java.awt.Color(255, 255, 153));
+        PanelRecherche.setBackground(new java.awt.Color(255, 255, 255));
 
         labelRecherche.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelRecherche.setText("Recherche :");
@@ -442,7 +447,7 @@ public class ConsultationVue extends javax.swing.JFrame {
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        PanelParcours.setBackground(new java.awt.Color(255, 255, 153));
+        PanelParcours.setBackground(new java.awt.Color(255, 255, 255));
 
         labelParcours.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelParcours.setText("Parcours :");
@@ -598,7 +603,7 @@ public class ConsultationVue extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void boutonPointInteretPrecedentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonPointInteretPrecedentActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_boutonPointInteretPrecedentActionPerformed
 
     private void ListPointInteretValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListPointInteretValueChanged
@@ -607,7 +612,7 @@ public class ConsultationVue extends javax.swing.JFrame {
     }//GEN-LAST:event_ListPointInteretValueChanged
 
     private void txtLibelleParcoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLibelleParcoursActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtLibelleParcoursActionPerformed
 
     /**
@@ -640,16 +645,18 @@ public class ConsultationVue extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConsultationVue().setVisible(true);
+               // new ConsultationVue().setVisible(true);
             }
         });
     }
     
-    public void updateIHM(int x, int y){
-         txtXPOI.setText(String.valueOf(x));
-         txtYPOI.setText(String.valueOf(y));
-        
-    }
+//    public void updateIHM(int x, int y){
+//         txtXPOI.setText(String.valueOf(x));
+//         txtYPOI.setText(String.valueOf(y));
+//        
+//    }
+    
+    
 
     // Variables declaration - do not modify                     
     private javax.swing.JComboBox ComboRecherche;
@@ -705,4 +712,24 @@ public class ConsultationVue extends javax.swing.JFrame {
     //private javax.swing.JTextField txtXPOI;
     //private javax.swing.JTextField txtYPOI;
     // End of variables declaration                   
+
+     //Méthode qui permet de mettre à jour.
+    @Override
+    public void update(Observable o, Object arg) {
+        //Permet d'obtenir le int en String.
+        if(o instanceof Lieux){
+        PointsInterets monPointInteret = ((Lieux)o).getPointInteretCourant();
+        //Verification dans le cas si le point interet est null
+        txtXPOI.setText((monPointInteret==null)?"":""+monPointInteret.getX());
+        txtYPOI.setText((monPointInteret==null)?"":""+monPointInteret.getY());
+        txtDescriptionPOI.setText((monPointInteret==null)?"":""+monPointInteret.getDescription());
+        txtLibellePOI.setText("coucou");
+        txtThemePOI.setText((monPointInteret==null)?"":""+monPointInteret.getTheme());
+        this.validate();
+        
+        
+        }
+        
+        
+    }
 }

@@ -10,7 +10,7 @@ package fr.melysig.vues;
  * Classe de vue d'<b>affichage des Parcours</b>
  * Permet d'afficher et manipuler les parcours via une IHM
  *
- * @author Sébastien R., Julien P.
+ * @author Sébastien R.
  * @since 0.3
  * @version 0.1.1
  */
