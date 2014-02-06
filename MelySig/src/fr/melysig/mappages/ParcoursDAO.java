@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,9 +72,42 @@ public class ParcoursDAO extends DAO<Parcours> {
      */
     @Override
     public List<Parcours> lister(int nb) {
-        /* A FAIRE */
-        return null;
+        
+        PreparedStatement requetePreparee;
+        List<Parcours> mesParcours = new ArrayList<>();
+        try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT * FROM parcours LIMIT 0,?",
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    );
+            requetePreparee.setInt(1, nb);
+
+            this.debug("Listing -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+            
+            /* On redifinié le pointeur sur l'enregistrement 0*/
+            resultats.beforeFirst();
+
+            if (resultats.next()) {
+                Parcours monParcours = new Parcours(
+                        resultats.getInt("idParcours"),
+                        resultats.getString("libelleParcours"),
+                        resultats.getString("descriptionParcours")
+                );
+                mesParcours.add(monParcours);
+                this.debug("Listing -> Ajout du parcours n°" + monParcours.getId() + " à la liste avec succès.");
+            } else {
+                throw new SQLException("Aucun parcours à lister !");
+            }
+
+        } catch (SQLException erreur) {
+            this.erreur("Listing -> Erreur SQL !", erreur);
+        }
+        return mesParcours;
     }
+    
 
     /**
      * Permet de créer un nouveau parcours

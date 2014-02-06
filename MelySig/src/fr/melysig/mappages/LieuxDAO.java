@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,9 +64,43 @@ public class LieuxDAO extends DAO<Lieux> {
      */
     @Override
     public List<Lieux> lister(int nb) {
-        /* A FAIRE */
-        return null;
-    }
+        
+        PreparedStatement requetePreparee;
+               List<Lieux> mesLieux = new ArrayList<>();
+               try {
+                   requetePreparee = this.connexion
+                           .prepareStatement(
+                                   "SELECT * FROM lieux LIMIT 0,?",
+                                   ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                                   ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                           );
+                   requetePreparee.setInt(1, nb);
+
+                   this.debug("Listing -> Exécution de la requete SQL...");
+                   ResultSet resultats = requetePreparee.executeQuery();
+
+                   /* On redifinié le pointeur sur l'enregistrement 0*/
+                   resultats.beforeFirst();
+
+                   if (resultats.next()) {
+                       Lieux monLieux = new Lieux(
+                               resultats.getInt("idLieu"),
+                               resultats.getString("nomLieu"),
+                               resultats.getString("carteLieu"),
+                               resultats.getString("descriptionLieu"),
+                               resultats.getInt("idUtilisateurLieu")
+                       );
+                       mesLieux.add(monLieux);
+                       this.debug("Listing -> Ajout du lieu n°" + monLieux.getId() + " à la liste avec succès.");
+                   } else {
+                       throw new SQLException("Aucun lieu à lister !");
+                   }
+
+               } catch (SQLException erreur) {
+                   this.erreur("Listing -> Erreur SQL !", erreur);
+               }
+               return mesLieux;
+           }
 
     @Override
     public Lieux creer(Lieux nouveauLieux) {
