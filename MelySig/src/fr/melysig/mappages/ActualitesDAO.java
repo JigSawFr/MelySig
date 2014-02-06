@@ -6,37 +6,37 @@
  */
 package fr.melysig.mappages;
 
-import fr.melysig.models.Parcours;
+import fr.melysig.models.Actualites;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Classe DAO pour les <b>parcours</b>
- * <br />Permet de faire la liaison entre la couches de données et les objets des parcours.
+ * Classe DAO pour les <b>actualités</b>
+ * <br />Permet de faire la liaison entre la couches de données et les objets des actualités.
  *
- * @author Sébastien R., Julien P.
- * @since 0.3
- * @version 0.1.4
+ * @author Gérold M., Sébastien R.
+ * @since 0.4
+ * @version 0.2
  */
-public class ParcoursDAO extends DAO<Parcours> {
+public class ActualitesDAO extends DAO<Actualites> {
 
     /**
-     * Permet charger les informations d'un parcours
+     * Permet charger les informations d'une actualité
      *
      * @param id l'identifiant de type <code>int/</code>
      * @return
      */
     @Override
-    public Parcours chercher(int id) {
+    public Actualites chercher(int id) {
 
         PreparedStatement requetePreparee;
-        Parcours monParcours = new Parcours();
+        Actualites monActualite = new Actualites();
         try {
             requetePreparee = this.connexion
                     .prepareStatement(
-                            "SELECT * FROM parcours WHERE idParcours = ?",
+                            "SELECT * FROM actualites WHERE idActualite = ?",
                             ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
                             ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
                     );
@@ -46,39 +46,41 @@ public class ParcoursDAO extends DAO<Parcours> {
             ResultSet resultats = requetePreparee.executeQuery();
 
             if (resultats.first()) {
-                monParcours = new Parcours(
+                monActualite = new Actualites(
                         id,
-                        resultats.getString("libelleParcours"),
-                        resultats.getString("descriptionParcours")
+                        resultats.getString("libelleActualite"),
+                        resultats.getString("descriptionActualite"),
+                        resultats.getInt("idUtilisateurActualite")
                 );
-                this.debug("Recherche -> Parcours localisé dans la base avec succès.");
+                this.debug("Recherche -> Actualité localisé dans la base avec succès.");
             } else {
-                throw new SQLException("Aucun parcours ne correspond à l'identifiant n° " + id + " !");
+                throw new SQLException("Aucune actualité ne correspond à l'identifiant n° " + id + " !");
             }
 
         } catch (SQLException erreur) {
             this.erreur("Recherche -> Erreur SQL !", erreur);
         }
-        return monParcours;
+        return monActualite;
     }
 
     /**
-     * Permet de créer un nouveau parcours
+     * Permet de créer une nouvelle actualité
      *
-     * @param nouveauParcours Objet de type <code>Parcours</code>
-     * @return Objet de type <code>Parcours</code> muni de l'ID de la base suite à l'insertion
+     * @param nouvelleActualite Objet de type <code>Actualites</code>
+     * @return Objet de type <code>Actualites</code> muni de l'ID de la base suite à l'insertion
      */
     @Override
-    public Parcours creer(Parcours nouveauParcours) {
+    public Actualites creer(Actualites nouvelleActualite) {
 
         try {
             PreparedStatement requetePreparee = this.connexion
                     .prepareStatement(
-                            "INSERT INTO parcours (libelleParcours, descriptionParcours) VALUES (?,?)",
+                            "INSERT INTO actualites (libelleActualite, descriptionActualite, idUtilisateurActualite) VALUES (?,?,?)",
                             Statement.RETURN_GENERATED_KEYS // Retourne les lignes affectés
                     );
-            requetePreparee.setString(1, nouveauParcours.getLibelle());
-            requetePreparee.setString(2, nouveauParcours.getDescription());
+            requetePreparee.setString(1, nouvelleActualite.getLibelle());
+            requetePreparee.setString(2, nouvelleActualite.getDescription());
+            requetePreparee.setInt(3, nouvelleActualite.getUtilisateur());
 
             this.debug("Ajout -> Exécution de la requete SQL...");
             int lignes = requetePreparee.executeUpdate();
@@ -89,8 +91,8 @@ public class ParcoursDAO extends DAO<Parcours> {
 
             ResultSet clesGenerees = requetePreparee.getGeneratedKeys();
             if (clesGenerees.next()) {
-                this.debug("Ajout -> Définition de l'identifiant unique du parcours.");
-                nouveauParcours.setId(clesGenerees.getInt(1));
+                this.debug("Ajout -> Définition de l'identifiant unique de l'actualité.");
+                nouvelleActualite.setId(clesGenerees.getInt(1));
             } else {
                 throw new SQLException("Aucune clées générées.");
             }
@@ -98,65 +100,67 @@ public class ParcoursDAO extends DAO<Parcours> {
         } catch (SQLException erreur) {
             this.erreur("Ajout -> Erreur SQL !", erreur);
         }
-        this.debug("Ajout -> Nouveau parcours ajouté avec succès (N°" + nouveauParcours.getId() + ").");
-        return nouveauParcours;
+        this.debug("Ajout -> Nouvelle actualité ajoutée avec succès (N°" + nouvelleActualite.getId() + ").");
+        return nouvelleActualite;
     }
 
     /**
-     * Permet de mettre à jour un parcours existant
+     * Permet de mettre à jour une actualité existante
      *
-     * @param monParcours Objet de type <code>Parcours</code>
-     * @return Objet de type <code>Parcours</code> muni des nouvelles informations
+     * @param monActualite Objet de type <code>Actualites</code>
+     * @return Objet de type <code>Actualites</code> muni des nouvelles informations
      */
     @Override
-    public Parcours mettreAjour(Parcours monParcours) {
+    public Actualites mettreAjour(Actualites monActualite) {
 
         PreparedStatement requetePreparee;
         try {
             requetePreparee = this.connexion
                     .prepareStatement(
-                            "UPDATE parcours SET libelleParcours = ?, descriptionParcours = ? WHERE idParcours = ?",
+                            "UPDATE actualites SET libelleActualite = ?, descriptionActualite = ?, idUtilisateurActualite = ? WHERE idActualite = ?",
                             ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
                             ResultSet.CONCUR_UPDATABLE // Possibilité modifier les données de la base via le ResultSet.
                     );
-            requetePreparee.setString(1, monParcours.getLibelle());
-            requetePreparee.setString(2, monParcours.getDescription());
-            requetePreparee.setInt(3, monParcours.getId());
+            requetePreparee.setString(1, monActualite.getLibelle());
+            requetePreparee.setString(2, monActualite.getDescription());
+            requetePreparee.setInt(3, monActualite.getUtilisateur());
+            requetePreparee.setInt(5, monActualite.getId());
+
             this.debug("Mise à jour -> Exécution de la requete SQL...");
             int lignes = requetePreparee.executeUpdate();
             if (lignes == 0) {
-                throw new SQLException("Mise à jour -> Le parcours n'as pas été mis à jour.");
+                throw new SQLException("Mise à jour -> L'actualité n'as pas été mise à jour.");
             }
-            this.debug("Mise à jour -> Le parcours a été modifié avec succès.");
+            this.debug("Mise à jour -> L'actualité a été modifiée avec succès.");
         } catch (SQLException erreur) {
             this.erreur("Mise à jour -> Erreur SQL !", erreur);
         }
-        return monParcours;
+        return monActualite;
     }
 
     /**
      * Permet de supprimer un parcours existant
      *
-     * @param monParcours Objet de type <code>Parcours</code>
+     * @param monActualite Objet de type <code>Parcours</code>
      */
     @Override
-    public void effacer(Parcours monParcours) {
+    public void effacer(Actualites monActualite) {
 
         PreparedStatement requetePreparee;
         try {
             requetePreparee = this.connexion
                     .prepareStatement(
-                            "DELETE FROM parcours WHERE idParcours = ?"
+                            "DELETE FROM actualites WHERE idActualite = ?"
                     );
-            requetePreparee.setInt(1, monParcours.getId());
+            requetePreparee.setInt(1, monActualite.getId());
             this.debug("Suppression -> Exécution de la requete SQL...");
             int lignes = requetePreparee.executeUpdate();
             if (lignes == 0) {
-                throw new SQLException("Le parcours n'as pas été supprimé.");
+                throw new SQLException("L'actualité n'as pas été supprimée.");
             } else if (lignes == 1) {
-                this.debug("Suppression -> Le parcours n°" + monParcours.getId() + " a bien été supprimé !");
+                this.debug("Suppression -> L'actualité n°" + monActualite.getId() + " a bien été supprimée !");
             } else if (lignes > 1) {
-                throw new SQLException("Plusieurs parcours ont été supprimés ?? Pas normal tout ça...");
+                throw new SQLException("Plusieurs actualités ont été supprimées ?? Pas normal tout ça...");
             }
         } catch (SQLException erreur) {
             this.erreur("Suppression -> Erreur SQL !", erreur);
@@ -169,7 +173,7 @@ public class ParcoursDAO extends DAO<Parcours> {
      * @param message Message de débuggage
      */
     private void debug(String message) {
-        super.gestionDebug.debug("DAO", "Parcours -> " + message);
+        super.gestionDebug.debug("DAO", "Actualités -> " + message);
     }
 
     /**
@@ -179,6 +183,6 @@ public class ParcoursDAO extends DAO<Parcours> {
      * @param erreur Code d'erreur
      */
     private void erreur(String message, Exception erreur) {
-        super.gestionErreurs.erreur("DAO", "Parcours -> " + message, erreur);
+        super.gestionErreurs.erreur("DAO", "Actualités -> " + message, erreur);
     }
 }

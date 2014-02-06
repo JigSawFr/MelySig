@@ -10,15 +10,14 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.ParcoursDAO;
-//import java.sql.SQLException;
 
 /**
  * Classe de <b>traitement des Parcours</b>
  * Permet le traitement des différents parcours
  *
- * @author Sébastien R.
+ * @author Sébastien R., Julien P.
  * @since 0.3
- * @version 0.1
+ * @version 0.1.2
  */
 public class Parcours {
 
@@ -77,8 +76,7 @@ public class Parcours {
      * dans la base de données
      *
      * @param id Identifiant <b>unique</b> du parcours
-     * @return <b>true</b> si le parcours existe
-     * <br/><b>false</b> dans le cas contraire
+     * @return objet de type <code>parcours</code>
      */
     public Parcours chargerParcours(int id) {
 
@@ -87,62 +85,42 @@ public class Parcours {
         return resultat;
     }
 
+    /**
+     * Ajouter un <b>nouveau parcours</b> dans la base de données
+     *
+     * @param nouveauParcours objet parcours contenant les données à ajouter
+     * @return objet parcours avec l'identifiant unique en base de données
+     */
     public Parcours creerParcours(Parcours nouveauParcours) {
 
-        debug("Ajout d'un nouveau parcours");
+        debug("Ajout d'un nouveau parcours.");
         Parcours resultat = this.parcoursDAO.creer(nouveauParcours);
+        return resultat;
+    }
+    
+    /**
+     * Modifier un <b>parcours existant</b> dans la base de données
+     *
+     * @param monParcours objet parcours contenant les données à modifier
+     * @return objet parcours avec l'identifiant unique en base de données
+     */
+    public Parcours mettreAjourParcours(Parcours monParcours) {
+
+        debug("Modification d'un parcours existant.");
+        Parcours resultat = this.parcoursDAO.mettreAjour(monParcours);
         return resultat;
     }
 
     /**
-     * Ajouter un <b>nouveau parcours</b>
-     * dans la base de données
-     *
-     * @param libelle libellé du parcours
-     * @param description description du parcours
-     * @return <b>int</b> qui est l'identifiant du nouveau parcours si le parcours a bien été ajouté
-     * <br/><b>0</b> dans le cas contraire
-     * @throws java.sql.SQLException
+     * Permet de <b>supprimer un parcours existant</b>
+     * @param monParcours objet parcours contenant l'id du parcours à supprimer
      */
-//    public int ajouterParcours(String libelle, String description) throws SQLException {
-//
-//        /* Mise en variables des informations du parcours */
-//        this.libelle = libelle;
-//        this.description = description;
-//        debug("Mise en variable du parcours : \n -> Libellé : " + this.libelle + "\n -> Description : " + this.description);
-//
-//        /* Mise en variable de la requête SQL */
-//        /*this.requeteSql = "INSERT INTO parcours"
-//         + "(libelleParcours, descriptionParcours) VALUES"
-//         + "(?,?);";*/
-//        debug("Création de la requête SQL.");
-//        try {
-//
-//        /* On prépare notre requête */
-//            this.requetePreparee = this.connexion.prepareStatement(this.requeteSql);
-//        debug("Préparation de la requête SQL.");
-//
-//        /* On définit les variables de la requête préparée */
-//            this.requetePreparee.setString(1, this.libelle);
-//        this.requetePreparee.setString(2, this.description);
-//        debug("Définition des variables de la requête préparée.");
-//
-//        /* Execution de la requête SQL */
-//        this.requetePreparee.executeUpdate();
-//        debug("Insertion du parcours avec succès.");
-//        } catch (SQLException erreur) {
-//        gestionErreur("Impossible de fermer la connexion", erreur);
-//        } finally {
-//        if (this.requetePreparee != null) {
-//        this.requetePreparee.close();
-//        debug("Fermeture de la requête préparée.");
-//        }
-//        if (this.connexion != null) {
-//        MaBase.fermerConnexion();
-//        }
-//        }
-//        return 0;
-//    }
+    public void effacerParcours(Parcours monParcours) {
+        
+        debug("Suppression d'un parcours existant.");
+        this.parcoursDAO.effacer(monParcours);
+    }
+
     /**
      * Permet d'obtenir l'identifiant unique du parcours
      *
@@ -152,6 +130,10 @@ public class Parcours {
         return id;
     }
 
+    /**
+     * Permet de définir l'identifiant unique du parcours
+     * @param id l'identifiant unique du parcours de type <code>int</code>
+     */
     public void setId(int id) {
         this.id = id;
     }
@@ -193,7 +175,7 @@ public class Parcours {
     }
 
     /**
-     * Affichage des erreurs du Singleton en console
+     * Affichage des erreurs en console
      *
      * @param message Message d'erreur
      * @param erreur Code d'erreur
@@ -203,7 +185,7 @@ public class Parcours {
     }
 
     /**
-     * Affichage d'informations de débuggage du Singleton en console
+     * Affichage d'informations de débuggage en console
      *
      * @param message Message de débuggage
      */
@@ -214,16 +196,12 @@ public class Parcours {
     /**
      * Méthode d'affichage de l'objet Parcours
      *
-     * @return
+     * @return <code>null</code>
      */
     @Override
     public String toString() {
-        String affichage = "\n---- Affichage de l'objet PARCOURS ----\n";
-        affichage += "Identifiant: " + this.getId() + "\n";
-        affichage += "Libellé: " + this.getLibelle() + "\n";
-        affichage += "Description: " + this.getDescription() + "\n";
-        affichage += "---------------------------------------\n";
-        return affichage;
+        debug("Objet -> Identifiant : " + this.getId() + " | Pseudo : " + this.getLibelle() + " | Mot de passe : " + this.getDescription());
+        return null;
     }
 
 }

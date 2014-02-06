@@ -8,35 +8,61 @@ package fr.melysig.controleurs;
 
 import fr.melysig.models.Parcours;
 import fr.melysig.vues.ParcoursVue;
-//import java.sql.SQLException;
 
 /**
  * Classe de <b>mise en relation de la vue et le modèle des Parcours</b>
- * Permet le traitement des différents actions nécessaires
+ * Permet le traitement des différentes actions nécessaires
  *
- * @author Sébastien R.
+ * @author Sébastien R., Julien P.
  * @since 0.3
- * @version 0.1
+ * @version 0.2.0
  */
 public class ParcoursControleur {
 
+    /**
+     * Déclaration du modèle
+     */
     private Parcours modele;
-    private final ParcoursVue vue;
+    /**
+     * Déclaration de la vue
+     */
+    private ParcoursVue vue;
 
     /**
      * Constructeur de la classe
+     *
+     * @param modele
+     * @param vue
      */
-    public ParcoursControleur() {
+    public ParcoursControleur(Parcours modele, ParcoursVue vue) {
 
-        this.modele = new Parcours();
-        this.vue = new ParcoursVue();
+        this.modele = modele;
+        this.vue = vue;
     }
+//    public ParcoursControleur() {
+//
+//        this.modele = new Parcours();
+//        this.vue = new ParcoursVue();
+//    }
 
+    /**
+     * Permet de charger les données d'un parcours
+     *
+     * @param id Identifiant unique du parcours
+     * @return l'objet parcours contenant les données chargées
+     */
     public Parcours chargerParcours(int id) {
         this.modele = modele.chargerParcours(id);
         return modele;
     }
 
+    /**
+     * Permet de créer un nouveau parcours
+     *
+     * @param libelle libellé du parcours
+     * @param description description du parcours
+     * @return
+     */
     public Parcours creerParcours(String libelle, String description) {
         this.modele = new Parcours();
         this.modele.setLibelle(libelle);
@@ -44,36 +70,106 @@ public class ParcoursControleur {
         return modele.creerParcours(this.modele);
     }
 
-//    public int ajouterParcours(String libelle, String description) throws SQLException {
-//        return modele.ajouterParcours(libelle, description);
-//    }
+    /**
+     * Permet de modifier un parcours existant (Polymorphisme)
+     *
+     * @return
+     */
+    public Parcours mettreAjourParcours() {
+        return modele.mettreAjourParcours(this.modele);
+    }
 
+    /**
+     * Permet de modifier un parcours existant
+     *
+     * @param libelle libellé du parcours
+     * @param description description du parcours
+     * @return
+     */
+    public Parcours mettreAjourParcours(String libelle, String description) {
+        this.modele.setLibelle(libelle);
+        this.modele.setDescription(description);
+        return modele.mettreAjourParcours(this.modele);
+    }
+
+    /**
+     * Permet de supprimer un parcours existant
+     */
+    public void effacerParcours() {
+        this.modele.effacerParcours(this.modele);
+        this.modele = new Parcours();
+    }
+
+    /**
+     * Permet de supprimer un parcours existant (Polymorphisme)
+     *
+     * @param id Identifiant du parcours à supprimer
+     */
+    public void effacerParcours(int id) {
+        this.modele = new Parcours();
+        this.modele.chargerParcours(id);
+        this.modele.effacerParcours(this.modele);
+        this.modele = new Parcours();
+    }
+
+    /**
+     * Permet d'obtenir l'identifiant unique du parcours depuis le modèle
+     *
+     * @return l'identifiant unique de type <code>int</code>
+     */
     public int getId() {
         return modele.getId();
     }
 
+    /**
+     * Permet d'obtenir le libellé du parcours
+     *
+     * @return le libellé de type <code>String</code>
+     */
     public String getLibelle() {
         return modele.getLibelle();
     }
 
+    /**
+     * Permet d'obtenir la description du parcours
+     *
+     * @return la description de type <code>String</code>
+     */
     public String getDescription() {
         return modele.getDescription();
     }
 
+    /**
+     * Permet de définir le libellé du parcours
+     *
+     * @param libelle le libellé de type <code>String</code>
+     */
     public void setLibelle(String libelle) {
         modele.setLibelle(libelle);
     }
 
+    /**
+     * Permet de définir la description du parcours
+     *
+     * @param description la description de type <code>String</code>
+     */
     public void setDescription(String description) {
         modele.setDescription(description);
     }
 
-    public void afficherDetails() {
-        vue.afficherDetails(modele.getId(), modele.getLibelle(), modele.getDescription());
-    }
-
+    /**
+     * Permet d'afficher les détails du parcours
+     */
+//    public void afficherDetails() {
+//        vue.afficherDetails(modele.getId(), modele.getLibelle(), modele.getDescription());
+//    }
+    /**
+     * Permet d'afficher les données de l'objet Parcours
+     *
+     * @return les données définit de l'objet
+     */
     @Override
     public String toString() {
         return modele.toString();
-    }  
+    }
 }

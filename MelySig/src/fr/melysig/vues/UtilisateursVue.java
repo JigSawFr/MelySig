@@ -7,14 +7,14 @@
 package fr.melysig.vues;
 
 /**
- * Classe de vue d' <b>affichage des UtilisateurVues</b>
+ * Classe de vue d' <b>affichage des UtilisateursVues</b>
  * Permet d'afficher et manipuler les membres via une IHM
  *
  * @author Sébastien R.
  * @since 0.2
- * @version 0.1
+ * @version 0.1.1
  */
-public class UtilisateurVue {
+public class UtilisateursVue {
 
     /**
      * Permet d'afficher les informations concernant un membre
