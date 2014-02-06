@@ -106,16 +106,25 @@ public class LieuxDAO extends DAO<Lieux> {
     @Override
     public void effacer(Lieux monLieux) {
 
-        /* A REFAIRE */
-        /*  try {
-         this.connexion
-         .createStatement()
-         .executeUpdate(
-         "DELETE FROM lieux WHERE idLieu = " + id
-         );
-         } catch (SQLException erreur) {
-         this.erreur("Recherche -> Erreur SQL !", erreur);
-         }*/
+       PreparedStatement requetePreparee;
+       try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                                 "DELETE FROM lieux WHERE idLieu = ?"
+            );
+            requetePreparee.setInt(1, monLieux.getId());
+            this.debug("Suppression -> Exécution de la requete SQL...");
+            int lignes = requetePreparee.executeUpdate();
+            if (lignes == 0) {
+                throw new SQLException("Le lieu n'as pas été supprimé.");
+            } else if (lignes == 1) {
+                this.debug("Suppression -> Le lieu n°" + monLieux.getId() + " a bien été supprimé !");
+            } else if (lignes > 1) {
+                throw new SQLException("Plusieurs lieux ont été supprimés ?? Pas normal tout ça...");
+            }
+        } catch (SQLException erreur) {
+            this.erreur("Suppression -> Erreur SQL !", erreur);
+        }
     }
 
     @Override
