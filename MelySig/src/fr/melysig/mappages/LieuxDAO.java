@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Classe DAO pour les <b>parcours</b>
@@ -54,6 +55,18 @@ public class LieuxDAO extends DAO<Lieux> {
         return monLieux;
     }
 
+    /**
+     * Permet de lister différents lieux
+     *
+     * @param nb nombre de lieux de type <code>int</code>
+     * @return
+     */
+    @Override
+    public List<Lieux> lister(int nb) {
+        /* A FAIRE */
+        return null;
+    }
+
     @Override
     public Lieux creer(Lieux nouveauLieux) {
 
@@ -94,15 +107,15 @@ public class LieuxDAO extends DAO<Lieux> {
     public void effacer(Lieux monLieux) {
 
         /* A REFAIRE */
-      /*  try {
-            this.connexion
-                    .createStatement()
-                    .executeUpdate(
-                            "DELETE FROM lieux WHERE idLieu = " + id
-                    );
-        } catch (SQLException erreur) {
-            this.erreur("Recherche -> Erreur SQL !", erreur);
-        }*/
+        /*  try {
+         this.connexion
+         .createStatement()
+         .executeUpdate(
+         "DELETE FROM lieux WHERE idLieu = " + id
+         );
+         } catch (SQLException erreur) {
+         this.erreur("Recherche -> Erreur SQL !", erreur);
+         }*/
     }
 
     @Override

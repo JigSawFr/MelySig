@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Classe DAO pour les <b>actualités</b>
@@ -61,6 +62,18 @@ public class ActualitesDAO extends DAO<Actualites> {
             this.erreur("Recherche -> Erreur SQL !", erreur);
         }
         return monActualite;
+    }
+    
+        /**
+     * Permet de lister différents thèmes
+     *
+     * @param nb nombre de thèmes de type <code>int</code>
+     * @return
+     */
+    @Override
+    public List<Actualites> lister(int nb) {
+        /* A FAIRE */
+        return null;
     }
 
     /**
