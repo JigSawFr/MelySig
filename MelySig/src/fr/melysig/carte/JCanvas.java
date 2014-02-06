@@ -15,6 +15,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observable;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -22,7 +24,7 @@ import javax.imageio.ImageIO;
  * @author Coonax
  * @author Poook
  */
-public class JCanvas extends JPanel {
+public class JCanvas extends JPanel{
     
 //    private int x;
 //    private int y;
@@ -119,6 +121,7 @@ public class JCanvas extends JPanel {
         }
         return true;
     }
+
 
     
     

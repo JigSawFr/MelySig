@@ -11,6 +11,10 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.LieuxDAO;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Observable;
 
 /**
  * Classe de <b>traitement des Parcours</b>
@@ -21,7 +25,10 @@ import fr.melysig.mappages.LieuxDAO;
  * @version 0.1.1
  */
 
-public class Lieux {
+public class Lieux extends Observable{
+    
+    private PointsInterets pointInteretCourant;
+    private List<PointsInterets> pointsInterets;
     
     /**
      * Identifiant Unique du lieux
@@ -63,6 +70,11 @@ public class Lieux {
         this.description = null;
         this.idUtilisateur = 0;
         this.lieuxDAO = new LieuxDAO();
+        this.pointInteretCourant = null;
+        this.pointsInterets = new ArrayList();
+        setPointsInterets(Arrays.asList(new PointsInterets[]{
+            new PointsInterets(1, 10, 10, "String", "Missa NoSound", 1, 4218, 1)
+        }));
     }
     
     /**
@@ -81,6 +93,9 @@ public class Lieux {
         this.description = description;
         this.idUtilisateur = idUtilisateur;
         this.lieuxDAO = new LieuxDAO();
+        this.pointInteretCourant = null;
+        this.pointsInterets = new ArrayList<PointsInterets>();
+                
     }
     
      /**
@@ -95,8 +110,30 @@ public class Lieux {
      public Lieux chargerLieux(int id) {
 
         debug("Recherche d'un lieux existant...Chargement du n° " + id);
+//        Lieux resultat = this.lieuxDAO.chercher(id);
+//        setId(resultat.getId());
+//        setNom(resultat.getNom());
+//        setCarte(resultat.getCarte());
+//        setDescription(resultat.getDescription());
+//        setIDUtilisateur(resultat.getIDUtilisateur());
+        
         Lieux resultat = this.lieuxDAO.chercher(id);
-        return resultat;
+        setId(1);
+        setNom("MaBite");
+        setCarte("String");
+        setDescription("Missa NoSound");
+        setIDUtilisateur(4218);
+        
+        setPointsInterets(Arrays.asList(new PointsInterets[]{
+            new PointsInterets(1, 10, 10, "String", "Missa NoSound", 1, 4218, 1)
+        }));
+        
+        //Il y a une notification
+        this.setChanged();
+        //Dit le fait qu'il y a eu une modification à la vue
+        this.notifyObservers();
+        
+        return this;
     }
 
     public Lieux creerLieux(Lieux nouveauLieux) {
@@ -226,6 +263,38 @@ public class Lieux {
         affichage += "---------------------------------------\n";
         return affichage;
     }
+    
+    public void setCurrentPointsInterets(int x, int y){
+        
+        pointInteretCourant=new PointsInterets(1, x, y, "dffddf", "description", 1, 1, 1);
+//        for(PointsInterets point:this.pointsInterets){
+//            if(point.getX()==x && point.getY()==y){
+//                setCurrentPointInteret(point);
+               setChanged();
+               notifyObservers();
+//                return;
+//            }
+//        }
+    }
+    
+    public void setCurrentPointInteret(PointsInterets pointsInterets){
+        this.pointInteretCourant=pointsInterets;
+        
+    }
+
+    public PointsInterets getPointInteretCourant() {
+        return pointInteretCourant;
+    }
+
+    public List<PointsInterets> getPointsInterets() {
+        return pointsInterets;
+    }
+
+    public void setPointsInterets(List<PointsInterets> pointsInterets) {
+        this.pointsInterets = pointsInterets;
+    }
+    
+    
     
     
 }

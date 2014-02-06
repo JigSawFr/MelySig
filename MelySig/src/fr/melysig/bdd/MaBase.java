@@ -40,7 +40,7 @@ public class MaBase {
     /**
      * Port du serveur
      */
-    private static final String port = "3306";
+    private static final String port = "8889";
     /**
      * Nom de la base
      */

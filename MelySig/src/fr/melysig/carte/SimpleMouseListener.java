@@ -5,6 +5,7 @@
  */
 
 package fr.melysig.carte;
+import fr.melysig.models.Lieux;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -17,9 +18,14 @@ import java.util.List;
  * @author Poook
  */
 public class SimpleMouseListener extends JCanvasMouseListener {
+    private Lieux lieux;
     
-    public SimpleMouseListener(JCanvas canvas){
+    
+    public SimpleMouseListener(JCanvas canvas, Lieux lieux){
         super(canvas);
+        this.lieux = lieux;
+        
+        
     }
     
     protected void rightClickAction(MouseEvent e){
@@ -29,12 +35,15 @@ public class SimpleMouseListener extends JCanvasMouseListener {
         canvas.removeDrawable(drawable);
     }
     
+    
     protected void leftClickAction(MouseEvent e){
         Point p = e.getPoint();
         IDrawable rect = createDrawable(e);
         if (canvas.isFree(rect.getRectangle())) {
             canvas.addDrawable(rect);
         }
+        lieux.setCurrentPointsInterets(p.x, p.y);
+        
     }
     
     private IDrawable createDrawable(MouseEvent e) {

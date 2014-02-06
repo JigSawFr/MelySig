@@ -13,7 +13,12 @@ import fr.melysig.carte.MoveDrawableMouseListener;
 import fr.melysig.carte.NonOverlapMoveAdapter;
 import fr.melysig.carte.RectangleDrawable;
 import fr.melysig.carte.SimpleMouseListener;
+import fr.melysig.models.Lieux;
+import fr.melysig.models.PointsInterets;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
@@ -21,20 +26,24 @@ import javax.swing.JTextField;
  *
  * @author Coonax
  */
-public class ConsultationVue extends javax.swing.JFrame {
+public class ConsultationVue extends javax.swing.JFrame implements Observer {
     
+    private Lieux lieux;
     private static JCanvas monCanvas = new JCanvas();
     Dimension dim = new Dimension(20, 20);
     IDrawable rect = new RectangleDrawable(Color.RED, new Point(10, 5),dim);
     private static JTextField txtXPOI = new javax.swing.JTextField();
     private static JTextField txtYPOI = new javax.swing.JTextField();
     
+
 //    private static ConsultationVue gestionConsultation = null;
 
     /**
      * Creates new form ConsultationVue
      */
-    public ConsultationVue() {
+    public ConsultationVue(Lieux lieux) {
+        this.lieux = lieux;
+        lieux.addObserver(this);
         initComponents();
     }
     
@@ -116,7 +125,7 @@ public class ConsultationVue extends javax.swing.JFrame {
         monCanvas.setSize(1700,890);
 
 
-        new SimpleMouseListener(monCanvas);
+        new SimpleMouseListener(monCanvas, lieux);
         new MoveDrawableMouseListener (monCanvas);
         new NonOverlapMoveAdapter(monCanvas);
 
@@ -640,16 +649,18 @@ public class ConsultationVue extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConsultationVue().setVisible(true);
+               // new ConsultationVue().setVisible(true);
             }
         });
     }
     
-    public void updateIHM(int x, int y){
-         txtXPOI.setText(String.valueOf(x));
-         txtYPOI.setText(String.valueOf(y));
-        
-    }
+//    public void updateIHM(int x, int y){
+//         txtXPOI.setText(String.valueOf(x));
+//         txtYPOI.setText(String.valueOf(y));
+//        
+//    }
+    
+    
 
     // Variables declaration - do not modify                     
     private javax.swing.JComboBox ComboRecherche;
@@ -705,4 +716,24 @@ public class ConsultationVue extends javax.swing.JFrame {
     //private javax.swing.JTextField txtXPOI;
     //private javax.swing.JTextField txtYPOI;
     // End of variables declaration                   
+
+     //Méthode qui permet de mettre à jour.
+    @Override
+    public void update(Observable o, Object arg) {
+        //Permet d'obtenir le int en String.
+        if(o instanceof Lieux){
+        PointsInterets monPointInteret = ((Lieux)o).getPointInteretCourant();
+        //Verification dans le cas si le point interet est null
+        txtXPOI.setText((monPointInteret==null)?"":""+monPointInteret.getX());
+        txtYPOI.setText((monPointInteret==null)?"":""+monPointInteret.getY());
+        txtDescriptionPOI.setText((monPointInteret==null)?"":""+monPointInteret.getDescription());
+        txtLibellePOI.setText("coucou");
+        txtThemePOI.setText((monPointInteret==null)?"":""+monPointInteret.getTheme());
+        this.validate();
+        
+        
+        }
+        
+        
+    }
 }

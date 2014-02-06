@@ -37,6 +37,7 @@ public class LieuxControleur {
         this.modele = modele.chargerLieux(id);
         return modele;
     }
+ 
     
     public Lieux creerLieux(String nom, String carte , String description, int idUtilisateur) {
         this.modele = new Lieux();

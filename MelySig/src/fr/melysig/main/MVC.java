@@ -9,6 +9,7 @@ package fr.melysig.main;
 import fr.melysig.controleurs.*;
 import fr.melysig.models.*;
 import fr.melysig.vues.*;
+import javax.swing.JPanel;
 
 /**
  * <b>Controleur principal - Initialisation du MVC</b>
@@ -70,6 +71,14 @@ public class MVC {
         Utilisateurs modeleUtilisateurs = new Utilisateurs();
         UtilisateursControleur controleurUtilisateurs = new UtilisateursControleur(modeleUtilisateurs, vueUtilisateurs);
 
+        
+        
+        Lieux lieux = new Lieux();
+        // Appel de la vue.
+        ConsultationVue consultationVue = new ConsultationVue(lieux);
+
+        
+        
         /**
          * Information de l'initialisation
          */
