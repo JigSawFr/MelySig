@@ -232,7 +232,7 @@ public class UtilisateursControleur {
     }
 
     /**
-     * Permet d'afficher les données de l'objet Parcours
+     * Permet d'afficher les données de l'objet Utilisateurs
      *
      * @return les données définit de l'objet
      */
