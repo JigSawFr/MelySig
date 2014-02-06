@@ -10,6 +10,7 @@ import fr.melysig.bdd.MaBase;
 import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Classe DAO mère
@@ -41,6 +42,14 @@ public abstract class DAO<T> {
      * @return
      */
     public abstract T chercher(int id);
+
+    /**
+     * Permet de lister plusieurs objets
+     *
+     * @param nb Nomre d'objets à lister
+     * @return
+     */
+    public abstract List<T> lister(int nb);
 
     /**
      * Permet de créer une nouvelle entrée dans la base de données vis à vis d'un objet

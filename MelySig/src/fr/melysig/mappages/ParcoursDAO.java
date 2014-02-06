@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Classe DAO pour les <b>parcours</b>
@@ -60,6 +61,18 @@ public class ParcoursDAO extends DAO<Parcours> {
             this.erreur("Recherche -> Erreur SQL !", erreur);
         }
         return monParcours;
+    }
+
+    /**
+     * Permet de lister différents parcours
+     *
+     * @param nb nombre de parcours de type <code>int</code>
+     * @return
+     */
+    @Override
+    public List<Parcours> lister(int nb) {
+        /* A FAIRE */
+        return null;
     }
 
     /**

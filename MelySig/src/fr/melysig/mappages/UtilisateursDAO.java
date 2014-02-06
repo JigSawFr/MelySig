@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Classe DAO pour les <b>utilisateurs</b>
@@ -53,7 +54,6 @@ public class UtilisateursDAO extends DAO<Utilisateurs> {
                         resultats.getString("nomUtilisateur"),
                         resultats.getString("prenomUtilisateur"),
                         resultats.getString("emailUtilisateur")
-                        
                 );
                 this.debug("Recherche -> Utilisateur localisé dans la base avec succès.");
             } else {
@@ -64,6 +64,18 @@ public class UtilisateursDAO extends DAO<Utilisateurs> {
             this.erreur("Recherche -> Erreur SQL !", erreur);
         }
         return monUtilisateur;
+    }
+
+    /**
+     * Permet de lister différents utilisateurs
+     *
+     * @param nb nombre d'utilisateurs de type <code>int</code>
+     * @return
+     */
+    @Override
+    public List<Utilisateurs> lister(int nb) {
+        /* A FAIRE */
+        return null;
     }
 
     /**

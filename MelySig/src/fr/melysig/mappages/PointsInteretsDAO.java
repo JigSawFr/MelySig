@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe DAO pour les <b>points d'intérêts</b>
@@ -25,7 +27,7 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
     /**
      * Permet charger les informations d'un POI
      *
-     * @param id l'identifiant de type <code>int/</code>
+     * @param id l'identifiant de type <code>int</code>
      * @return
      */
     @Override
@@ -65,6 +67,55 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
             this.erreur("Recherche -> Erreur SQL !", erreur);
         }
         return monPointInteret;
+    }
+
+    /**
+     * Permet de lister différents POI
+     *
+     * @param nb nombre de POI de type <code>int</code>
+     * @return
+     */
+    @Override
+    public List<PointsInterets> lister(int nb) {
+
+        PreparedStatement requetePreparee;
+        List<PointsInterets> mesPointsInterets = new ArrayList<>();
+        try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT * FROM pointsInterets LIMIT 0,?",
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    );
+            requetePreparee.setInt(1, nb);
+
+            this.debug("Listing -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+            
+            /* On redifinié le pointeur sur l'enregistrement 0*/
+            resultats.beforeFirst();
+
+            if (resultats.next()) {
+                PointsInterets monPointInteret = new PointsInterets(
+                        resultats.getInt("idPointInteret"),
+                        resultats.getInt("coordonneeXPointInteret"),
+                        resultats.getInt("coordonneeYPointInteret"),
+                        resultats.getString("libellePointInteret"),
+                        resultats.getString("descriptionPointInteret"),
+                        resultats.getInt("idLieuPointInteret"),
+                        resultats.getInt("idUtilisateurPointInteret"),
+                        resultats.getInt("idThemePointInteret")
+                );
+                mesPointsInterets.add(monPointInteret);
+                this.debug("Listing -> Ajout du point d'intérêt n°" + monPointInteret.getId() + " à la liste avec succès.");
+            } else {
+                throw new SQLException("Aucun point d'intérêt à lister !");
+            }
+
+        } catch (SQLException erreur) {
+            this.erreur("Listing -> Erreur SQL !", erreur);
+        }
+        return mesPointsInterets;
     }
 
     /**

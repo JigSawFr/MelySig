@@ -4,7 +4,6 @@
  * Copyright 2014 - melysig.exia-nancy.com
  * Auteurs : Pocecco Julien, Mougenel Gerold, Gaudenot Guillaume & Robert Sebastien.
  */
-
 package fr.melysig.mappages;
 
 import fr.melysig.models.Themes;
@@ -12,13 +11,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  *
  * @author Coonax
  */
 public class ThemesDAO extends DAO<Themes> {
-        /**
+
+    /**
      * Permet charger les informations d'un theme
      *
      * @param id l'identifiant de type <code>int/</code>
@@ -56,6 +57,18 @@ public class ThemesDAO extends DAO<Themes> {
             this.erreur("Recherche -> Erreur SQL !", erreur);
         }
         return monTheme;
+    }
+
+    /**
+     * Permet de lister différents thèmes
+     *
+     * @param nb nombre de thèmes de type <code>int</code>
+     * @return
+     */
+    @Override
+    public List<Themes> lister(int nb) {
+        /* A FAIRE */
+        return null;
     }
 
     /**
