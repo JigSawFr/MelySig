@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Julien P.
  * @since 0.4
- * @version 0.2.2
+ * @version 0.2.3
  */
 public class LieuxDAO extends DAO<Lieux> {
 
