@@ -16,7 +16,7 @@ import java.sql.Statement;
  * Classe DAO pour les <b>parcours</b>
  * <br />Permet de faire la liaison entre la couches de données et les objets des parcours.
  *
- * @author Sébastien R.
+ * @author Sébastien R., Julien P.
  * @since 0.3
  * @version 0.1.4
  */

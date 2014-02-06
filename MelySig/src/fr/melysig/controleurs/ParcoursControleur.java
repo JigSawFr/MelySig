@@ -13,7 +13,7 @@ import fr.melysig.vues.ParcoursVue;
  * Classe de <b>mise en relation de la vue et le modèle des Parcours</b>
  * Permet le traitement des différentes actions nécessaires
  *
- * @author Sébastien R.
+ * @author Sébastien R., Julien P.
  * @since 0.3
  * @version 0.2.0
  */

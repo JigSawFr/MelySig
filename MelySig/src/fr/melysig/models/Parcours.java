@@ -15,7 +15,7 @@ import fr.melysig.mappages.ParcoursDAO;
  * Classe de <b>traitement des Parcours</b>
  * Permet le traitement des différents parcours
  *
- * @author Sébastien R.
+ * @author Sébastien R., Julien P.
  * @since 0.3
  * @version 0.1.2
  */
