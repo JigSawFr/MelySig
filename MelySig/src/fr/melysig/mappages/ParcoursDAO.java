@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Sébastien R., Julien P.
  * @since 0.3
- * @version 0.1.4
+ * @version 0.1.5
  */
 public class ParcoursDAO extends DAO<Parcours> {
 

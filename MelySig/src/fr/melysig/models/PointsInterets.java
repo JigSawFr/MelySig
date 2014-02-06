@@ -10,6 +10,7 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.PointsInteretsDAO;
+import java.util.ArrayList;
 
 /**
  * Classe de <b>traitement des Points d'intérêts</b>
@@ -56,7 +57,7 @@ public class PointsInterets {
     /**
      * Tableau contenant la liste des POI
      */
-    //private ArrayList<PointsInterets> listePointsInterets = new ArrayList<PointsInterets>();
+    private ArrayList<PointsInterets> listePointsInterets = new ArrayList<>();
 
     /**
      * Création de l'objet DAO pour les utilisateurs
@@ -78,11 +79,13 @@ public class PointsInterets {
         this.lieu = 0;
         this.utilisateur = 0;
         this.theme = 0;
+        this.listePointsInterets = null;
         this.pointsInteretsDAO = new PointsInteretsDAO();
     }
 
     /**
      * Constructeur de la classe POI (Polymorphisme)
+     *
      * @param id
      * @param X
      * @param Y
@@ -90,7 +93,7 @@ public class PointsInterets {
      * @param description
      * @param lieu
      * @param utilisateur
-     * @param theme 
+     * @param theme
      */
     public PointsInterets(int id, int X, int Y, String libelle, String description, int lieu, int utilisateur, int theme) {
         this.id = id;
@@ -101,10 +104,9 @@ public class PointsInterets {
         this.lieu = lieu;
         this.utilisateur = utilisateur;
         this.theme = theme;
+        this.listePointsInterets = null;
         this.pointsInteretsDAO = new PointsInteretsDAO();
     }
-    
-    
 
     /**
      * Chargement des <b>informations concernant un POI existant</b>
@@ -119,6 +121,20 @@ public class PointsInterets {
         PointsInterets resultat = this.pointsInteretsDAO.chercher(id);
         return resultat;
     }
+
+    /**
+     * Chargement des <b>informations de plusieurs POI existants</b>
+     * dans la base de données
+     *
+     * @param nb Identifiant <b>unique</b> du POI
+     * @return objet de type <code>PointsInterets</code>
+     */
+//    public PointsInterets chargerPointInteret(int nb) {
+//
+//        debug("Recherche d'un point d'intérêt existant...Chargement du n° " + id);
+//        PointsInterets resultat = this.pointsInteretsDAO.chercher(id);
+//        return resultat;
+//    }
 
     /**
      * Ajouter un <b>nouveau POI</b> dans la base de données
@@ -159,7 +175,8 @@ public class PointsInterets {
 
     /**
      * Permet d'obtenir l'ID du POI
-     * @return 
+     *
+     * @return
      */
     public int getId() {
         return id;
@@ -167,7 +184,8 @@ public class PointsInterets {
 
     /**
      * Permet de définir l'ID du POI
-     * @param id 
+     *
+     * @param id
      */
     public void setId(int id) {
         this.id = id;
@@ -175,7 +193,8 @@ public class PointsInterets {
 
     /**
      * Permet d'obtenir la coordonnée X
-     * @return 
+     *
+     * @return
      */
     public int getX() {
         return X;
@@ -183,7 +202,8 @@ public class PointsInterets {
 
     /**
      * Permet de définir la coordonnée X
-     * @param X 
+     *
+     * @param X
      */
     public void setX(int X) {
         this.X = X;
@@ -191,7 +211,8 @@ public class PointsInterets {
 
     /**
      * Permet d'obtenir la coordonnée Y
-     * @return 
+     *
+     * @return
      */
     public int getY() {
         return Y;
@@ -199,7 +220,8 @@ public class PointsInterets {
 
     /**
      * Permet de définir la coordonnée Y
-     * @param Y 
+     *
+     * @param Y
      */
     public void setY(int Y) {
         this.Y = Y;
@@ -207,7 +229,8 @@ public class PointsInterets {
 
     /**
      * Permet d'obtenir le libellé du POI
-     * @return 
+     *
+     * @return
      */
     public String getLibelle() {
         return libelle;
@@ -215,7 +238,8 @@ public class PointsInterets {
 
     /**
      * Permet de définir le libellé du POI
-     * @param libelle 
+     *
+     * @param libelle
      */
     public void setLibelle(String libelle) {
         this.libelle = libelle;
@@ -223,7 +247,8 @@ public class PointsInterets {
 
     /**
      * Permet d'obtenir la description du POI
-     * @return 
+     *
+     * @return
      */
     public String getDescription() {
         return description;
@@ -231,7 +256,8 @@ public class PointsInterets {
 
     /**
      * Permet de définir la description du POI
-     * @param description 
+     *
+     * @param description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -239,7 +265,8 @@ public class PointsInterets {
 
     /**
      * Permet d'obtenir l'ID du lieu du POI
-     * @return 
+     *
+     * @return
      */
     public int getLieu() {
         return lieu;
@@ -247,7 +274,8 @@ public class PointsInterets {
 
     /**
      * Permet de définir l'ID du lieu du POI
-     * @param lieu 
+     *
+     * @param lieu
      */
     public void setLieu(int lieu) {
         this.lieu = lieu;
@@ -255,7 +283,8 @@ public class PointsInterets {
 
     /**
      * Permet d'obtenir l'ID de l'utilisateur du POI
-     * @return 
+     *
+     * @return
      */
     public int getUtilisateur() {
         return utilisateur;
@@ -263,7 +292,8 @@ public class PointsInterets {
 
     /**
      * Permet de définir l'ID de l'utilisateur du POI
-     * @param utilisateur 
+     *
+     * @param utilisateur
      */
     public void setUtilisateur(int utilisateur) {
         this.utilisateur = utilisateur;
@@ -271,7 +301,8 @@ public class PointsInterets {
 
     /**
      * Permet d'obtenir l'ID du thème du POI
-     * @return 
+     *
+     * @return
      */
     public int getTheme() {
         return theme;
@@ -279,12 +310,13 @@ public class PointsInterets {
 
     /**
      * Permet de définir l'ID du thème du POI
-     * @param theme 
+     *
+     * @param theme
      */
     public void setTheme(int theme) {
         this.theme = theme;
     }
-    
+
     /**
      * Affichage des erreurs en console
      *
@@ -311,9 +343,8 @@ public class PointsInterets {
      */
     @Override
     public String toString() {
-        debug("Objet -> Identifiant : " + this.getId() + " | Coordonnée X : " + this.getX() + " | Coordoonnée Y : " + this.getY() + " | Libellé : " + this.getLibelle()+ " | Description : " + this.getDescription() + " | Lieu : " + this.getLieu() + " | Utilisateur : " + this.getUtilisateur() + " | Thème : " + this.getTheme());
+        debug("Objet -> Identifiant : " + this.getId() + " | Coordonnée X : " + this.getX() + " | Coordoonnée Y : " + this.getY() + " | Libellé : " + this.getLibelle() + " | Description : " + this.getDescription() + " | Lieu : " + this.getLieu() + " | Utilisateur : " + this.getUtilisateur() + " | Thème : " + this.getTheme());
         return null;
     }
-    
-    
+
 }

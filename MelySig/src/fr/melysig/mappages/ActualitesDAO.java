@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,8 +73,41 @@ public class ActualitesDAO extends DAO<Actualites> {
      */
     @Override
     public List<Actualites> lister(int nb) {
-        /* A FAIRE */
-        return null;
+
+        PreparedStatement requetePreparee;
+        List<Actualites> mesActualites = new ArrayList<>();
+        try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT * FROM actualites LIMIT 0,?",
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    );
+            requetePreparee.setInt(1, nb);
+
+            this.debug("Listing -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+            
+            /* On redifinié le pointeur sur l'enregistrement 0*/
+            resultats.beforeFirst();
+
+            if (resultats.next()) {
+                Actualites monActualite = new Actualites(
+                        resultats.getInt("idActualite"),
+                        resultats.getString("libelleActualite"),
+                        resultats.getString("descriptionActualite"),
+                        resultats.getInt("idUtilisateurActualite")
+                );
+                mesActualites.add(monActualite);
+                this.debug("Listing -> Ajout du point d'intérêt n°" + monActualite.getId() + " à la liste avec succès.");
+            } else {
+                throw new SQLException("Aucun point d'intérêt à lister !");
+            }
+
+        } catch (SQLException erreur) {
+            this.erreur("Listing -> Erreur SQL !", erreur);
+        }
+        return mesActualites;
     }
 
     /**
