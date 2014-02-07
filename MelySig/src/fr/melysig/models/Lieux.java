@@ -13,6 +13,7 @@ import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.LieuxDAO;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 
@@ -50,11 +51,6 @@ public class Lieux extends Observable{
      * idUtilisateur du lieux
      */
     private int idUtilisateur;
-    
-     /**
-     * Création de l'objet DAO pour les parcours
-     */
-    DAO<Lieux> lieuxDAO;
 
     private static final Debug gestionDebug = Debug.obtenirGestionDebug();
     private static final Erreurs gestionErreurs = Erreurs.obtenirGestionErreurs();
@@ -69,12 +65,8 @@ public class Lieux extends Observable{
         this.carte = null;
         this.description = null;
         this.idUtilisateur = 0;
-        this.lieuxDAO = new LieuxDAO();
         this.pointInteretCourant = null;
         this.pointsInterets = new ArrayList();
-        setPointsInterets(Arrays.asList(new PointsInterets[]{
-            new PointsInterets(1, 10, 10, "String", "Missa NoSound", 1, 4218, 1)
-        }));
     }
     
     /**
@@ -92,57 +84,11 @@ public class Lieux extends Observable{
         this.carte = carte;
         this.description = description;
         this.idUtilisateur = idUtilisateur;
-        this.lieuxDAO = new LieuxDAO();
         this.pointInteretCourant = null;
         this.pointsInterets = new ArrayList<PointsInterets>();
                 
     }
-    
-     /**
-     * Chargement des <b>informations concernant un lieux existant</b>
-     * dans la base de données
-     *
-     * @param id Identifiant <b>unique</b> du lieux
-     * @return <b>true</b> si le lieux existe
-     * <br/><b>false</b> dans le cas contraire
-     */
-    
-     public Lieux chargerLieux(int id) {
-
-        debug("Recherche d'un lieux existant...Chargement du n° " + id);
-//        Lieux resultat = this.lieuxDAO.chercher(id);
-//        setId(resultat.getId());
-//        setNom(resultat.getNom());
-//        setCarte(resultat.getCarte());
-//        setDescription(resultat.getDescription());
-//        setIDUtilisateur(resultat.getIDUtilisateur());
-        
-        Lieux resultat = this.lieuxDAO.chercher(id);
-        setId(1);
-        setNom("MaBite");
-        setCarte("String");
-        setDescription("Missa NoSound");
-        setIDUtilisateur(4218);
-        
-        setPointsInterets(Arrays.asList(new PointsInterets[]{
-            new PointsInterets(1, 10, 10, "String", "Missa NoSound", 1, 4218, 1)
-        }));
-        
-        //Il y a une notification
-        this.setChanged();
-        //Dit le fait qu'il y a eu une modification à la vue
-        this.notifyObservers();
-        
-        return this;
-    }
-
-    public Lieux creerLieux(Lieux nouveauLieux) {
-
-        debug("Ajout d'un nouveau lieux");
-        Lieux resultat = this.lieuxDAO.creer(nouveauLieux);
-        return resultat;
-    }
-    
+ 
      /**
      * Permet d'obtenir l'identifiant unique du lieux
      *
@@ -266,20 +212,24 @@ public class Lieux extends Observable{
     
     public void setCurrentPointsInterets(int x, int y){
         
-        pointInteretCourant=new PointsInterets(1, x, y, "dffddf", "description", 1, 1, 1);
-//        for(PointsInterets point:this.pointsInterets){
-//            if(point.getX()==x && point.getY()==y){
-//                setCurrentPointInteret(point);
-               setChanged();
-               notifyObservers();
-//                return;
-//            }
-//        }
+        //pointInteretCourant=new PointsInterets(1, x, y, "dffddf", "description", 1, 1, 1);
+        // index de parcourt de la liste
+        Iterator<PointsInterets> i = pointsInterets.iterator();
+        boolean find = false;
+        while(i.hasNext() && !find){
+            PointsInterets point = i.next();
+            int diffX = Math.abs(point.getX() - x);
+            int diffY =  Math.abs(point.getY() - y) ;
+            if( diffX<= 20 && diffY <= 20 ){
+                setCurrentPointInteret(point);
+                find = true;
+            }
+        }
     }
     
     public void setCurrentPointInteret(PointsInterets pointsInterets){
         this.pointInteretCourant=pointsInterets;
-        
+        setChanged();
     }
 
     public PointsInterets getPointInteretCourant() {

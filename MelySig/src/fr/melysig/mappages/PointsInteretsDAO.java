@@ -23,7 +23,16 @@ import java.util.List;
  * @version 0.1
  */
 public class PointsInteretsDAO extends DAO<PointsInterets> {
-
+    //singleton
+    private static PointsInteretsDAO instance;
+    private PointsInteretsDAO() {}
+    
+    public static PointsInteretsDAO getInstance() {
+        if ( instance == null) {
+            instance = new PointsInteretsDAO();
+        }
+        return instance;
+    }
     /**
      * Permet charger les informations d'un POI
      *
@@ -138,7 +147,7 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
             requetePreparee.setString(3, nouveauPointInteret.getLibelle());
             requetePreparee.setString(4, nouveauPointInteret.getDescription());
             requetePreparee.setInt(5, nouveauPointInteret.getLieu());
-            requetePreparee.setInt(6, nouveauPointInteret.getUtilisateur());
+            requetePreparee.setInt(6, 1/*nouveauPointInteret.getUtilisateur()*/);
             requetePreparee.setInt(7, nouveauPointInteret.getTheme());
 
             this.debug("Ajout -> Exécution de la requete SQL...");
@@ -176,7 +185,7 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
         try {
             requetePreparee = this.connexion
                     .prepareStatement(
-                            "UPDATE pointsInterets SET coordonneeXPointInteret = ?, coordonneeYPointInteret = ?, libellePointInteret = ?, descriptionPointInteret = ?, idLieuPointInteret = ?, idUtilisateurPointInteret = ?, idThemePointInteret = ? WHERE idUtilisateur = ?",
+                            "UPDATE pointsInterets SET coordonneeXPointInteret = ?, coordonneeYPointInteret = ?, libellePointInteret = ?, descriptionPointInteret = ?, idLieuPointInteret = ?, idUtilisateurPointInteret = ?, idThemePointInteret = ? WHERE idPointInteret = ?",
                             ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
                             ResultSet.CONCUR_UPDATABLE // Possibilité modifier les données de la base via le ResultSet.
                     );
@@ -185,8 +194,9 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
             requetePreparee.setString(3, monPointInteret.getLibelle());
             requetePreparee.setString(4, monPointInteret.getDescription());
             requetePreparee.setInt(5, monPointInteret.getLieu());
-            requetePreparee.setInt(6, monPointInteret.getUtilisateur());
+            requetePreparee.setInt(6, 1);
             requetePreparee.setInt(7, monPointInteret.getTheme());
+            requetePreparee.setInt(8, monPointInteret.getId());
 
             this.debug("Mise à jour -> Exécution de la requete SQL...");
             int lignes = requetePreparee.executeUpdate();

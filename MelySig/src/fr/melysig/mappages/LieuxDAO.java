@@ -24,6 +24,17 @@ import java.util.List;
  */
 public class LieuxDAO extends DAO<Lieux> {
 
+    private static LieuxDAO instance;
+    
+    private LieuxDAO() {}
+    
+    public static LieuxDAO getInstance() {
+        if (instance == null) {
+            instance = new LieuxDAO();
+        }
+        return instance;
+    }
+    
     @Override
     public Lieux chercher(int id) {
 
