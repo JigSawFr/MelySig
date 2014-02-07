@@ -6,11 +6,14 @@
 
 package fr.melysig.carte;
 import fr.melysig.models.Lieux;
+import fr.melysig.process.LieuProcess;
+import fr.melysig.process.PointInteretProcess;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,17 +41,16 @@ public class SimpleMouseListener extends JCanvasMouseListener {
     
     protected void leftClickAction(MouseEvent e){
         Point p = e.getPoint();
-        IDrawable rect = createDrawable(e);
+        IDrawable rect = canvas.createPoint(p.x, p.y);
         if (canvas.isFree(rect.getRectangle())) {
-            canvas.addDrawable(rect);
+            String libelle = JOptionPane.showInputDialog(canvas, "Libellé point d'intéret" );
+            if (libelle != null) {
+                canvas.addDrawable(rect);
+                PointInteretProcess.getInstance().creerPointInteret(lieux, libelle, p.x, p.y);
+            }
         }
-        lieux.setCurrentPointsInterets(p.x, p.y);
+        LieuProcess.getInstance().setCurentPointInteret(lieux, p.x, p.y);
         
     }
     
-    private IDrawable createDrawable(MouseEvent e) {
-        Point p = e.getPoint();
-        Dimension dim = new Dimension(20,20);
-        return new RectangleDrawable(Color.RED, p, dim);
-    }
 }

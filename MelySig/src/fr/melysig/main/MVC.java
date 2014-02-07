@@ -60,7 +60,7 @@ public class MVC {
          */
         PanelDeConnexion monPanel = new PanelDeConnexion(this);
         
-        Lieux lieux = new Lieux();
+        Lieux lieux = LieuProcess.getInstance().chargerLieux(1);
         // Appel de la vue.
         maConsultationVue = new ConsultationVue(this, lieux);
 

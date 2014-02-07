@@ -16,7 +16,11 @@ import fr.melysig.carte.SimpleMouseListener;
 import fr.melysig.main.MVC;
 import fr.melysig.models.Lieux;
 import fr.melysig.models.PointsInterets;
+import fr.melysig.process.LieuProcess;
+import fr.melysig.process.PointInteretProcess;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
@@ -48,6 +52,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         this.monMVC = mvc;
         lieux.addObserver(this);
         initComponents();
+        update(lieux, null);
     }
     
 //    public static ConsultationVue obtenirConsultation() {
@@ -134,6 +139,20 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
         PanelCarte.add(monCanvas, BorderLayout.CENTER);
 
+        boutonModifierPointInteret.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                PointsInterets pi = lieux.getPointInteretCourant();
+                pi.setLibelle(txtLibellePOI.getText());
+                pi.setTheme(Integer.parseInt(txtThemePOI.getText()));
+                pi.setDescription(txtDescriptionPOI.getText());
+                pi.setX(Integer.parseInt(txtXPOI.getText()));
+                pi.setY(Integer.parseInt(txtYPOI.getText()));
+                PointInteretProcess.getInstance().mettreAjourPointInteret(lieux, pi);
+            }
+        });
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Consultation - MelySIG");
@@ -721,16 +740,20 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     public void update(Observable o, Object arg) {
         //Permet d'obtenir le int en String.
         if(o instanceof Lieux){
-        PointsInterets monPointInteret = ((Lieux)o).getPointInteretCourant();
-        //Verification dans le cas si le point interet est null
-        txtXPOI.setText((monPointInteret==null)?"":""+monPointInteret.getX());
-        txtYPOI.setText((monPointInteret==null)?"":""+monPointInteret.getY());
-        txtDescriptionPOI.setText((monPointInteret==null)?"":""+monPointInteret.getDescription());
-        txtLibellePOI.setText("coucou");
-        txtThemePOI.setText((monPointInteret==null)?"":""+monPointInteret.getTheme());
-        this.validate();
-        
-        
+            PointsInterets monPointInteret = ((Lieux)o).getPointInteretCourant();
+            //Verification dans le cas si le point interet est null
+            txtXPOI.setText((monPointInteret==null)?"":""+monPointInteret.getX());
+            txtYPOI.setText((monPointInteret==null)?"":""+monPointInteret.getY());
+            txtDescriptionPOI.setText((monPointInteret==null)?"":""+monPointInteret.getDescription());
+            txtLibellePOI.setText((monPointInteret==null)?"":""+monPointInteret.getLibelle());
+            txtThemePOI.setText((monPointInteret==null)?"":""+monPointInteret.getTheme());
+            txtLieuPOI.setText((monPointInteret==null)?"":""+LieuProcess.getInstance().chargerLieux(monPointInteret.getLieu()).getNom());
+            monCanvas.clear();
+            for(PointsInterets point : lieux.getPointsInterets()) {
+                monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY()));
+            }
+            this.validate();
+
         }
         
         
