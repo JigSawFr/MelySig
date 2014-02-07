@@ -7,6 +7,7 @@
 package fr.melysig.controleurs;
 
 import fr.melysig.models.Utilisateurs;
+import fr.melysig.vues.PanelDeConnexion;
 import fr.melysig.vues.UtilisateursVue;
 
 /**
@@ -26,23 +27,23 @@ public class UtilisateursControleur {
     /**
      * Déclaration de la vue
      */
-    private UtilisateursVue vue;
+    private PanelDeConnexion vue;
 
     /**
      * Constructeur de la classe
      * @param modele
      * @param vue
      */
-    public UtilisateursControleur(Utilisateurs modele, UtilisateursVue vue) {
+//    public UtilisateursControleur(Utilisateurs modele, UtilisateursVue vue) {
+//
+//        this.modele = modele;
+//        this.vue = vue;
+//    }
+    public UtilisateursControleur(PanelDeConnexion vue) {
 
-        this.modele = modele;
+        this.modele = new Utilisateurs();
         this.vue = vue;
     }
-//    public UtilisateursControleur() {
-//
-//        this.modele = new Utilisateurs();
-//        this.vue = new UtilisateursVue();
-//    }
 
     /**
      * Permet de charger les données d'un utilisateur
@@ -54,6 +55,12 @@ public class UtilisateursControleur {
         this.modele = modele.chargerUtilisateur(id);
         return modele;
     }
+
+    public boolean verifierUtilisateur(String identifiant, String motDePasse) {
+        return modele.verifierUtilisateur(identifiant, motDePasse);
+    }
+    
+    
 
     /**
      * Permet de créer un nouvel utilisateur
@@ -226,10 +233,10 @@ public class UtilisateursControleur {
     /**
      * Permet d'afficher les détails de l'utilisateur via la vue depuis le modèle
      */
-    public void miseAjourVue() {
-
-        vue.afficherDetailsUtilisateur(modele.getId(), modele.getPseudo(), modele.getMotDePasse(), modele.getNom(), modele.getPrenom(), modele.getEmail());
-    }
+//    public void miseAjourVue() {
+//
+//        vue.afficherDetailsUtilisateur(modele.getId(), modele.getPseudo(), modele.getMotDePasse(), modele.getNom(), modele.getPrenom(), modele.getEmail());
+//    }
 
     /**
      * Permet d'afficher les données de l'objet Parcours

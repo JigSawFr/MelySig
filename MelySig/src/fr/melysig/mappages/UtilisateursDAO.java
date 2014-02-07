@@ -24,6 +24,43 @@ import java.util.List;
 public class UtilisateursDAO extends DAO<Utilisateurs> {
 
     /**
+     * Permet de vérifier si les identifications d'un utilisateur sont corrects
+     *
+     * @param identifiant
+     * @param motDePasse
+     * @return
+     */
+    public boolean verifier(String identifiant, String motDePasse) {
+
+        PreparedStatement requetePreparee;
+        try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT * FROM utilisateurs WHERE pseudoUtilisateur = ? AND motDePasseUtilisateur = ?",
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    );
+            requetePreparee.setString(1, identifiant);
+            requetePreparee.setString(2, motDePasse);
+
+            this.debug("Vérification -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+
+            if (resultats.first()) {
+                this.debug("Vérification -> Utilisateur localisé dans la base avec succès.");
+                return true;
+            } else {
+                this.debug("Vérification -> Login / Mot de passe erronnés.");
+                return false;
+            }
+
+        } catch (SQLException erreur) {
+            this.erreur("Vérification -> Erreur SQL !", erreur);
+        }
+        return false;
+    }
+
+    /**
      * Permet charger les informations d'un utilisateur
      *
      * @param id l'identifiant de type <code>int/</code>

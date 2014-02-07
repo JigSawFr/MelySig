@@ -13,6 +13,7 @@ import fr.melysig.carte.MoveDrawableMouseListener;
 import fr.melysig.carte.NonOverlapMoveAdapter;
 import fr.melysig.carte.RectangleDrawable;
 import fr.melysig.carte.SimpleMouseListener;
+import fr.melysig.main.MVC;
 import fr.melysig.models.Lieux;
 import fr.melysig.models.PointsInterets;
 import java.awt.*;
@@ -34,6 +35,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     IDrawable rect = new RectangleDrawable(Color.RED, new Point(10, 5),dim);
     private static JTextField txtXPOI = new javax.swing.JTextField();
     private static JTextField txtYPOI = new javax.swing.JTextField();
+    MVC monMVC;
     
 
 //    private static ConsultationVue gestionConsultation = null;
@@ -41,8 +43,9 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     /**
      * Creates new form ConsultationVue
      */
-    public ConsultationVue(Lieux lieux) {
+    public ConsultationVue(MVC mvc, Lieux lieux) {
         this.lieux = lieux;
+        this.monMVC = mvc;
         lieux.addObserver(this);
         initComponents();
     }
@@ -599,7 +602,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         getAccessibleContext().setAccessibleDescription("");
 
         pack();
-        this.setVisible(true);
+        //this.setVisible(true);
     }// </editor-fold>                        
 
     private void boutonPointInteretPrecedentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonPointInteretPrecedentActionPerformed

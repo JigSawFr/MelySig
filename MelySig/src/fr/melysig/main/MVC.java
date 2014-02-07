@@ -6,8 +6,7 @@
  */
 package fr.melysig.main;
 
-import fr.melysig.controleurs.*;
-import fr.melysig.models.*;
+import fr.melysig.models.Lieux;
 import fr.melysig.vues.*;
 
 /**
@@ -31,13 +30,12 @@ public class MVC {
      */
     private final Debug gestionDebug;
     private final Erreurs gestionErreurs;
+    
+    public ConsultationVue maConsultationVue;
 
     /**
      * Déclaration des sous-controleurs
      */
-//    private final UtilisateursControleur gestionUtilisateurs;
-//    private final ParcoursControleur gestionParcours;
-
     public MVC() {
 
         /**
@@ -60,21 +58,11 @@ public class MVC {
         /**
          * Instanciation des sous-controleurs
          */
-//        this.gestionUtilisateurs = new UtilisateursControleur();
-//        this.gestionParcours = new ParcoursControleur();
-        ParcoursVue vueParcours = new ParcoursVue();
-        Parcours modeleParcours = new Parcours();
-        ParcoursControleur controleurParcours = new ParcoursControleur(modeleParcours, vueParcours);
-        
-        UtilisateursVue vueUtilisateurs = new UtilisateursVue();
-        Utilisateurs modeleUtilisateurs = new Utilisateurs();
-        UtilisateursControleur controleurUtilisateurs = new UtilisateursControleur(modeleUtilisateurs, vueUtilisateurs);
-
-        
+        PanelDeConnexion monPanel = new PanelDeConnexion(this);
         
         Lieux lieux = new Lieux();
         // Appel de la vue.
-        ConsultationVue consultationVue = new ConsultationVue(lieux);
+        maConsultationVue = new ConsultationVue(this, lieux);
 
         /**
          * Information de l'initialisation
@@ -84,41 +72,22 @@ public class MVC {
         /**
          * Notre Application
          */
-        
-        /* ---- Commandes de test ---- */
-//        gestionUtilisateurs.chargerUtilisateur(2);
-//        gestionUtilisateurs.toString();
-//        gestionUtilisateurs.toString();
-//        gestionUtilisateurs.mettreAjourUtilisateur(gestionUtilisateurs.getPseudo(), "tete de gland", gestionUtilisateurs.getNom(), gestionUtilisateurs.getPrenom(), gestionUtilisateurs.getEmail());
-//        gestionUtilisateurs.chargerUtilisateur(3);
-//        gestionUtilisateurs.effacerUtilisateur();
-//        gestionParcours.setLibelle("blabla");
-//        System.out.println(gestionParcours.toString());
-//        gestionParcours.creerParcours("Musées des canailles", "On passe tout au karcher !");
-//        gestionParcours.mettreAjourParcours(gestionParcours.getLibelle(), "Les suceurs de bites !");
-//        System.out.println(gestionParcours.toString());
-//        gestionParcours.chargerParcours(5);
-//        System.out.println(gestionParcours.toString());
-//        gestionParcours.effacerParcours();
-//        System.out.println(gestionParcours.toString());
-        
-//        gestionParcours.afficherDetails();
-//        gestionParcours.chargerParcours(3);
-//        System.out.println(gestionParcours.toString());
-//        gestionParcours.afficherDetails();
-//        gestionParcours.creerParcours("Musées du JUIF", "Take your mask");
-//        System.out.println(gestionParcours.getId());
-//        System.out.println(gestionParcours.toString());
-//
-//        /**
-//         * Listing des différents parcours 
-//         */
-//        String mesParcours = "";
-//        for (int i = 1; i <= 21; i++) {
-//            gestionParcours.chargerParcours(i);
-//            mesParcours += "\n-> Parcours n°" + gestionParcours.getId() + "  - " + gestionParcours.getLibelle() + ", " + gestionParcours.getDescription();
-//        }
-//        System.out.println(mesParcours);
+        try {
+            this.gestionDebug.debug("SPS", "Lancement du Splash Screen...");
+            this.gestionDebug.debug("SPS", "Mise en pause ...5 secondes restantes");
+            Thread.sleep(1000);
+            this.gestionDebug.debug("SPS", "Mise en pause ...4 secondes restantes");
+            Thread.sleep(1000);
+            this.gestionDebug.debug("SPS", "Mise en pause ...3 secondes restantes");
+            Thread.sleep(1000);
+            this.gestionDebug.debug("SPS", "Mise en pause ...2 secondes restantes");
+            Thread.sleep(1000);
+            this.gestionDebug.debug("SPS", "Mise en pause ...1 seconde restante");
+            Thread.sleep(1000);
+            this.gestionDebug.debug("SPS", "C'est parti !");
+        } catch (InterruptedException e) {
+        }
+        monPanel.setVisible(true);
     }
 
 }

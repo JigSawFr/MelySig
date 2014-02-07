@@ -54,6 +54,7 @@ public class Utilisateurs {
      * Création de l'objet DAO pour les utilisateurs
      */
     DAO<Utilisateurs> utilisateursDAO;
+    UtilisateursDAO accessDirectDAO;
 
     private static final Debug gestionDebug = Debug.obtenirGestionDebug();
     private static final Erreurs gestionErreurs = Erreurs.obtenirGestionErreurs();
@@ -69,6 +70,7 @@ public class Utilisateurs {
         this.prenom = null;
         this.email = null;
         this.utilisateursDAO = new UtilisateursDAO();
+        this.accessDirectDAO = new UtilisateursDAO();
     }
 
     /**
@@ -89,6 +91,20 @@ public class Utilisateurs {
         this.prenom = prenom;
         this.email = email;
         this.utilisateursDAO = new UtilisateursDAO();
+    }
+
+    /**
+     * Vérification des informations de connexion
+     *
+     * @param identifiant
+     * @param motDePasse
+     * @return vrai/faux <code>boolean</code>
+     */
+    public boolean verifierUtilisateur(String identifiant, String motDePasse) {
+
+        debug("Vérification des accès de l'utilisateur " + identifiant + " avec le mot de passe : " + motDePasse);
+        boolean resultat = this.accessDirectDAO.verifier(identifiant, motDePasse);
+        return resultat;
     }
 
     /**
