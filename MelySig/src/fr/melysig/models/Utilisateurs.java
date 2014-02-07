@@ -10,6 +10,9 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.UtilisateursDAO;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Observable;
 
 /**
  * Classe de <b>traitement des Utilisateurss</b>
@@ -19,7 +22,7 @@ import fr.melysig.mappages.UtilisateursDAO;
  * @since 0.2
  * @version 0.2
  */
-public class Utilisateurs {
+public class Utilisateurs extends Observable {
 
     /**
      * Identifiant Unique de l'utilisateur
@@ -104,6 +107,10 @@ public class Utilisateurs {
 
         debug("Vérification des accès de l'utilisateur " + identifiant + " avec le mot de passe : " + motDePasse);
         boolean resultat = this.accessDirectDAO.verifier(identifiant, motDePasse);
+        
+        this.setPseudo(identifiant);
+        this.setMotDePasse(motDePasse);
+        this.setChanged();
         return resultat;
     }
 

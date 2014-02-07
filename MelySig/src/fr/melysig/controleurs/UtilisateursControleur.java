@@ -9,6 +9,7 @@ package fr.melysig.controleurs;
 import fr.melysig.models.Utilisateurs;
 import fr.melysig.vues.PanelDeConnexion;
 import fr.melysig.vues.UtilisateursVue;
+import java.util.Observable;
 
 /**
  * Classe de <b>mise en relation de la vue et le modèle des Utilisateurss</b>
@@ -23,11 +24,11 @@ public class UtilisateursControleur {
     /**
      * Déclaration du modèle
      */
-    private Utilisateurs modele;
+    public Utilisateurs modele;
     /**
      * Déclaration de la vue
      */
-    private PanelDeConnexion vue;
+    //private PanelDeConnexion vue;
 
     /**
      * Constructeur de la classe
@@ -39,10 +40,10 @@ public class UtilisateursControleur {
 //        this.modele = modele;
 //        this.vue = vue;
 //    }
-    public UtilisateursControleur(PanelDeConnexion vue) {
+    public UtilisateursControleur() {
 
         this.modele = new Utilisateurs();
-        this.vue = vue;
+        //this.vue = vue;
     }
 
     /**
@@ -57,7 +58,9 @@ public class UtilisateursControleur {
     }
 
     public boolean verifierUtilisateur(String identifiant, String motDePasse) {
-        return modele.verifierUtilisateur(identifiant, motDePasse);
+        boolean resultat = modele.verifierUtilisateur(identifiant, motDePasse);
+        this.modele.notifyObservers();
+        return resultat;
     }
     
     

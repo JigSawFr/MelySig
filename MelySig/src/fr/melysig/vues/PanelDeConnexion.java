@@ -20,8 +20,8 @@ import javax.swing.JOptionPane;
  */
 public class PanelDeConnexion extends javax.swing.JFrame {
 
-    MVC monMVC;
-    UtilisateursControleur monControleurUtilisateur;
+    MVC monMVC = MVC.obtenirMVC();
+    //UtilisateursControleur monControleurUtilisateur;
     private final Debug gestionDebug;
     private final Erreurs gestionErreurs;
 
@@ -30,10 +30,10 @@ public class PanelDeConnexion extends javax.swing.JFrame {
      *
      * @param mvc
      */
-    public PanelDeConnexion(MVC mvc) {
+    public PanelDeConnexion() {
         initComponents();
-        monControleurUtilisateur = new UtilisateursControleur(this);
-        monMVC = mvc;
+        //monControleurUtilisateur = new UtilisateursControleur(this);
+        //monMVC = mvc;
         this.gestionErreurs = Erreurs.obtenirGestionErreurs();
         this.gestionDebug = Debug.obtenirGestionDebug();
     }
@@ -58,7 +58,6 @@ public class PanelDeConnexion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MelySIG - Authentification");
-        setAlwaysOnTop(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(java.awt.Color.white);
         setIconImages(null);
@@ -158,11 +157,14 @@ public class PanelDeConnexion extends javax.swing.JFrame {
 
     private void boutonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonConnexionActionPerformed
 
-        boolean auth = monControleurUtilisateur.verifierUtilisateur(this.champsIdentifiant.getText(), String.valueOf(this.champsMotDePasse.getPassword()));
+        boolean auth = monMVC.monControleurUtilisateur.verifierUtilisateur(this.champsIdentifiant.getText(), String.valueOf(this.champsMotDePasse.getPassword()));
         if (auth == true) {
+            this.monMVC.monControleurUtilisateur.setPseudo(this.champsIdentifiant.getText());
             this.gestionDebug.debug("VUE", "Authentification -> Utilisateur authentifié avec succès.");
             this.setVisible(false);
             this.monMVC.maConsultationVue.setVisible(true);
+            this.monMVC.monControleurUtilisateur.toString();
+            this.monMVC.toString();
         } else {
             this.gestionErreurs.erreur("VUE", "Authentification -> Authentification incorrecte !", null);
             JOptionPane.showMessageDialog(this, "Vos identifiants sont incorrects,\nMerci de rééssayer !");

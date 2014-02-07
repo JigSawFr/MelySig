@@ -17,11 +17,6 @@ package fr.melysig.main;
 public class MelySig {
 
     /**
-     * Déclaration de notre objet MVC
-     */
-    private static MVC mainMVC;
-
-    /**
      * Méthode principale permettant le lancement du programme. Etant statique, celle-ci est initialisée dès le démarrage.
      *
      * @param args Arguments de la ligne de commande
@@ -32,6 +27,6 @@ public class MelySig {
          * Initialisation du MVC
          * Lancement du programme !
          */
-        mainMVC = new MVC();
+        MVC.obtenirMVC();
     }
 }

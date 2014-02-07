@@ -6,8 +6,11 @@
  */
 package fr.melysig.main;
 
+import fr.melysig.controleurs.UtilisateursControleur;
 import fr.melysig.models.Lieux;
+import fr.melysig.process.LieuProcess;
 import fr.melysig.vues.*;
+import javax.swing.JOptionPane;
 
 /**
  * <b>Controleur principal - Initialisation du MVC</b>
@@ -28,15 +31,31 @@ public class MVC {
     /**
      * Objet Singleton issus de méthodes génériques
      */
-    private final Debug gestionDebug;
-    private final Erreurs gestionErreurs;
-    
-    public ConsultationVue maConsultationVue;
+    private Debug gestionDebug;
+    private Erreurs gestionErreurs;
 
+    private static MVC monMVC;
+    public ConsultationVue maConsultationVue;
+    public UtilisateursControleur monControleurUtilisateur;
+
+    public static MVC obtenirMVC() {
+        if (monMVC == null) {
+            monMVC = new MVC();
+            monMVC.initialisationMVC();
+        }
+        return monMVC;
+    }
+
+    @Override
+    public String toString() {
+        return "MVC{" + "debug=" + debug + ", erreurs=" + erreurs + ", gestionDebug=" + gestionDebug + ", gestionErreurs=" + gestionErreurs + ", maConsultationVue=" + maConsultationVue.toString() + ", monUtilisateur=" + monControleurUtilisateur.toString() + '}';
+    }
+
+    
     /**
      * Déclaration des sous-controleurs
      */
-    public MVC() {
+    private void initialisationMVC() {
 
         /**
          * Initalisation de la gestion des informations de débuggage
@@ -58,11 +77,12 @@ public class MVC {
         /**
          * Instanciation des sous-controleurs
          */
-        PanelDeConnexion monPanel = new PanelDeConnexion(this);
-        
+        monControleurUtilisateur = new UtilisateursControleur();
+        PanelDeConnexion monPanel = new PanelDeConnexion();
+
         Lieux lieux = LieuProcess.getInstance().chargerLieux(1);
         // Appel de la vue.
-        maConsultationVue = new ConsultationVue(this, lieux);
+        maConsultationVue = new ConsultationVue(lieux);
 
         /**
          * Information de l'initialisation
