@@ -7,7 +7,6 @@
 package fr.melysig.controleurs;
 
 import fr.melysig.models.Actualites;
-import fr.melysig.vues.ActualitesVue;
 
 /**
  * Classe de <b>mise en relation de la vue et le modèle des Actualités</b>
@@ -26,7 +25,6 @@ public class ActualitesControleur {
     /**
      * Déclaration de la vue
      */
-    private ActualitesVue vue;
 
     /**
      * Constructeur de la classe
@@ -34,10 +32,9 @@ public class ActualitesControleur {
      * @param modele
      * @param vue
      */
-    public ActualitesControleur(Actualites modele, ActualitesVue vue) {
+    public ActualitesControleur(Actualites modele) {
 
         this.modele = modele;
-        this.vue = vue;
     }
 //    public ParcoursControleur() {
 //

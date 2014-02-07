@@ -10,8 +10,6 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.UtilisateursDAO;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Observable;
 
 /**

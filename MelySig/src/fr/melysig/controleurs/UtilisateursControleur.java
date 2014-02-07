@@ -7,9 +7,9 @@
 package fr.melysig.controleurs;
 
 import fr.melysig.models.Utilisateurs;
-import fr.melysig.vues.PanelDeConnexion;
-import fr.melysig.vues.UtilisateursVue;
-import java.util.Observable;
+//import fr.melysig.vues.PanelDeConnexion;
+//import fr.melysig.vues.UtilisateursVue;
+//import java.util.Observable;
 
 /**
  * Classe de <b>mise en relation de la vue et le modèle des Utilisateurss</b>
@@ -17,7 +17,7 @@ import java.util.Observable;
  *
  * @author Sébastien R.
  * @since 0.2
- * @version 0.2
+ * @version 0.3
  */
 public class UtilisateursControleur {
 
@@ -30,11 +30,11 @@ public class UtilisateursControleur {
      */
     //private PanelDeConnexion vue;
 
-    /**
-     * Constructeur de la classe
-     * @param modele
-     * @param vue
-     */
+//    /**
+//     * Constructeur de la classe
+//     * @param modele
+//     * @param vue
+//     */
 //    public UtilisateursControleur(Utilisateurs modele, UtilisateursVue vue) {
 //
 //        this.modele = modele;
@@ -61,9 +61,7 @@ public class UtilisateursControleur {
         boolean resultat = modele.verifierUtilisateur(identifiant, motDePasse);
         this.modele.notifyObservers();
         return resultat;
-    }
-    
-    
+    } 
 
     /**
      * Permet de créer un nouvel utilisateur

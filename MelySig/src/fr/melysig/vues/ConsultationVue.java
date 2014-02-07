@@ -12,7 +12,6 @@ import fr.melysig.carte.MoveDrawableMouseListener;
 import fr.melysig.carte.NonOverlapMoveAdapter;
 import fr.melysig.carte.RectangleDrawable;
 import fr.melysig.carte.SimpleMouseListener;
-import fr.melysig.controleurs.UtilisateursControleur;
 import fr.melysig.main.MVC;
 import fr.melysig.models.Lieux;
 import fr.melysig.models.PointsInterets;
