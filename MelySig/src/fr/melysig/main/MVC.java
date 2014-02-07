@@ -8,6 +8,7 @@ package fr.melysig.main;
 
 import fr.melysig.controleurs.*;
 import fr.melysig.models.*;
+import fr.melysig.process.LieuProcess;
 import fr.melysig.vues.*;
 
 /**
@@ -72,7 +73,7 @@ public class MVC {
 
         
         
-        Lieux lieux = new Lieux();
+        Lieux lieux = LieuProcess.getInstance().chargerLieux(1);
         // Appel de la vue.
         ConsultationVue consultationVue = new ConsultationVue(lieux);
 

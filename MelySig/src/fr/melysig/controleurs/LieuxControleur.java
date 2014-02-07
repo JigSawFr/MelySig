@@ -33,19 +33,19 @@ public class LieuxControleur {
         ///this.vue = new xxxx();
     }
     
-    public Lieux chargerLieux(int id) {
-        this.modele = modele.chargerLieux(id);
-        return modele;
-    }
-    
-    public Lieux creerLieux(String nom, String carte , String description, int idUtilisateur) {
-        this.modele = new Lieux();
-        this.modele.setNom(nom);
-        this.modele.setCarte(carte);
-        this.modele.setDescription(description);
-        this.modele.setIDUtilisateur(idUtilisateur);
-        return modele.creerLieux(this.modele);
-    }
+//    public Lieux chargerLieux(int id) {
+//        this.modele = modele.chargerLieux(id);
+//        return modele;
+//    }
+//    
+//    public Lieux creerLieux(String nom, String carte , String description, int idUtilisateur) {
+//        this.modele = new Lieux();
+//        this.modele.setNom(nom);
+//        this.modele.setCarte(carte);
+//        this.modele.setDescription(description);
+//        this.modele.setIDUtilisateur(idUtilisateur);
+//        return modele.creerLieux(this.modele);
+//    }
      public int getId() {
         return modele.getId();
     }

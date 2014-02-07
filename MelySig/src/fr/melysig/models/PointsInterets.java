@@ -54,19 +54,10 @@ public class PointsInterets {
      * ID du thème
      */
     private int theme;
-    /**
-     * Tableau contenant la liste des POI
-     */
-    private ArrayList<PointsInterets> listePointsInterets = new ArrayList<>();
-
-    /**
-     * Création de l'objet DAO pour les utilisateurs
-     */
-    DAO<PointsInterets> pointsInteretsDAO;
 
     private static final Debug gestionDebug = Debug.obtenirGestionDebug();
     private static final Erreurs gestionErreurs = Erreurs.obtenirGestionErreurs();
-
+    
     /**
      * Constructeur de la classe Utilisateurs (Polymorphisme)
      */
@@ -79,8 +70,6 @@ public class PointsInterets {
         this.lieu = 0;
         this.utilisateur = 0;
         this.theme = 0;
-        this.listePointsInterets = null;
-        this.pointsInteretsDAO = new PointsInteretsDAO();
     }
 
     /**
@@ -104,73 +93,6 @@ public class PointsInterets {
         this.lieu = lieu;
         this.utilisateur = utilisateur;
         this.theme = theme;
-        this.listePointsInterets = null;
-        this.pointsInteretsDAO = new PointsInteretsDAO();
-    }
-
-    /**
-     * Chargement des <b>informations concernant un POI existant</b>
-     * dans la base de données
-     *
-     * @param id Identifiant <b>unique</b> du POI
-     * @return objet de type <code>PointsInterets</code>
-     */
-    public PointsInterets chargerPointInteret(int id) {
-
-        debug("Recherche d'un point d'intérêt existant...Chargement du n° " + id);
-        PointsInterets resultat = this.pointsInteretsDAO.chercher(id);
-        return resultat;
-    }
-
-    /**
-     * Chargement des <b>informations de plusieurs POI existants</b>
-     * dans la base de données
-     *
-     * @param nb Identifiant <b>unique</b> du POI
-     * @return objet de type <code>PointsInterets</code>
-     */
-//    public PointsInterets chargerPointInteret(int nb) {
-//
-//        debug("Recherche d'un point d'intérêt existant...Chargement du n° " + id);
-//        PointsInterets resultat = this.pointsInteretsDAO.chercher(id);
-//        return resultat;
-//    }
-
-    /**
-     * Ajouter un <b>nouveau POI</b> dans la base de données
-     *
-     * @param nouveauPointInteret objet PointsInterets contenant les données à ajouter
-     * @return objet PointsInterets avec l'identifiant unique en base de données
-     */
-    public PointsInterets creerPointInteret(PointsInterets nouveauPointInteret) {
-
-        debug("Ajout d'un nouveau point d'intérêt.");
-        PointsInterets resultat = this.pointsInteretsDAO.creer(nouveauPointInteret);
-        return resultat;
-    }
-
-    /**
-     * Modifier un <b>POI existant</b> dans la base de données
-     *
-     * @param monPointInteret objet PointsInterets contenant les données à modifier
-     * @return objet PointsInterets avec l'identifiant unique en base de données
-     */
-    public PointsInterets mettreAjourPointInteret(PointsInterets monPointInteret) {
-
-        debug("Modification d'un point d'intérêt existant.");
-        PointsInterets resultat = this.pointsInteretsDAO.mettreAjour(monPointInteret);
-        return resultat;
-    }
-
-    /**
-     * Permet de <b>supprimer un POI existant</b>
-     *
-     * @param monPointInteret objet PointsInterets contenant l'id du POI à supprimer
-     */
-    public void effacerPointInteret(PointsInterets monPointInteret) {
-
-        debug("Suppression d'un point d'intérêt existant.");
-        this.pointsInteretsDAO.effacer(monPointInteret);
     }
 
     /**
@@ -317,7 +239,7 @@ public class PointsInterets {
         this.theme = theme;
     }
 
-    /**
+          /**
      * Affichage des erreurs en console
      *
      * @param message Message d'erreur
@@ -335,7 +257,7 @@ public class PointsInterets {
     private static void debug(String message) {
         gestionDebug.debug("MDL", "Points d'intérêts -> " + message);
     }
-
+    
     /**
      * Méthode d'affichage de l'objet PointsInterets
      *

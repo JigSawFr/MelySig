@@ -6,11 +6,13 @@
 
 package fr.melysig.carte;
 
+import fr.melysig.models.Lieux;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +35,13 @@ public class JCanvas extends JPanel{
     private final List drawables = new LinkedList();
 //    private String nomPointInteret;
 //    private String descriptionPointInteret;
-
-            
+    
+    
+     public IDrawable createPoint(int x, int y) {
+        Point p = new Point(x,y);
+        Dimension dim = new Dimension(20,20);
+        return new RectangleDrawable(Color.RED, p, dim);
+    }       
             
 
 //    public String getNomPointInteret() {
@@ -67,7 +74,7 @@ public class JCanvas extends JPanel{
         /**
          * Permet l'ajout d'un unique point interet.
          */
-        drawables.clear();
+        //drawables.clear();
         /**
          * Fin de fonction de suppression des Points interets.
          */
