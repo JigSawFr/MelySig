@@ -6,6 +6,11 @@
 
 package fr.melysig.carte;
 
+import fr.melysig.models.Lieux;
+import fr.melysig.models.PointsInterets;
+import fr.melysig.process.LieuProcess;
+import fr.melysig.process.PointInteretProcess;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
@@ -16,10 +21,12 @@ import java.util.List;
  */
 public class MoveDrawableMouseListener extends JCanvasMouseAdapter {
 	protected IMovableDrawable drawable;
+        protected Lieux lieu;
 
 	
-	public MoveDrawableMouseListener(JCanvas canvas) {
+	public MoveDrawableMouseListener(JCanvas canvas, Lieux lieu) {
 		super(canvas);
+                this.lieu = lieu;
 	}
 
 	
@@ -39,6 +46,11 @@ public class MoveDrawableMouseListener extends JCanvasMouseAdapter {
 	}
 
 	public void mouseReleased(MouseEvent e) {
+                Point p = e.getPoint();
+                PointsInterets pointCourant = lieu.getPointInteretCourant();
+                pointCourant.setX(p.x);
+                pointCourant.setY(p.y);
+                PointInteretProcess.getInstance().mettreAjourPointInteret(lieu, pointCourant);
 		drawable = null;
 	}
 }

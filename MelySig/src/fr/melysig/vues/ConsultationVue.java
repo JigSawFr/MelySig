@@ -140,8 +140,8 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         monCanvas.setSize(1700, 890);
 
         new SimpleMouseListener(monCanvas, lieux);
-        new MoveDrawableMouseListener(monCanvas);
-        new NonOverlapMoveAdapter(monCanvas);
+        new MoveDrawableMouseListener(monCanvas, lieux);
+        new NonOverlapMoveAdapter(monCanvas, lieux);
 
         PanelCarte.add(monCanvas, BorderLayout.CENTER);
 
