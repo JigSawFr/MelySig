@@ -21,38 +21,26 @@ import java.util.List;
  *
  * @author PoooK
  */
-public class PointInteretProcess {
+public class ThemeProcess {
    
    //singleton
-   private static PointInteretProcess pointInteretProcess;
+   private static ThemeProcess pointInteretProcess;
    
-   public static PointInteretProcess getInstance() {
+   public static ThemeProcess getInstance() {
        if (pointInteretProcess == null) {
-           pointInteretProcess = new PointInteretProcess();
+           pointInteretProcess = new ThemeProcess();
        }
        return pointInteretProcess;
    }
     
-   private PointInteretProcess () {
+   private ThemeProcess () {
    }
    
-   public void creerPointInteret(Lieux lieu, String libellePointInteret, int x, int y){
-       Debug.obtenirGestionDebug().debug("MDL", "Points d'intérêts -> créer un point d'intérêt avec libelle " + libellePointInteret);
-       List<Themes> themes = ThemesDAO.getInstance().listerThemes();
-       PointsInterets pointInteret = new PointsInterets();
-       pointInteret.setLibelle(libellePointInteret);
-       pointInteret.setX(x);
-       pointInteret.setY(y);
-       pointInteret.setLieu(lieu);
-       pointInteret.setTheme((themes.size() > 0)? themes.get(0) : null);
+   public Themes creerTheme(String libelleTheme, String description){
+       Debug.obtenirGestionDebug().debug("MDL", "Theme -> créer un théme avec libelle " + libelleTheme);
        
-       lieu.setCurrentPointInteret(pointInteret);
-       List<PointsInterets> pi = lieu.getPointsInterets();
-       pi.add(pointInteret);
-       
-       PointsInteretsDAO.getInstance().creer(pointInteret);
-       LieuProcess.getInstance().mettreAjourLieu(lieu);
-       lieu.notifyObservers();
+       Themes themes = ThemesDAO.getInstance().creer(libelleTheme, description);
+       return themes;
    }
    
    /**
@@ -62,10 +50,15 @@ public class PointInteretProcess {
      * @param id Identifiant <b>unique</b> du POI
      * @return objet de type <code>PointsInterets</code>
      */
-    public PointsInterets chargerPointInteret(int id) {
+    public Themes chargerThemes(int id) {
 
-        Debug.obtenirGestionDebug().debug("MDL", "Points d'intérêts -> Recherche d'un point d'intérêt existant...Chargement du n° " + id);
-        PointsInterets resultat = PointsInteretsDAO.getInstance().chercher(id);
+        Debug.obtenirGestionDebug().debug("MDL", "Themes -> Recherche d'un thème existant...Chargement du n° " + id);
+        Themes resultat = ThemesDAO.getInstance().chercher(id);
+        return resultat;
+    } 
+    
+    public Themes getTheme(String libelle) {
+        Themes resultat = ThemesDAO.getInstance().chercher(libelle);
         return resultat;
     }
 
@@ -102,12 +95,10 @@ public class PointInteretProcess {
      * @param monPointInteret objet PointsInterets contenant les données à modifier
      * @return objet PointsInterets avec l'identifiant unique en base de données
      */
-    public PointsInterets mettreAjourPointInteret(Lieux lieu, PointsInterets monPointInteret) {
+    public Themes mettreAjourThemes(Themes monThemes) {
 
         Debug.obtenirGestionDebug().debug("MDL","Modification d'un point d'intérêt existant.");
-        PointsInterets resultat = PointsInteretsDAO.getInstance().mettreAjour(monPointInteret);
-        lieu.setCurrentPointInteret(monPointInteret);
-        lieu.notifyObservers();
+        Themes resultat = ThemesDAO.getInstance().mettreAjour(monThemes);
         return resultat;
     }
 
@@ -116,10 +107,14 @@ public class PointInteretProcess {
      *
      * @param monPointInteret objet PointsInterets contenant l'id du POI à supprimer
      */
-    public void effacerPointInteret(PointsInterets monPointInteret) {
+    public void effacerThemes(Themes monThemes) {
 
-        Debug.obtenirGestionDebug().debug("MDL","Suppression d'un point d'intérêt existant.");
-        PointsInteretsDAO.getInstance().effacer(monPointInteret);
+        Debug.obtenirGestionDebug().debug("MDL","Suppression d'un thème existant.");
+        ThemesDAO.getInstance().effacer(monThemes);
     }
     
+    public List<Themes> getTousThemes() {
+        Debug.obtenirGestionDebug().debug("MDL","liste tous les thèmes existant.");
+        return ThemesDAO.getInstance().listerThemes();
+    }
 }

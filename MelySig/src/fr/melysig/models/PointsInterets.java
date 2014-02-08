@@ -45,7 +45,7 @@ public class PointsInterets {
     /**
      * ID du lieu
      */
-    private int lieu;
+    private Lieux lieu;
     /**
      * ID de l'utilisateur
      */
@@ -53,8 +53,10 @@ public class PointsInterets {
     /**
      * ID du thème
      */
-    private int theme;
+    //private int theme;
 
+    private Themes theme;
+    
     private static final Debug gestionDebug = Debug.obtenirGestionDebug();
     private static final Erreurs gestionErreurs = Erreurs.obtenirGestionErreurs();
     
@@ -67,9 +69,9 @@ public class PointsInterets {
         this.Y = 0;
         this.libelle = null;
         this.description = null;
-        this.lieu = 0;
+        this.lieu = null;
         this.utilisateur = 0;
-        this.theme = 0;
+        this.theme = null;
     }
 
     /**
@@ -84,7 +86,7 @@ public class PointsInterets {
      * @param utilisateur
      * @param theme
      */
-    public PointsInterets(int id, int X, int Y, String libelle, String description, int lieu, int utilisateur, int theme) {
+    public PointsInterets(int id, int X, int Y, String libelle, String description, Lieux lieu, int utilisateur, Themes theme) {
         this.id = id;
         this.X = X;
         this.Y = Y;
@@ -190,7 +192,7 @@ public class PointsInterets {
      *
      * @return
      */
-    public int getLieu() {
+    public Lieux getLieu() {
         return lieu;
     }
 
@@ -199,7 +201,7 @@ public class PointsInterets {
      *
      * @param lieu
      */
-    public void setLieu(int lieu) {
+    public void setLieu(Lieux lieu) {
         this.lieu = lieu;
     }
 
@@ -226,7 +228,7 @@ public class PointsInterets {
      *
      * @return
      */
-    public int getTheme() {
+    public Themes getTheme() {
         return theme;
     }
 
@@ -235,7 +237,7 @@ public class PointsInterets {
      *
      * @param theme
      */
-    public void setTheme(int theme) {
+    public void setTheme(Themes theme) {
         this.theme = theme;
     }
 

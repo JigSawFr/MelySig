@@ -6,7 +6,9 @@
  */
 package fr.melysig.mappages;
 
+import fr.melysig.models.Lieux;
 import fr.melysig.models.PointsInterets;
+import fr.melysig.models.Themes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,9 +65,9 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
                         resultats.getInt("coordonneeYPointInteret"),
                         resultats.getString("libellePointInteret"),
                         resultats.getString("descriptionPointInteret"),
-                        resultats.getInt("idLieuPointInteret"),
+                        LieuxDAO.getInstance().chercher(resultats.getInt("idLieuPointInteret")),
                         resultats.getInt("idUtilisateurPointInteret"),
-                        resultats.getInt("idThemePointInteret")
+                        ThemesDAO.getInstance().chercher(resultats.getInt("idThemePointInteret"))
                 );
                 this.debug("Recherche -> Point d'intérêt localisé dans la base avec succès.");
             } else {
@@ -111,9 +113,9 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
                         resultats.getInt("coordonneeYPointInteret"),
                         resultats.getString("libellePointInteret"),
                         resultats.getString("descriptionPointInteret"),
-                        resultats.getInt("idLieuPointInteret"),
+                        LieuxDAO.getInstance().chercher(resultats.getInt("idLieuPointInteret")),
                         resultats.getInt("idUtilisateurPointInteret"),
-                        resultats.getInt("idThemePointInteret")
+                        ThemesDAO.getInstance().chercher(resultats.getInt("idThemePointInteret"))
                 );
                 mesPointsInterets.add(monPointInteret);
                 this.debug("Listing -> Ajout du point d'intérêt n°" + monPointInteret.getId() + " à la liste avec succès.");
@@ -127,7 +129,7 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
         return mesPointsInterets;
     }
 
-    public List<PointsInterets> listerPOILieux(int idLieux) {
+    public List<PointsInterets> listerPOILieux(Lieux lieux) {
 
         PreparedStatement requetePreparee;
         List<PointsInterets> mesPointsInterets = new ArrayList<>();
@@ -138,7 +140,7 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
                             ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
                             ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
                     );
-            requetePreparee.setInt(1, idLieux);
+            requetePreparee.setInt(1, lieux.getId());
 
             this.debug("Listing -> Exécution de la requete SQL...");
             ResultSet resultats = requetePreparee.executeQuery();
@@ -153,9 +155,9 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
                         resultats.getInt("coordonneeYPointInteret"),
                         resultats.getString("libellePointInteret"),
                         resultats.getString("descriptionPointInteret"),
-                        resultats.getInt("idLieuPointInteret"),
+                        lieux,
                         resultats.getInt("idUtilisateurPointInteret"),
-                        resultats.getInt("idThemePointInteret")
+                        ThemesDAO.getInstance().chercher(resultats.getInt("idThemePointInteret"))
                 );
                 mesPointsInterets.add(monPointInteret);
                 this.debug("Listing -> Ajout du point d'intérêt n°" + monPointInteret.getId() + " à la liste avec succès.");
@@ -185,9 +187,9 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
             requetePreparee.setInt(2, nouveauPointInteret.getY());
             requetePreparee.setString(3, nouveauPointInteret.getLibelle());
             requetePreparee.setString(4, nouveauPointInteret.getDescription());
-            requetePreparee.setInt(5, nouveauPointInteret.getLieu());
-            requetePreparee.setInt(6, 1/*nouveauPointInteret.getUtilisateur()*/);
-            requetePreparee.setInt(7, nouveauPointInteret.getTheme());
+            requetePreparee.setInt(5, nouveauPointInteret.getLieu().getId());
+            requetePreparee.setInt(6, nouveauPointInteret.getUtilisateur());
+            requetePreparee.setInt(7, nouveauPointInteret.getTheme().getId());
 
             this.debug("Ajout -> Exécution de la requete SQL...");
             int lignes = requetePreparee.executeUpdate();
@@ -211,6 +213,50 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
         return nouveauPointInteret;
     }
 
+        public PointsInterets creer(int x, int y, String libelle, String description, Lieux lieu, int utilisateur, Themes themes) {
+            PointsInterets nouveauPointInteret = new PointsInterets();
+        try {
+            PreparedStatement requetePreparee = this.connexion
+                    .prepareStatement(
+                            "INSERT INTO pointsInterets (coordonneeXPointInteret, coordonneeYPointInteret, libellePointInteret, descriptionPointInteret, idLieuPointInteret, idUtilisateurPointInteret, idThemePointInteret) VALUES (?,?,?,?,?,?,?)",
+                            Statement.RETURN_GENERATED_KEYS // Retourne les lignes affectés
+                    );
+            requetePreparee.setInt(1, x);
+            requetePreparee.setInt(2, y);
+            requetePreparee.setString(3, libelle);
+            requetePreparee.setString(4, description);
+            requetePreparee.setInt(5, lieu.getId());
+            requetePreparee.setInt(6, utilisateur);
+            requetePreparee.setInt(7, themes.getId());
+
+            this.debug("Ajout -> Exécution de la requete SQL...");
+            int lignes = requetePreparee.executeUpdate();
+
+            if (lignes == 0) {
+                throw new SQLException("Aucune lignes affectées");
+            }
+
+            nouveauPointInteret.setLibelle(libelle);
+            nouveauPointInteret.setX(x);
+            nouveauPointInteret.setY(y);
+            nouveauPointInteret.setLieu(lieu);
+            nouveauPointInteret.setTheme(themes);
+            
+            ResultSet clesGenerees = requetePreparee.getGeneratedKeys();
+            if (clesGenerees.next()) {
+                this.debug("Ajout -> Définition de l'identifiant unique du point d'intérêt.");
+                nouveauPointInteret.setId(clesGenerees.getInt(1));
+            } else {
+                throw new SQLException("Aucune clées générées.");
+            }
+
+        } catch (SQLException erreur) {
+            this.erreur("Ajout -> Erreur SQL !", erreur);
+        }
+        this.debug("Ajout -> Nouveau point d'intérêt ajouté avec succès (N°" + nouveauPointInteret.getId() + ").");
+        return nouveauPointInteret;
+    }
+    
     /**
      * Permet de mettre à jour un POI existant
      *
@@ -232,9 +278,9 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
             requetePreparee.setInt(2, monPointInteret.getY());
             requetePreparee.setString(3, monPointInteret.getLibelle());
             requetePreparee.setString(4, monPointInteret.getDescription());
-            requetePreparee.setInt(5, monPointInteret.getLieu());
+            requetePreparee.setInt(5, monPointInteret.getLieu().getId());
             requetePreparee.setInt(6, 1);
-            requetePreparee.setInt(7, monPointInteret.getTheme());
+            requetePreparee.setInt(7, monPointInteret.getTheme().getId());
             requetePreparee.setInt(8, monPointInteret.getId());
 
             this.debug("Mise à jour -> Exécution de la requete SQL...");

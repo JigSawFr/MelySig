@@ -29,12 +29,6 @@ public class Themes {
      * Description du theme
      */
     private String description;
-    
-
-    /**
-     * Création de l'objet DAO pour les themes
-     */
-    DAO<Themes> themesDAO;
 
     private static final Debug gestionDebug = Debug.obtenirGestionDebug();
     private static final Erreurs gestionErreurs = Erreurs.obtenirGestionErreurs();
@@ -46,7 +40,6 @@ public class Themes {
         this.id = 0;
         this.libelle = null;
         this.description = null;
-        this.themesDAO = new ThemesDAO();
     }
 
     /**
@@ -60,58 +53,6 @@ public class Themes {
         this.id = id;
         this.libelle = libelle;
         this.description = description;
-        this.themesDAO = new ThemesDAO();
-    }
-
-    /**
-     * Chargement des <b>informations concernant un theme existant</b>
-     * dans la base de données
-     *
-     * @param id Identifiant <b>unique</b> du theme
-     * @return objet de type <code>theme</code>
-     */
-    public Themes chargerTheme(int id) {
-
-        debug("Recherche d'un theme existant...Chargement du n° " + id);
-        Themes resultat = this.themesDAO.chercher(id);
-        return resultat;
-    }
-
-    /**
-     * Ajouter un <b>nouveau theme</b> dans la base de données
-     *
-     * @param nouveauTheme objet themes contenant les données à ajouter
-     * @return objet themes avec l'identifiant unique en base de données
-     */
-    public Themes creerTheme(Themes nouveauTheme) {
-
-        debug("Ajout d'un nouveau theme.");
-        Themes resultat = this.themesDAO.creer(nouveauTheme);
-        return resultat;
-    }
-
-    /**
-     * Modifier un <b>theme existant</b> dans la base de données
-     *
-     * @param monTheme objet themes contenant les données à modifier
-     * @return objet themes avec l'identifiant unique en base de données
-     */
-    public Themes mettreAjourTheme(Themes monTheme) {
-
-        debug("Modification d'un theme existant.");
-        Themes resultat = this.themesDAO.mettreAjour(monTheme);
-        return resultat;
-    }
-
-    /**
-     * Permet de <b>supprimer un theme existant</b>
-     *
-     * @param monTheme objet themes contenant l'id du theme à supprimer
-     */
-    public void effacerTheme(Themes monTheme) {
-
-        debug("Suppression d'un theme existant.");
-        this.themesDAO.effacer(monTheme);
     }
 
     /**

@@ -56,7 +56,7 @@ public class LieuxDAO extends DAO<Lieux> {
                         resultats.getString("descriptionLieu"),
                         resultats.getInt("idUtilisateurLieu")
                 );
-                monLieux.setPointsInterets(PointsInteretsDAO.getInstance().listerPOILieux(monLieux.getId()));
+                monLieux.setPointsInterets(PointsInteretsDAO.getInstance().listerPOILieux(monLieux));
                 this.debug("Recherche -> Lieux localisé dans la base avec succès.");
             } else {
                 throw new SQLException("Aucun lieux ne correspond à l'identifiant n° " + id + " !");
@@ -185,6 +185,47 @@ public class LieuxDAO extends DAO<Lieux> {
         return nouveauLieux;
     }
 
+    
+    public Lieux creer(String nom, String carte, String description, int idUtilisateur ) {
+        Lieux nouveauLieux = new Lieux();
+        try {
+            PreparedStatement requetePreparee = this.connexion
+                    .prepareStatement(
+                            "INSERT INTO lieux (nomLieu,carteLieu, descriptionLieu,idUtilisateurLieu) VALUES (?,?,?,?)",
+                            Statement.RETURN_GENERATED_KEYS // Retourne les lignes affectés
+                    );
+            requetePreparee.setString(1, nom);
+            requetePreparee.setString(2, carte);
+            requetePreparee.setString(3, description);
+            requetePreparee.setInt(4, idUtilisateur);
+
+            this.debug("Ajout -> Exécution de la requete SQL...");
+            int lignes = requetePreparee.executeUpdate();
+
+            if (lignes == 0) {
+                throw new SQLException("Aucun lignes affectées");
+            }
+
+            ResultSet clesGenerees = requetePreparee.getGeneratedKeys();
+            
+            if (clesGenerees.next()) {
+                this.debug("Ajout -> Définition de l'identifiant unique du lieux.");
+                nouveauLieux.setId(clesGenerees.getInt(1));
+            } else {
+                throw new SQLException("Aucune clées générées.");
+            }
+            nouveauLieux.setCarte(carte);
+            nouveauLieux.setDescription(description);
+            nouveauLieux.setIDUtilisateur(idUtilisateur);
+            nouveauLieux.setNom(nom);
+
+        } catch (SQLException erreur) {
+            this.erreur("Ajout -> Erreur SQL !", erreur);
+        }
+        this.debug("Ajout -> Nouveau lieux ajouté avec succès (N°" + nouveauLieux.getId() + ").");
+        return nouveauLieux;
+    }
+    
     @Override
     public void effacer(Lieux monLieux) {
 

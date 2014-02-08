@@ -15,9 +15,11 @@ import fr.melysig.carte.SimpleMouseListener;
 import fr.melysig.main.MVC;
 import fr.melysig.models.Lieux;
 import fr.melysig.models.PointsInterets;
+import fr.melysig.models.Themes;
 import fr.melysig.models.Utilisateurs;
 import fr.melysig.process.LieuProcess;
 import fr.melysig.process.PointInteretProcess;
+import fr.melysig.process.ThemeProcess;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,11 +31,14 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -351,7 +356,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             public void actionPerformed(ActionEvent ae) {
                 PointsInterets pi = lieux.getPointInteretCourant();
                 pi.setLibelle(txtLibellePOI.getText());
-                pi.setTheme(Integer.parseInt(txtThemePOI.getText()));
+                pi.setTheme(ThemeProcess.getInstance().getTheme(txtThemePOI.getText()));
                 pi.setDescription(txtDescriptionPOI.getText());
                 pi.setX(Integer.parseInt(txtXPOI.getText()));
                 pi.setY(Integer.parseInt(txtYPOI.getText()));
@@ -522,7 +527,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         labelSelectionParcours.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelSelectionParcours.setText("Sélection :");
 
-        ComboboxListParcours.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        ComboboxListParcours.setModel(new javax.swing.DefaultComboBoxModel());
 
         javax.swing.GroupLayout PanelParcoursLayout = new javax.swing.GroupLayout(PanelParcours);
         PanelParcours.setLayout(PanelParcoursLayout);
@@ -766,10 +771,11 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             txtDescriptionPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getDescription());
             txtLibellePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLibelle());
             txtThemePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getTheme());
-            txtLieuPOI.setText((monPointInteret == null) ? "" : "" + LieuProcess.getInstance().chargerLieux(monPointInteret.getLieu()).getNom());
+            txtLieuPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLieu().getNom());
             monCanvas.clear();
-            ((DefaultListModel)ListPointInteret.getModel()).clear();
             PointsInterets pointCourant = lieux.getPointInteretCourant();
+  //          updateListModele((DefaultListModel) ListPointInteret.getModel(), lieux.getPointsInterets());
+            ((DefaultListModel)ListPointInteret.getModel()).clear();
             for (PointsInterets point : lieux.getPointsInterets()) {
                 if (point.equals(pointCourant) ) {
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.BLUE));
@@ -778,6 +784,12 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
                 }
                 ((DefaultListModel)ListPointInteret.getModel()).addElement(point.getLibelle());
             }
+            List<Themes> themes = ThemeProcess.getInstance().getTousThemes();
+            ((DefaultComboBoxModel)ComboboxListParcours.getModel()).removeAllElements();
+            for (Themes theme : themes) {
+                ComboboxListParcours.addItem(theme.getLibelle());
+            }
+            
             this.validate();
 
         }
@@ -792,4 +804,23 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
     }
     
+//    private void updateListModele(DefaultListModel model, List<PointsInterets> list) {
+//        List<String> contenueAAjouter = new ArrayList();
+//        for(PointsInterets p : list) {
+//            contenueAAjouter.add(p.getLibelle());
+//        }
+//                
+//        for(int i=0 ; i< model.getSize(); i++){
+//            
+//            if (!contenueAAjouter.contains(model.getElementAt(i))) {
+//                model.removeElementAt(i);
+//                i--;
+//            } else {
+//                contenueAAjouter.remove(model.getElementAt(i));
+//            }
+//        }
+//        for (String o : contenueAAjouter) {
+//            model.addElement(o);
+//        }
+//    }
 }

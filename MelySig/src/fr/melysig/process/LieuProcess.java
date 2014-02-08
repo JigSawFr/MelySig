@@ -60,12 +60,7 @@ public class LieuProcess {
     public Lieux creerLieux(String nom, String carte , String description, int idUtilisateur) {
 
         Debug.obtenirGestionDebug().debug("MDL","Ajout d'un nouveau lieux");
-        Lieux lieu = new Lieux();
-        lieu.setNom(nom);
-        lieu.setCarte(carte);
-        lieu.setDescription(description);
-        lieu.setIDUtilisateur(idUtilisateur);
-        Lieux resultat = LieuxDAO.getInstance().creer(lieu);
+        Lieux resultat = LieuxDAO.getInstance().creer(nom, carte, description, idUtilisateur);
         return resultat;
     }
     
@@ -89,9 +84,10 @@ public class LieuProcess {
             if (poi.getLibelle().equals(libelle)) {
                 lieu.setCurrentPointInteret(poi);
                 find =true;
+                lieu.notifyObservers();
             }
         }
-        lieu.notifyObservers();
+        
     }
     
     public List<Lieux> getListLieu() {

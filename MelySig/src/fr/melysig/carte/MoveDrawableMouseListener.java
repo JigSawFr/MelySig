@@ -22,6 +22,7 @@ import java.util.List;
 public class MoveDrawableMouseListener extends JCanvasMouseAdapter {
 	protected IMovableDrawable drawable;
         protected Lieux lieu;
+        protected boolean drag = false;
 
 	
 	public MoveDrawableMouseListener(JCanvas canvas, Lieux lieu) {
@@ -34,6 +35,7 @@ public class MoveDrawableMouseListener extends JCanvasMouseAdapter {
 		if (drawable != null) {
 			drawable.setPosition(e.getPoint());
 			canvas.repaint();
+                        drag = true;
 		}
 	}
 
@@ -42,15 +44,22 @@ public class MoveDrawableMouseListener extends JCanvasMouseAdapter {
 		List selectedDrawables = canvas.findDrawables(e.getPoint());
 		if (selectedDrawables.size() == 0)
 			return;
+                Point p = e.getPoint();
+                LieuProcess.getInstance().setCurentPointInteret(lieu, p.x, p.y);
+                selectedDrawables = canvas.findDrawables(e.getPoint());
 		drawable = (IMovableDrawable) selectedDrawables.get(0);
+               
 	}
 
 	public void mouseReleased(MouseEvent e) {
+            if (drag) {    
                 Point p = e.getPoint();
                 PointsInterets pointCourant = lieu.getPointInteretCourant();
                 pointCourant.setX(p.x);
                 pointCourant.setY(p.y);
                 PointInteretProcess.getInstance().mettreAjourPointInteret(lieu, pointCourant);
-		drawable = null;
+		drag = false;
+            }
+            drawable = null;
 	}
 }

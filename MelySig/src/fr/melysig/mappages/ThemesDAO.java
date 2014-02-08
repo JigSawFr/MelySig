@@ -6,11 +6,13 @@
  */
 package fr.melysig.mappages;
 
+import fr.melysig.models.Lieux;
 import fr.melysig.models.Themes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +21,17 @@ import java.util.List;
  */
 public class ThemesDAO extends DAO<Themes> {
 
+    private static ThemesDAO instance;
+    
+    public static ThemesDAO getInstance() {
+        if ( instance == null) {
+            instance = new ThemesDAO();
+        }
+        return instance;
+    }
+    
+    private ThemesDAO() {}
+    
     /**
      * Permet charger les informations d'un theme
      *
@@ -59,6 +72,39 @@ public class ThemesDAO extends DAO<Themes> {
         return monTheme;
     }
 
+    public Themes chercher(String libelle) {
+
+        PreparedStatement requetePreparee;
+        Themes monTheme = new Themes();
+        try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT * FROM themes WHERE libelleTheme = ?",
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    );
+            requetePreparee.setString(1, libelle);
+
+            this.debug("Recherche -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+
+            if (resultats.first()) {
+                monTheme = new Themes(
+                        resultats.getInt("idTheme"),
+                        resultats.getString("libelleTheme"),
+                        resultats.getString("descriptionTheme")
+                );
+                this.debug("Recherche -> Theme localisé dans la base avec succès.");
+            } else {
+                throw new SQLException("Aucun theme ne correspond au libelle " + libelle + " !");
+            }
+
+        } catch (SQLException erreur) {
+            this.erreur("Recherche -> Erreur SQL !", erreur);
+        }
+        return monTheme;
+    }
+    
     /**
      * Permet de lister différents thèmes
      *
@@ -71,6 +117,40 @@ public class ThemesDAO extends DAO<Themes> {
         return null;
     }
 
+    public List<Themes> listerThemes() {
+                
+        PreparedStatement requetePreparee;
+               List<Themes> mesThemes = new ArrayList<>();
+               try {
+                   requetePreparee = this.connexion
+                           .prepareStatement(
+                                   "SELECT * FROM themes",
+                                   ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                                   ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                           );
+
+                   this.debug("Listing -> Exécution de la requete SQL...");
+                   ResultSet resultats = requetePreparee.executeQuery();
+
+                   /* On redifinié le pointeur sur l'enregistrement 0*/
+                   resultats.beforeFirst();
+
+                   while (resultats.next()) {
+                       Themes monThemes = new Themes(
+                               resultats.getInt("idTheme"),
+                               resultats.getString("libelleTheme"),
+                               resultats.getString("descriptionTheme")
+                       );
+                       mesThemes.add(monThemes);
+                       this.debug("Listing -> Ajout du theme n°" + monThemes.getId() + " à la liste avec succès.");
+                   } 
+
+               } catch (SQLException erreur) {
+                   this.erreur("Listing -> Erreur SQL !", erreur);
+               }
+               return mesThemes;
+    }
+    
     /**
      * Permet de créer un nouvel theme
      *
@@ -96,6 +176,42 @@ public class ThemesDAO extends DAO<Themes> {
                 throw new SQLException("Aucune lignes affectées");
             }
 
+            ResultSet clesGenerees = requetePreparee.getGeneratedKeys();
+            if (clesGenerees.next()) {
+                this.debug("Ajout -> Définition de l'identifiant unique du theme.");
+                nouveauTheme.setId(clesGenerees.getInt(1));
+            } else {
+                throw new SQLException("Aucune clées générées.");
+            }
+
+        } catch (SQLException erreur) {
+            this.erreur("Ajout -> Erreur SQL !", erreur);
+        }
+        this.debug("Ajout -> Nouveau theme ajouté avec succès (N°" + nouveauTheme.getId() + ").");
+        return nouveauTheme;
+    }
+    
+     public Themes creer(String libelle, String description) {
+         Themes nouveauTheme = new Themes();
+        try {
+            PreparedStatement requetePreparee = this.connexion
+                    .prepareStatement(
+                            "INSERT INTO themes (libelleTheme, descriptionTheme) VALUES (?,?)",
+                            Statement.RETURN_GENERATED_KEYS // Retourne les lignes affectés
+                    );
+            requetePreparee.setString(1, libelle);
+            requetePreparee.setString(2, description);
+
+            this.debug("Ajout -> Exécution de la requete SQL...");
+            int lignes = requetePreparee.executeUpdate();
+
+            if (lignes == 0) {
+                throw new SQLException("Aucune lignes affectées");
+            }
+
+            nouveauTheme.setDescription(description);
+            nouveauTheme.setLibelle(libelle);
+            
             ResultSet clesGenerees = requetePreparee.getGeneratedKeys();
             if (clesGenerees.next()) {
                 this.debug("Ajout -> Définition de l'identifiant unique du theme.");
