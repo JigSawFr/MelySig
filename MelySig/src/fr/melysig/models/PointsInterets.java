@@ -271,4 +271,14 @@ public class PointsInterets {
         return null;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PointsInterets) {
+            return o!= null && ((PointsInterets)o).getId() == getId();
+        }
+        return false;
+    }
+
+    
+    
 }

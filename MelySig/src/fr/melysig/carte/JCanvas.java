@@ -42,7 +42,6 @@ public class JCanvas extends JPanel{
         Dimension dim = new Dimension(20,20);
         return new RectangleDrawable(couleur, p, dim);
     }       
-            
 
 //    public String getNomPointInteret() {
 //        return nomPointInteret;

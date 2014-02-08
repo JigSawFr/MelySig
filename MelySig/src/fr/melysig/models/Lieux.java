@@ -244,9 +244,7 @@ public class Lieux extends Observable{
     public void setPointsInterets(List<PointsInterets> pointsInterets) {
         this.pointsInterets = pointsInterets;
     }
-    
-    
-    
+
      public void setCurrentParcour(Parcours parcour){
         this.parcourCourant=parcour;
         setChanged();
@@ -255,4 +253,9 @@ public class Lieux extends Observable{
     public Parcours getParcourCourant() {
         return parcourCourant;
     }
+    
+    public void setModificationParcourCourant() {
+        setChanged();
+    }
+    
 }

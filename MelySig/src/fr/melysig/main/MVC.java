@@ -37,6 +37,7 @@ public class MVC {
     private static MVC monMVC;
     public ConsultationVue maConsultationVue;
     public UtilisateursControleur monControleurUtilisateur;
+    public int utilisateur = 1;
 
     public static MVC obtenirMVC() {
         if (monMVC == null) {
@@ -80,7 +81,7 @@ public class MVC {
         monControleurUtilisateur = new UtilisateursControleur();
         PanelDeConnexion monPanel = new PanelDeConnexion();
 
-        Lieux lieux = LieuProcess.getInstance().chargerLieux(1);
+        Lieux lieux = LieuProcess.getInstance().chargerLieux(utilisateur);
         // Appel de la vue.
         maConsultationVue = new ConsultationVue(lieux);
 
@@ -110,4 +111,7 @@ public class MVC {
         monPanel.setVisible(true);
     }
 
+    public int getIdUtilisateur() {
+        return utilisateur;
+    }
 }

@@ -8,10 +8,12 @@
 package fr.melysig.process;
 
 import fr.melysig.main.Debug;
+import fr.melysig.main.MVC;
 import fr.melysig.mappages.LieuxDAO;
 import fr.melysig.mappages.PointsInteretsDAO;
 import fr.melysig.mappages.ThemesDAO;
 import fr.melysig.models.Lieux;
+import fr.melysig.models.ListThemes;
 import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Themes;
 import java.util.ArrayList;
@@ -38,13 +40,14 @@ public class PointInteretProcess {
    
    public void creerPointInteret(Lieux lieu, String libellePointInteret, int x, int y){
        Debug.obtenirGestionDebug().debug("MDL", "Points d'intérêts -> créer un point d'intérêt avec libelle " + libellePointInteret);
-       List<Themes> themes = ThemesDAO.getInstance().listerThemes();
+       ListThemes themes = ThemesDAO.getInstance().listerThemes();
        PointsInterets pointInteret = new PointsInterets();
        pointInteret.setLibelle(libellePointInteret);
        pointInteret.setX(x);
        pointInteret.setY(y);
        pointInteret.setLieu(lieu);
-       pointInteret.setTheme((themes.size() > 0)? themes.get(0) : null);
+       pointInteret.setTheme((themes.getList().size() > 0)? themes.getList().get(0) : null);
+       pointInteret.setUtilisateur(MVC.obtenirMVC().getIdUtilisateur());
        
        lieu.setCurrentPointInteret(pointInteret);
        List<PointsInterets> pi = lieu.getPointsInterets();

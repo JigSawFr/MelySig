@@ -22,7 +22,7 @@ import java.util.Observable;
  * @since 0.3
  * @version 0.1.2
  */
-public class Parcours extends Observable{
+public class Parcours{
 
     /**
      * Identifiant Unique du parcours
@@ -167,7 +167,6 @@ public class Parcours extends Observable{
      */
     public void setLibelle(String libelle) {
         this.libelle = libelle;
-        setChanged();
     }
 
     /**
@@ -177,12 +176,10 @@ public class Parcours extends Observable{
      */
     public void setDescription(String description) {
         this.description = description;
-        setChanged();
     }
 
     public void setListPointInterets(List<PointsInterets> pointInterets) {
         this.listePointsInterets = pointInterets;
-        setChanged();
     }
     
     public List<PointsInterets> getListPointsInterets() {
@@ -208,7 +205,8 @@ public class Parcours extends Observable{
     private static void debug(String message) {
         gestionDebug.debug("MDL", "Parcours -> " + message);
     }
-
+    
+    
     /**
      * Méthode d'affichage de l'objet Parcours
      *

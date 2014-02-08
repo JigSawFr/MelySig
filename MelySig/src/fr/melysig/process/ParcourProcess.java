@@ -33,17 +33,13 @@ public class ParcourProcess {
     public void chargerParcourCourant(Observer observer, Lieux lieu,String theme) {
         Debug.obtenirGestionDebug().debug("MDL","Recherche d'un parcour existant...Chargement du parcour " + theme);
         Themes themeObject = ThemeProcess.getInstance().chargerThemes(theme);
-        Parcours parcourCourant = lieu.getParcourCourant();
-        if (parcourCourant != null ) {
-            parcourCourant.deleteObservers();
-        }
         Parcours parcour = new Parcours();
         parcour.setDescription(themeObject.getDescription());
         parcour.setLibelle(themeObject.getLibelle());
         parcour.setListPointInterets(ThemesDAO.getInstance().listerPointInteret(themeObject, lieu));
         lieu.setCurrentParcour(parcour);
-        parcour.addObserver(observer);
-        parcour.notifyObservers();
+        lieu.setModificationParcourCourant();
+        lieu.notifyObservers();
     }
     
     

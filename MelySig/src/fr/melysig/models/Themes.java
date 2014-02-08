@@ -11,6 +11,7 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.ThemesDAO;
+import java.util.Observable;
 
 /**
  *

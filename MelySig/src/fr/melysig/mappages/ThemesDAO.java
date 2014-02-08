@@ -7,6 +7,7 @@
 package fr.melysig.mappages;
 
 import fr.melysig.models.Lieux;
+import fr.melysig.models.ListThemes;
 import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Themes;
 import java.sql.PreparedStatement;
@@ -118,10 +119,10 @@ public class ThemesDAO extends DAO<Themes> {
         return null;
     }
 
-    public List<Themes> listerThemes() {
+    public ListThemes listerThemes() {
                 
         PreparedStatement requetePreparee;
-               List<Themes> mesThemes = new ArrayList<>();
+               ListThemes mesThemes = new ListThemes();
                try {
                    requetePreparee = this.connexion
                            .prepareStatement(

@@ -12,6 +12,7 @@ import fr.melysig.mappages.LieuxDAO;
 import fr.melysig.mappages.PointsInteretsDAO;
 import fr.melysig.mappages.ThemesDAO;
 import fr.melysig.models.Lieux;
+import fr.melysig.models.ListThemes;
 import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Themes;
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class ThemeProcess {
         ThemesDAO.getInstance().effacer(monThemes);
     }
     
-    public List<Themes> getTousThemes() {
+    public ListThemes getTousThemes() {
         Debug.obtenirGestionDebug().debug("MDL","liste tous les thèmes existant.");
         return ThemesDAO.getInstance().listerThemes();
     }

@@ -14,6 +14,7 @@ import fr.melysig.carte.RectangleDrawable;
 import fr.melysig.carte.SimpleMouseListener;
 import fr.melysig.main.MVC;
 import fr.melysig.models.Lieux;
+import fr.melysig.models.ListThemes;
 import fr.melysig.models.Parcours;
 import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Themes;
@@ -54,6 +55,7 @@ import javax.swing.event.ListSelectionListener;
  */
 public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
+    private ListThemes listThemes;
     private Lieux lieux;
     private ConsultationVue consultationVue;
     private static JCanvas monCanvas = new JCanvas();
@@ -72,12 +74,15 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         consultationVue = this;
         lieux.addObserver(this);
         this.monMVC.monControleurUtilisateur.modele.addObserver(this);
+        listThemes = ThemeProcess.getInstance().getTousThemes();
+        listThemes.addObserver(this);
         //this.monMVC.monUtilisateur.
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //JOptionPane.showMessageDialog(this, "DEBUG= " + this.monMVC.monUtilisateur.getPseudo());
         this.LabelPseudoConnecter.setText(this.monMVC.monControleurUtilisateur.getPseudo());
         update(lieux, null);
+        update(listThemes, null);
     }
 
 //    public static ConsultationVue obtenirConsultation() {
@@ -218,7 +223,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         ListPointInteret.setModel(new DefaultListModel());
         ListPointInteret.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                ListPointInteretValueChanged(evt);
+                ListPointInteretValueChanged(evt,ListPointInteret);
             }
         });
         jScrollPane1.setViewportView(ListPointInteret);
@@ -519,17 +524,11 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         LibellePointInteretParcours.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LibellePointInteretParcours.setText("Points Interets :");
 
-        listPointsInteretsParcours.setModel(new javax.swing.AbstractListModel() {
-            List<String> tab = new ArrayList<>();
-
-            public int getSize() {
-                return tab.size();
+        listPointsInteretsParcours.setModel(new DefaultListModel());
+        listPointsInteretsParcours.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                ListPointInteretValueChanged(evt, listPointsInteretsParcours);
             }
-
-            public Object getElementAt(int i) {
-                return tab.get(i);
-            }
-            
         });
         jScrollPane5.setViewportView(listPointsInteretsParcours);
 
@@ -674,16 +673,27 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_boutonPointInteretPrecedentActionPerformed
 
     private void ListPointInteretValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListPointInteretValueChanged
-        if (ListPointInteret != null && ListPointInteret.getModel()!= null && ListPointInteret.getModel().getSize() > 0 ) {
-            String poiSelect = (String) ListPointInteret.getModel().getElementAt(evt.getFirstIndex());
-            PointsInterets courant = lieux.getPointInteretCourant();
-            if(  courant == null || poiSelect != null && !poiSelect.equals(courant.getLibelle())) {
-            LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
-        }
-        }
+//        if (ListPointInteret != null && ListPointInteret.getModel()!= null && ListPointInteret.getModel().getSize() > 0 ) {
+//            String poiSelect = (String) ListPointInteret.getModel().getElementAt(evt.getFirstIndex());
+//            PointsInterets courant = lieux.getPointInteretCourant();
+//            if(  courant == null || poiSelect != null && !poiSelect.equals(courant.getLibelle())) {
+//            LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
+//        }
+//        }
         
     }//GEN-LAST:event_ListPointInteretValueChanged
 
+    private void ListPointInteretValueChanged(javax.swing.event.ListSelectionEvent evt, JList list ) {                                              
+        if (list != null && list.getModel()!= null && list.getModel().getSize() > 0 ) {
+            String poiSelect = (String) list.getModel().getElementAt(evt.getFirstIndex());
+            PointsInterets courant = lieux.getPointInteretCourant();
+            if(  courant == null || poiSelect != null && !poiSelect.equals(courant.getLibelle())) {
+                LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
+            }
+        }
+        
+    }
+    
     private void txtLibelleParcoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLibelleParcoursActionPerformed
 
     }//GEN-LAST:event_txtLibelleParcoursActionPerformed
@@ -800,6 +810,10 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             txtThemePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getTheme());
             txtLieuPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLieu().getNom());
             
+            // mise à jour des informations du parcour courant
+            Parcours monParcour = lieux.getParcourCourant();
+            txtDescriptionParcours.setText((monParcour == null) ? "" : "" + monParcour.getDescription());
+            txtLibelleParcours.setText((monParcour == null) ? "" : "" + monParcour.getLibelle());
             
   //          updateListModele((DefaultListModel) ListPointInteret.getModel(), lieux.getPointsInterets());
             
@@ -808,13 +822,22 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             // clear des points d'interet sur la map
             monCanvas.clear();
             
+            // clear de la JList de point d'interet
+            ((DefaultListModel)listPointsInteretsParcours.getModel()).clear();
+            
             // reconstruction des points d'interets dans la map et la jlist
             for (PointsInterets point : lieux.getPointsInterets()) {
-                // si le point d'interet construit correspond au point d'interet courant on lui donne une couleur differente sur la map
+                // si le point d'interet construit correspond au point d'interet courant on lui donne une couleur differente des points du parcours ou des autres points du lieu
                 if (point.equals(monPointInteret) ) {
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.BLUE));
+                } else if (monParcour != null && monParcour.getListPointsInterets().contains(point)){
+                    monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.GREEN));
                 } else {
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.RED));
+                }
+                // ajout du point d'interet dans la Jlist des parcours
+                if (monParcour != null && monParcour.getListPointsInterets().contains(point)) {
+                ((DefaultListModel)listPointsInteretsParcours.getModel()).addElement(point.getLibelle());
                 }
                 // ajout du point d'interet dans la Jlist
                 ((DefaultListModel)ListPointInteret.getModel()).addElement(point.getLibelle());
@@ -832,14 +855,6 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 //            // selectionne dans la JList le point d'interet courant
 //            ListPointInteret.setSelectedIndex(pos);
             
-            // clear de la comboBox
-            ((DefaultComboBoxModel)ComboboxListParcours.getModel()).removeAllElements();
-            // list tous les themes et l'ajoute dans la combo box
-            List<Themes> themes = ThemeProcess.getInstance().getTousThemes();
-            for (Themes theme : themes) {
-                ComboboxListParcours.addItem(theme.getLibelle());
-            }
-            
             //a verifier: permeet le rechargement graphique de la frame
             this.validate();
 
@@ -853,22 +868,14 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             //affiche le pseudo de l'utilisateur
             this.LabelPseudoConnecter.setText(this.monMVC.monControleurUtilisateur.getPseudo());
             //this.validate();     
-        } else if (o instanceof Parcours) {
             
-            Parcours monParcour = (Parcours)o;
-            txtDescriptionParcours.setText((monParcour == null) ? "" : "" + monParcour.getDescription());
-            txtLibelleParcours.setText((monParcour == null) ? "" : "" + monParcour.getLibelle());
-            
-//            for (PointsInterets point : lieux.getParcourCourant().getgetPointsInterets()) {
-//                // si le point d'interet construit correspond au point d'interet courant on lui donne une couleur differente sur la map
-//                if (point.equals(monPointInteret) ) {
-//                    monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.BLUE));
-//                } else {
-//                    monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.RED));
-//                }
-//                // ajout du point d'interet dans la Jlist
-//                ((DefaultListModel)ListPointInteret.getModel()).addElement(point.getLibelle());
-//            }
+        } else if (o instanceof ListThemes ) {
+            // clear de la comboBox
+            ((DefaultComboBoxModel)ComboboxListParcours.getModel()).removeAllElements();  
+            // list tous les themes et l'ajoute dans la combo box
+            for (Themes theme : ((ListThemes)o).getList()) {
+                ComboboxListParcours.addItem(theme.getLibelle());
+            }
         }
 
     }
