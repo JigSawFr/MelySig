@@ -29,6 +29,7 @@ import java.util.Observable;
 public class Lieux extends Observable{
     
     private PointsInterets pointInteretCourant;
+    private Parcours parcourCourant;
     private List<PointsInterets> pointsInterets;
     
     /**
@@ -228,9 +229,9 @@ public class Lieux extends Observable{
     }
     
     public void setCurrentPointInteret(PointsInterets pointsInterets){
-        this.pointInteretCourant=pointsInterets;
-        setChanged();
-    }
+                this.pointInteretCourant=pointsInterets;
+                setChanged();
+        }
 
     public PointsInterets getPointInteretCourant() {
         return pointInteretCourant;
@@ -246,5 +247,12 @@ public class Lieux extends Observable{
     
     
     
-    
+     public void setCurrentParcour(Parcours parcour){
+        this.parcourCourant=parcour;
+        setChanged();
+    }
+
+    public Parcours getParcourCourant() {
+        return parcourCourant;
+    }
 }

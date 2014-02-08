@@ -10,6 +10,9 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.ParcoursDAO;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 /**
  * Classe de <b>traitement des Parcours</b>
@@ -19,7 +22,7 @@ import fr.melysig.mappages.ParcoursDAO;
  * @since 0.3
  * @version 0.1.2
  */
-public class Parcours {
+public class Parcours extends Observable{
 
     /**
      * Identifiant Unique du parcours
@@ -36,8 +39,9 @@ public class Parcours {
     /**
      * Tableau contenant la liste des points d'intérêts d'un parcours
      */
-    //private ArrayList<PointsInterets> listePointsInterets = new ArrayList<PointsInterets>();
+    private List<PointsInterets> listePointsInterets = new ArrayList<PointsInterets>();
 
+    
     /**
      * Création de l'objet DAO pour les parcours
      */
@@ -71,55 +75,55 @@ public class Parcours {
         this.parcoursDAO = new ParcoursDAO();
     }
 
-    /**
-     * Chargement des <b>informations concernant un parcours existant</b>
-     * dans la base de données
-     *
-     * @param id Identifiant <b>unique</b> du parcours
-     * @return objet de type <code>parcours</code>
-     */
-    public Parcours chargerParcours(int id) {
-
-        debug("Recherche d'un parcours existant...Chargement du n° " + id);
-        Parcours resultat = this.parcoursDAO.chercher(id);
-        return resultat;
-    }
-
-    /**
-     * Ajouter un <b>nouveau parcours</b> dans la base de données
-     *
-     * @param nouveauParcours objet parcours contenant les données à ajouter
-     * @return objet parcours avec l'identifiant unique en base de données
-     */
-    public Parcours creerParcours(Parcours nouveauParcours) {
-
-        debug("Ajout d'un nouveau parcours.");
-        Parcours resultat = this.parcoursDAO.creer(nouveauParcours);
-        return resultat;
-    }
-    
-    /**
-     * Modifier un <b>parcours existant</b> dans la base de données
-     *
-     * @param monParcours objet parcours contenant les données à modifier
-     * @return objet parcours avec l'identifiant unique en base de données
-     */
-    public Parcours mettreAjourParcours(Parcours monParcours) {
-
-        debug("Modification d'un parcours existant.");
-        Parcours resultat = this.parcoursDAO.mettreAjour(monParcours);
-        return resultat;
-    }
-
-    /**
-     * Permet de <b>supprimer un parcours existant</b>
-     * @param monParcours objet parcours contenant l'id du parcours à supprimer
-     */
-    public void effacerParcours(Parcours monParcours) {
-        
-        debug("Suppression d'un parcours existant.");
-        this.parcoursDAO.effacer(monParcours);
-    }
+//    /**
+//     * Chargement des <b>informations concernant un parcours existant</b>
+//     * dans la base de données
+//     *
+//     * @param id Identifiant <b>unique</b> du parcours
+//     * @return objet de type <code>parcours</code>
+//     */
+//    public Parcours chargerParcours(int id) {
+//
+//        debug("Recherche d'un parcours existant...Chargement du n° " + id);
+//        Parcours resultat = this.parcoursDAO.chercher(id);
+//        return resultat;
+//    }
+//
+//    /**
+//     * Ajouter un <b>nouveau parcours</b> dans la base de données
+//     *
+//     * @param nouveauParcours objet parcours contenant les données à ajouter
+//     * @return objet parcours avec l'identifiant unique en base de données
+//     */
+//    public Parcours creerParcours(Parcours nouveauParcours) {
+//
+//        debug("Ajout d'un nouveau parcours.");
+//        Parcours resultat = this.parcoursDAO.creer(nouveauParcours);
+//        return resultat;
+//    }
+//    
+//    /**
+//     * Modifier un <b>parcours existant</b> dans la base de données
+//     *
+//     * @param monParcours objet parcours contenant les données à modifier
+//     * @return objet parcours avec l'identifiant unique en base de données
+//     */
+//    public Parcours mettreAjourParcours(Parcours monParcours) {
+//
+//        debug("Modification d'un parcours existant.");
+//        Parcours resultat = this.parcoursDAO.mettreAjour(monParcours);
+//        return resultat;
+//    }
+//
+//    /**
+//     * Permet de <b>supprimer un parcours existant</b>
+//     * @param monParcours objet parcours contenant l'id du parcours à supprimer
+//     */
+//    public void effacerParcours(Parcours monParcours) {
+//        
+//        debug("Suppression d'un parcours existant.");
+//        this.parcoursDAO.effacer(monParcours);
+//    }
 
     /**
      * Permet d'obtenir l'identifiant unique du parcours
@@ -163,6 +167,7 @@ public class Parcours {
      */
     public void setLibelle(String libelle) {
         this.libelle = libelle;
+        setChanged();
     }
 
     /**
@@ -172,8 +177,19 @@ public class Parcours {
      */
     public void setDescription(String description) {
         this.description = description;
+        setChanged();
     }
 
+    public void setListPointInterets(List<PointsInterets> pointInterets) {
+        this.listePointsInterets = pointInterets;
+        setChanged();
+    }
+    
+    public List<PointsInterets> getListPointsInterets() {
+        return listePointsInterets;
+    }
+    
+    
     /**
      * Affichage des erreurs en console
      *

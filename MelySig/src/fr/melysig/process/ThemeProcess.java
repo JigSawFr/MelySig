@@ -117,4 +117,10 @@ public class ThemeProcess {
         Debug.obtenirGestionDebug().debug("MDL","liste tous les thèmes existant.");
         return ThemesDAO.getInstance().listerThemes();
     }
+
+    public Themes chargerThemes(String theme) {
+        Debug.obtenirGestionDebug().debug("MDL","charge le thèmes existant " + theme);
+        Themes resultat = ThemesDAO.getInstance().chercher(theme);
+        return resultat;
+    }
 }

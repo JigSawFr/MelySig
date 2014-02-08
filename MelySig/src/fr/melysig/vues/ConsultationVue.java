@@ -14,10 +14,12 @@ import fr.melysig.carte.RectangleDrawable;
 import fr.melysig.carte.SimpleMouseListener;
 import fr.melysig.main.MVC;
 import fr.melysig.models.Lieux;
+import fr.melysig.models.Parcours;
 import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Themes;
 import fr.melysig.models.Utilisateurs;
 import fr.melysig.process.LieuProcess;
+import fr.melysig.process.ParcourProcess;
 import fr.melysig.process.PointInteretProcess;
 import fr.melysig.process.ThemeProcess;
 import java.awt.BorderLayout;
@@ -26,6 +28,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -33,6 +37,8 @@ import java.util.Observer;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -49,6 +55,7 @@ import javax.swing.event.ListSelectionListener;
 public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
     private Lieux lieux;
+    private ConsultationVue consultationVue;
     private static JCanvas monCanvas = new JCanvas();
     Dimension dim = new Dimension(20, 20);
     IDrawable rect = new RectangleDrawable(Color.RED, new Point(10, 5), dim);
@@ -62,6 +69,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
      */
     public ConsultationVue(Lieux lieux) {
         this.lieux = lieux;
+        consultationVue = this;
         lieux.addObserver(this);
         this.monMVC.monControleurUtilisateur.modele.addObserver(this);
         //this.monMVC.monUtilisateur.
@@ -320,6 +328,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         txtYPOI.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         txtYPOI.setForeground(new java.awt.Color(255, 0, 0));
         txtYPOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
+        txtYPOI.setInputVerifier(new IntVerifier());
 
         txtXPOI.setEditable(true);
         txtXPOI.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -528,6 +537,18 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         labelSelectionParcours.setText("Sélection :");
 
         ComboboxListParcours.setModel(new javax.swing.DefaultComboBoxModel());
+        ComboboxListParcours.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent ie) {
+                
+                if (ie.getStateChange() == ItemEvent.SELECTED) {
+                   ParcourProcess.getInstance().chargerParcourCourant(consultationVue, lieux, ie.getItem().toString());
+                }
+            }
+
+          
+        });
 
         javax.swing.GroupLayout PanelParcoursLayout = new javax.swing.GroupLayout(PanelParcours);
         PanelParcours.setLayout(PanelParcoursLayout);
@@ -657,8 +678,8 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             String poiSelect = (String) ListPointInteret.getModel().getElementAt(evt.getFirstIndex());
             PointsInterets courant = lieux.getPointInteretCourant();
             if(  courant == null || poiSelect != null && !poiSelect.equals(courant.getLibelle())) {
-                LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
-            }
+            LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
+        }
         }
         
     }//GEN-LAST:event_ListPointInteretValueChanged
@@ -832,6 +853,22 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             //affiche le pseudo de l'utilisateur
             this.LabelPseudoConnecter.setText(this.monMVC.monControleurUtilisateur.getPseudo());
             //this.validate();     
+        } else if (o instanceof Parcours) {
+            
+            Parcours monParcour = (Parcours)o;
+            txtDescriptionParcours.setText((monParcour == null) ? "" : "" + monParcour.getDescription());
+            txtLibelleParcours.setText((monParcour == null) ? "" : "" + monParcour.getLibelle());
+            
+//            for (PointsInterets point : lieux.getParcourCourant().getgetPointsInterets()) {
+//                // si le point d'interet construit correspond au point d'interet courant on lui donne une couleur differente sur la map
+//                if (point.equals(monPointInteret) ) {
+//                    monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.BLUE));
+//                } else {
+//                    monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.RED));
+//                }
+//                // ajout du point d'interet dans la Jlist
+//                ((DefaultListModel)ListPointInteret.getModel()).addElement(point.getLibelle());
+//            }
         }
 
     }
@@ -855,4 +892,30 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 //            model.addElement(o);
 //        }
 //    }
+    
+    //verificateur des champs de saisie
+    class IntVerifier extends InputVerifier {
+        public boolean verify(JComponent input) {
+            JTextField tf = (JTextField) input;
+            String s = tf.getText();
+            boolean isDigit = true;
+            for(int i=0; i<s.length(); i++) {
+                isDigit = isDigit && Character.isDigit(s.charAt(i));
+            }
+//            for (int i=0;i<s.length();i++)
+//                if (!Character.isDigit((s.charAt(i)))) {
+//                    tf.setText(String.valueOf(init));
+//                    return true;
+//                }
+//            try {
+//                if ((Integer.parseInt(s)>max)||(Integer.parseInt(s)<min))
+//                    tf.setText(String.valueOf(init));
+//            } catch (Exception e) {
+//                tf.setText(String.valueOf(init));
+//            }
+//            return true;
+            return isDigit;
+        }
+
+    }
 }

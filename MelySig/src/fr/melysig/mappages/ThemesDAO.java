@@ -7,6 +7,7 @@
 package fr.melysig.mappages;
 
 import fr.melysig.models.Lieux;
+import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Themes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,7 +72,7 @@ public class ThemesDAO extends DAO<Themes> {
         }
         return monTheme;
     }
-
+    
     public Themes chercher(String libelle) {
 
         PreparedStatement requetePreparee;
@@ -149,6 +150,48 @@ public class ThemesDAO extends DAO<Themes> {
                    this.erreur("Listing -> Erreur SQL !", erreur);
                }
                return mesThemes;
+    }
+    
+    public List<PointsInterets> listerPointInteret(Themes theme, Lieux lieu) {
+                
+        PreparedStatement requetePreparee;
+               List<PointsInterets> mesPoints = new ArrayList<>();
+               try {
+                   requetePreparee = this.connexion
+                           .prepareStatement(
+                                   "SELECT * FROM pointsInterets WHERE idLieuPointInteret = ? AND idThemePointInteret = ? ", 
+                                   ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                                   ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                           );
+                   requetePreparee.setInt(1, lieu.getId());
+                   requetePreparee.setInt(2, theme.getId());
+                   
+                   this.debug("Listing -> Exécution de la requete SQL...");
+                   ResultSet resultats = requetePreparee.executeQuery();
+                   
+
+                   /* On redifinié le pointeur sur l'enregistrement 0*/
+                   resultats.beforeFirst();
+
+                   while (resultats.next()) {
+                       PointsInterets monPoint = new PointsInterets(
+                               resultats.getInt("idPointInteret"),
+                        resultats.getInt("coordonneeXPointInteret"),
+                        resultats.getInt("coordonneeYPointInteret"),
+                        resultats.getString("libellePointInteret"),
+                        resultats.getString("descriptionPointInteret"),
+                        lieu,
+                        resultats.getInt("idUtilisateurPointInteret"),
+                        theme
+                       );
+                       mesPoints.add(monPoint);
+                       this.debug("Listing -> Ajout du point "+monPoint.getLibelle()+ " dans le parcourt " + theme.getLibelle() + " avec succès.");
+                   } 
+
+               } catch (SQLException erreur) {
+                   this.erreur("Listing -> Erreur SQL !", erreur);
+               }
+               return mesPoints;
     }
     
     /**
