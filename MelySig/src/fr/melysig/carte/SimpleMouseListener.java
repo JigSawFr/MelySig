@@ -35,17 +35,21 @@ public class SimpleMouseListener extends JCanvasMouseListener {
         List selectedDrawables = canvas.findDrawables(e.getPoint());
         if (selectedDrawables.size() == 0) return;
         IDrawable drawable = (IDrawable) selectedDrawables.get(0);
-        canvas.removeDrawable(drawable);
+        Point p = e.getPoint();
+        int confirm = JOptionPane.showConfirmDialog(canvas, "Voulez vous vraiment supprimer ce point?", "Confirmer suppression", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION){
+            LieuProcess.getInstance().setCurentPointInteret(lieux, p.x, p.y);
+            LieuProcess.getInstance().supprimerCurentPointInteret(lieux);
+        }
     }
     
     
     protected void leftClickAction(MouseEvent e){
         Point p = e.getPoint();
-        IDrawable rect = canvas.createPoint(p.x, p.y);
+        IDrawable rect = canvas.createPoint(p.x, p.y, Color.BLUE);
         if (canvas.isFree(rect.getRectangle())) {
             String libelle = JOptionPane.showInputDialog(canvas, "Libellé point d'intéret" );
             if (libelle != null) {
-                canvas.addDrawable(rect);
                 PointInteretProcess.getInstance().creerPointInteret(lieux, libelle, p.x, p.y);
             }
         }

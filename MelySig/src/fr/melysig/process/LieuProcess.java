@@ -12,7 +12,10 @@ import fr.melysig.mappages.LieuxDAO;
 import fr.melysig.mappages.PointsInteretsDAO;
 import fr.melysig.models.Lieux;
 import fr.melysig.models.PointsInterets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -76,5 +79,41 @@ public class LieuProcess {
     public void setCurentPointInteret(Lieux lieu, int x,int y) {
         lieu.setCurrentPointsInterets(x, y);
         lieu.notifyObservers();
+    }
+    
+    public void setCurentPointInteret(Lieux lieu, String libelle) {
+        Iterator<PointsInterets> pois = lieu.getPointsInterets().iterator();
+        boolean find = false;
+        while ( pois.hasNext() && !find) {
+            PointsInterets poi = pois.next();
+            if (poi.getLibelle().equals(libelle)) {
+                lieu.setCurrentPointInteret(poi);
+                find =true;
+            }
+        }
+        lieu.notifyObservers();
+    }
+    
+    public List<Lieux> getListLieu() {
+       return LieuxDAO.getInstance().listerLieux();
+    }
+    
+    public List<String> getListNomLieu() {
+        List<Lieux> listLieux = getListLieu();
+        List<String> listLibelles = new ArrayList<>();
+        for ( Lieux lieu : listLieux) {
+            listLibelles.add(lieu.getNom());
+        }
+        return listLibelles;
+    }
+    
+    public void supprimerCurentPointInteret (Lieux lieux){
+        
+        Debug.obtenirGestionDebug().debug("MDL","Suppression du point courant" );
+        PointsInterets pointCourant = lieux.getPointInteretCourant();
+        lieux.getPointsInterets().remove(pointCourant);
+        lieux.setCurrentPointInteret(null);
+        PointsInteretsDAO.getInstance().effacer(pointCourant);
+        lieux.notifyObservers();
     }
 }

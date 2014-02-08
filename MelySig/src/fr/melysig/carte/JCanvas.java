@@ -37,10 +37,10 @@ public class JCanvas extends JPanel{
 //    private String descriptionPointInteret;
     
     
-     public IDrawable createPoint(int x, int y) {
+     public IDrawable createPoint(int x, int y, Color couleur) {
         Point p = new Point(x,y);
         Dimension dim = new Dimension(20,20);
-        return new RectangleDrawable(Color.RED, p, dim);
+        return new RectangleDrawable(couleur, p, dim);
     }       
             
 

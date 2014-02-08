@@ -18,15 +18,24 @@ import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Utilisateurs;
 import fr.melysig.process.LieuProcess;
 import fr.melysig.process.PointInteretProcess;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -136,20 +145,6 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
         PanelCarte.add(monCanvas, BorderLayout.CENTER);
 
-        boutonModifierPointInteret.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                PointsInterets pi = lieux.getPointInteretCourant();
-                pi.setLibelle(txtLibellePOI.getText());
-                pi.setTheme(Integer.parseInt(txtThemePOI.getText()));
-                pi.setDescription(txtDescriptionPOI.getText());
-                pi.setX(Integer.parseInt(txtXPOI.getText()));
-                pi.setY(Integer.parseInt(txtYPOI.getText()));
-                PointInteretProcess.getInstance().mettreAjourPointInteret(lieux, pi);
-            }
-        });
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Consultation - MelySIG");
         setMinimumSize(new java.awt.Dimension(1400, 934));
@@ -207,17 +202,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         PanelPointInteret.setBackground(new java.awt.Color(255, 255, 255));
 
         ListPointInteret.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 153, 255)));
-        ListPointInteret.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
-
-            public int getSize() {
-                return strings.length;
-            }
-
-            public Object getElementAt(int i) {
-                return strings[i];
-            }
-        });
+        ListPointInteret.setModel(new DefaultListModel());
         ListPointInteret.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 ListPointInteretValueChanged(evt);
@@ -360,8 +345,27 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         jScrollPane3.setViewportView(txtDescriptionPOI);
 
         boutonModifierPointInteret.setText("Modifier");
+        boutonModifierPointInteret.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                PointsInterets pi = lieux.getPointInteretCourant();
+                pi.setLibelle(txtLibellePOI.getText());
+                pi.setTheme(Integer.parseInt(txtThemePOI.getText()));
+                pi.setDescription(txtDescriptionPOI.getText());
+                pi.setX(Integer.parseInt(txtXPOI.getText()));
+                pi.setY(Integer.parseInt(txtYPOI.getText()));
+                PointInteretProcess.getInstance().mettreAjourPointInteret(lieux, pi);
+            }
+        });
         boutonSupprimerPointInteret.setText("Supprimer");
+        boutonSupprimerPointInteret.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                LieuProcess.getInstance().supprimerCurentPointInteret(lieux);
+            }
+        });
 
         javax.swing.GroupLayout PanelInformationPointInteretLayout = new javax.swing.GroupLayout(PanelInformationPointInteret);
         PanelInformationPointInteret.setLayout(PanelInformationPointInteretLayout);
@@ -443,7 +447,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         labelRecherche.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelRecherche.setText("Recherche :");
 
-        ComboRecherche.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        ComboRecherche.setModel(new javax.swing.DefaultComboBoxModel(LieuProcess.getInstance().getListNomLieu().toArray()));
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel1.setText("Résultat :");
@@ -502,15 +506,16 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         LibellePointInteretParcours.setText("Points Interets :");
 
         listPointsInteretsParcours.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
+            List<String> tab = new ArrayList<>();
 
             public int getSize() {
-                return strings.length;
+                return tab.size();
             }
 
             public Object getElementAt(int i) {
-                return strings[i];
+                return tab.get(i);
             }
+            
         });
         jScrollPane5.setViewportView(listPointsInteretsParcours);
 
@@ -643,8 +648,11 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_boutonPointInteretPrecedentActionPerformed
 
     private void ListPointInteretValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListPointInteretValueChanged
-
-
+        if (ListPointInteret.getModel().getSize() > 0 ) {
+            String poiSelect = (String) ListPointInteret.getModel().getElementAt(evt.getFirstIndex());
+            LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
+        }
+        
     }//GEN-LAST:event_ListPointInteretValueChanged
 
     private void txtLibelleParcoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLibelleParcoursActionPerformed
@@ -760,8 +768,15 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             txtThemePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getTheme());
             txtLieuPOI.setText((monPointInteret == null) ? "" : "" + LieuProcess.getInstance().chargerLieux(monPointInteret.getLieu()).getNom());
             monCanvas.clear();
+            ((DefaultListModel)ListPointInteret.getModel()).clear();
+            PointsInterets pointCourant = lieux.getPointInteretCourant();
             for (PointsInterets point : lieux.getPointsInterets()) {
-                monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY()));
+                if (point.equals(pointCourant) ) {
+                    monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.BLUE));
+                } else {
+                    monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.RED));
+                }
+                ((DefaultListModel)ListPointInteret.getModel()).addElement(point.getLibelle());
             }
             this.validate();
 
@@ -776,4 +791,5 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         }
 
     }
+    
 }

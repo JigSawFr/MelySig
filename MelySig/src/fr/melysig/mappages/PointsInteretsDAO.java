@@ -127,6 +127,45 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
         return mesPointsInterets;
     }
 
+    public List<PointsInterets> listerPOILieux(int idLieux) {
+
+        PreparedStatement requetePreparee;
+        List<PointsInterets> mesPointsInterets = new ArrayList<>();
+        try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT * FROM pointsInterets WHERE idlieuPointInteret = ?",
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    );
+            requetePreparee.setInt(1, idLieux);
+
+            this.debug("Listing -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+            
+            /* On redifinié le pointeur sur l'enregistrement 0*/
+            resultats.beforeFirst();
+
+            while (resultats.next()) {
+                PointsInterets monPointInteret = new PointsInterets(
+                        resultats.getInt("idPointInteret"),
+                        resultats.getInt("coordonneeXPointInteret"),
+                        resultats.getInt("coordonneeYPointInteret"),
+                        resultats.getString("libellePointInteret"),
+                        resultats.getString("descriptionPointInteret"),
+                        resultats.getInt("idLieuPointInteret"),
+                        resultats.getInt("idUtilisateurPointInteret"),
+                        resultats.getInt("idThemePointInteret")
+                );
+                mesPointsInterets.add(monPointInteret);
+                this.debug("Listing -> Ajout du point d'intérêt n°" + monPointInteret.getId() + " à la liste avec succès.");
+            } 
+        } catch (SQLException erreur) {
+            this.erreur("Listing -> Erreur SQL !", erreur);
+        }
+        return mesPointsInterets;
+    }
+    
     /**
      * Permet de créer un nouveau POI
      *
@@ -222,7 +261,7 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
         try {
             requetePreparee = this.connexion
                     .prepareStatement(
-                            "DELETE FROM utilisateurs WHERE idUtilisateur = ?"
+                            "DELETE FROM pointsInterets WHERE idPointInteret = ?"
                     );
             requetePreparee.setInt(1, monPointInteret.getId());
             this.debug("Suppression -> Exécution de la requete SQL...");

@@ -56,6 +56,7 @@ public class LieuxDAO extends DAO<Lieux> {
                         resultats.getString("descriptionLieu"),
                         resultats.getInt("idUtilisateurLieu")
                 );
+                monLieux.setPointsInterets(PointsInteretsDAO.getInstance().listerPOILieux(monLieux.getId()));
                 this.debug("Recherche -> Lieux localisé dans la base avec succès.");
             } else {
                 throw new SQLException("Aucun lieux ne correspond à l'identifiant n° " + id + " !");
@@ -67,6 +68,41 @@ public class LieuxDAO extends DAO<Lieux> {
         return monLieux;
     }
 
+    
+       public List<Lieux> listerLieux() {
+
+        PreparedStatement requetePreparee;
+        List<Lieux> mesLieux = new ArrayList<>();
+        try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT * FROM lieux",
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    );
+
+            this.debug("Listing -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+            
+            /* On redifinié le pointeur sur l'enregistrement 0*/
+            resultats.beforeFirst();
+
+            while (resultats.next()) {
+                Lieux monLieu = new Lieux(
+                        resultats.getInt("idLieu"),
+                               resultats.getString("nomLieu"),
+                               resultats.getString("carteLieu"),
+                               resultats.getString("descriptionLieu"),
+                               resultats.getInt("idUtilisateurLieu")
+                );
+                mesLieux.add(monLieu);
+                this.debug("Listing -> Ajout du point d'intérêt n°" + monLieu.getId() + " à la liste avec succès.");
+            } 
+        } catch (SQLException erreur) {
+            this.erreur("Listing -> Erreur SQL !", erreur);
+        }
+        return mesLieux;
+    }
     /**
      * Permet de lister différents lieux
      *
