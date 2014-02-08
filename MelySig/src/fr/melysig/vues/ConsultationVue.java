@@ -653,9 +653,12 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_boutonPointInteretPrecedentActionPerformed
 
     private void ListPointInteretValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListPointInteretValueChanged
-        if (ListPointInteret.getModel().getSize() > 0 ) {
+        if (ListPointInteret != null && ListPointInteret.getModel()!= null && ListPointInteret.getModel().getSize() > 0 ) {
             String poiSelect = (String) ListPointInteret.getModel().getElementAt(evt.getFirstIndex());
-            LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
+            PointsInterets courant = lieux.getPointInteretCourant();
+            if(  courant == null || poiSelect != null && !poiSelect.equals(courant.getLibelle())) {
+                LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
+            }
         }
         
     }//GEN-LAST:event_ListPointInteretValueChanged
@@ -764,32 +767,59 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     public void update(Observable o, Object arg) {
         //Permet d'obtenir le int en String.
         if (o instanceof Lieux) {
+            //récupération du point d'interet courant
             PointsInterets monPointInteret = ((Lieux) o).getPointInteretCourant();
-            //Verification dans le cas si le point interet est null
+            
+            //Mise à jour de la partie information point interet 
+                //Verification dans le cas si le point interet est null
             txtXPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getX());
             txtYPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getY());
             txtDescriptionPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getDescription());
             txtLibellePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLibelle());
             txtThemePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getTheme());
             txtLieuPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLieu().getNom());
-            monCanvas.clear();
-            PointsInterets pointCourant = lieux.getPointInteretCourant();
+            
+            
   //          updateListModele((DefaultListModel) ListPointInteret.getModel(), lieux.getPointsInterets());
+            
+            // clear de la JList de point d'interet
             ((DefaultListModel)ListPointInteret.getModel()).clear();
+            // clear des points d'interet sur la map
+            monCanvas.clear();
+            
+            // reconstruction des points d'interets dans la map et la jlist
             for (PointsInterets point : lieux.getPointsInterets()) {
-                if (point.equals(pointCourant) ) {
+                // si le point d'interet construit correspond au point d'interet courant on lui donne une couleur differente sur la map
+                if (point.equals(monPointInteret) ) {
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.BLUE));
                 } else {
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.RED));
                 }
+                // ajout du point d'interet dans la Jlist
                 ((DefaultListModel)ListPointInteret.getModel()).addElement(point.getLibelle());
             }
-            List<Themes> themes = ThemeProcess.getInstance().getTousThemes();
+            
+            // recherche de l'index de la JList point d'interet correspondant au point d'interet courant
+//            DefaultListModel modeleList = ((DefaultListModel)ListPointInteret.getModel());
+//            int pos = -1;
+//            for (int i=0; monPointInteret != null && (i< modeleList.getSize() || pos >= 0); i++) {
+//                if ( modeleList.getElementAt(i).equals(monPointInteret.getLibelle()) ) {
+//                    pos = i;
+//                }
+//            }
+//            
+//            // selectionne dans la JList le point d'interet courant
+//            ListPointInteret.setSelectedIndex(pos);
+            
+            // clear de la comboBox
             ((DefaultComboBoxModel)ComboboxListParcours.getModel()).removeAllElements();
+            // list tous les themes et l'ajoute dans la combo box
+            List<Themes> themes = ThemeProcess.getInstance().getTousThemes();
             for (Themes theme : themes) {
                 ComboboxListParcours.addItem(theme.getLibelle());
             }
             
+            //a verifier: permeet le rechargement graphique de la frame
             this.validate();
 
         }
@@ -798,6 +828,8 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             //this.monMVC = MVC.obtenirMVC();
             //this.monMVC.toString();
             //JOptionPane.showMessageDialog(this, "DEBUG= " + this.monMVC.monUtilisateur.getPseudo());
+            
+            //affiche le pseudo de l'utilisateur
             this.LabelPseudoConnecter.setText(this.monMVC.monControleurUtilisateur.getPseudo());
             //this.validate();     
         }
