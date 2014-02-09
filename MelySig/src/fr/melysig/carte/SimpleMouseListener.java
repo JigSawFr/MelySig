@@ -23,6 +23,9 @@ import javax.swing.JOptionPane;
 public class SimpleMouseListener extends JCanvasMouseListener {
     private Lieux lieux;
     
+    public void setLieux(Lieux lieu){
+        lieux = lieu;
+    }
     
     public SimpleMouseListener(JCanvas canvas, Lieux lieux){
         super(canvas);

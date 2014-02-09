@@ -257,5 +257,14 @@ public class Lieux extends Observable{
     public void setModificationParcourCourant() {
         setChanged();
     }
+
+    @Override
+    public boolean equals(Object o) {
+       if (o instanceof Lieux){
+           return o != null && ((Lieux)o).getId() == getId();
+       }
+       return false;
+    }
+    
     
 }

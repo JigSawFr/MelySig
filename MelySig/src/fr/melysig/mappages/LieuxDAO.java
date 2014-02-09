@@ -7,6 +7,7 @@
 package fr.melysig.mappages;
 
 import fr.melysig.models.Lieux;
+import fr.melysig.models.ListLieux;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,11 +69,42 @@ public class LieuxDAO extends DAO<Lieux> {
         return monLieux;
     }
 
+    public Lieux chercher(String libelle) {
+
+        Lieux monLieux = new Lieux();
+        try {
+            ResultSet resultats = this.connexion
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            //ResultSet.CONCUR_UPDATABLE // Possibilité modifier les données de la base via le ResultSet.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    ).executeQuery(
+                            "SELECT * FROM lieux WHERE nomLieu Like '" + libelle+ "'"
+                    );
+            if (resultats.first()) {
+                monLieux = new Lieux(
+                        resultats.getInt("idLieu"),
+                        resultats.getString("nomLieu"),
+                        resultats.getString("carteLieu"),
+                        resultats.getString("descriptionLieu"),
+                        resultats.getInt("idUtilisateurLieu")
+                );
+                monLieux.setPointsInterets(PointsInteretsDAO.getInstance().listerPOILieux(monLieux));
+                this.debug("Recherche -> Lieux localisé dans la base avec succès.");
+            } else {
+                throw new SQLException("Aucun lieux ne correspond au libelle " + libelle + " !");
+            }
+
+        } catch (SQLException erreur) {
+            this.erreur("Recherche -> Erreur SQL !", erreur);
+        }
+        return monLieux;
+    }
     
-       public List<Lieux> listerLieux() {
+       public ListLieux listerLieux() {
 
         PreparedStatement requetePreparee;
-        List<Lieux> mesLieux = new ArrayList<>();
+        ListLieux mesLieux = new ListLieux();
         try {
             requetePreparee = this.connexion
                     .prepareStatement(

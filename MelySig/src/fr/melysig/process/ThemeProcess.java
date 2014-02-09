@@ -57,11 +57,7 @@ public class ThemeProcess {
         Themes resultat = ThemesDAO.getInstance().chercher(id);
         return resultat;
     } 
-    
-    public Themes getTheme(String libelle) {
-        Themes resultat = ThemesDAO.getInstance().chercher(libelle);
-        return resultat;
-    }
+  
 
     /**
      * Chargement des <b>informations de plusieurs POI existants</b>

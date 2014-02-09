@@ -10,7 +10,10 @@ package fr.melysig.process;
 import fr.melysig.main.Debug;
 import fr.melysig.mappages.LieuxDAO;
 import fr.melysig.mappages.PointsInteretsDAO;
+import fr.melysig.mappages.ThemesDAO;
 import fr.melysig.models.Lieux;
+import fr.melysig.models.ListLieux;
+import fr.melysig.models.ListThemes;
 import fr.melysig.models.PointsInterets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,14 +93,14 @@ public class LieuProcess {
         
     }
     
-    public List<Lieux> getListLieu() {
+    public ListLieux getListLieu() {
        return LieuxDAO.getInstance().listerLieux();
     }
     
     public List<String> getListNomLieu() {
-        List<Lieux> listLieux = getListLieu();
+        ListLieux listLieux = getListLieu();
         List<String> listLibelles = new ArrayList<>();
-        for ( Lieux lieu : listLieux) {
+        for ( Lieux lieu : listLieux.getList()) {
             listLibelles.add(lieu.getNom());
         }
         return listLibelles;
@@ -111,5 +114,22 @@ public class LieuProcess {
         lieux.setCurrentPointInteret(null);
         PointsInteretsDAO.getInstance().effacer(pointCourant);
         lieux.notifyObservers();
+    }
+    
+    public ListLieux getTousLieux() {
+        Debug.obtenirGestionDebug().debug("MDL","liste tous les thèmes existant.");
+        return LieuxDAO.getInstance().listerLieux();
+    }
+    
+    public Lieux chargerLieux(String lieu) {
+        Debug.obtenirGestionDebug().debug("MDL","charge le thèmes existant " + lieu);
+        Lieux resultat = LieuxDAO.getInstance().chercher(lieu);
+        return resultat;
+    }
+    
+    public void effacerLieu(Lieux monLieu) {
+
+        Debug.obtenirGestionDebug().debug("MDL","Suppression d'un lieu existant.");
+        LieuxDAO.getInstance().effacer(monLieu);
     }
 }

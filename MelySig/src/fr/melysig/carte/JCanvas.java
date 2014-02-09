@@ -31,6 +31,15 @@ public class JCanvas extends JPanel{
 //    private int x;
 //    private int y;
 //            
+    private Lieux lieu;
+    
+    public JCanvas(Lieux lieu) {
+        this.lieu = lieu;
+    }
+    
+    public void setLieux(Lieux lieu){
+        this.lieu = lieu;
+    }
     
     private final List drawables = new LinkedList();
 //    private String nomPointInteret;
@@ -55,9 +64,11 @@ public class JCanvas extends JPanel{
 
     public void paint(Graphics g){
         try{
-
-            BufferedImage img = ImageIO.read(new File("src/fr/melysig/images/Nancy.jpg"));
-            g.drawImage(img, 0, 0, this);
+            File file = new File(lieu.getCarte());
+            if (file != null && file.isFile() && file.exists()) {
+                BufferedImage img = ImageIO.read(file);
+                g.drawImage(img, 0, 0, this);
+            }
         }
         catch(IOException e){
             e.printStackTrace();

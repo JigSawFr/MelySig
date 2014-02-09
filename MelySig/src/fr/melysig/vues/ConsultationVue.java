@@ -14,6 +14,7 @@ import fr.melysig.carte.RectangleDrawable;
 import fr.melysig.carte.SimpleMouseListener;
 import fr.melysig.main.MVC;
 import fr.melysig.models.Lieux;
+import fr.melysig.models.ListLieux;
 import fr.melysig.models.ListThemes;
 import fr.melysig.models.Parcours;
 import fr.melysig.models.PointsInterets;
@@ -56,14 +57,18 @@ import javax.swing.event.ListSelectionListener;
 public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
     private ListThemes listThemes;
+    private ListLieux listLieux;
     private Lieux lieux;
     private ConsultationVue consultationVue;
-    private static JCanvas monCanvas = new JCanvas();
+    private static JCanvas monCanvas;
     Dimension dim = new Dimension(20, 20);
     IDrawable rect = new RectangleDrawable(Color.RED, new Point(10, 5), dim);
     private static JTextField txtXPOI = new javax.swing.JTextField();
     private static JTextField txtYPOI = new javax.swing.JTextField();
     MVC monMVC = MVC.obtenirMVC();;
+    private SimpleMouseListener simpleMouseListener;
+    private MoveDrawableMouseListener moveDrawableMouseListener;
+    private NonOverlapMoveAdapter nonOverlapMoveAdapter;
 
 //    private static ConsultationVue gestionConsultation = null;
     /**
@@ -71,11 +76,14 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
      */
     public ConsultationVue(Lieux lieux) {
         this.lieux = lieux;
+        monCanvas = new JCanvas(lieux);
         consultationVue = this;
         lieux.addObserver(this);
         this.monMVC.monControleurUtilisateur.modele.addObserver(this);
         listThemes = ThemeProcess.getInstance().getTousThemes();
         listThemes.addObserver(this);
+        listLieux = LieuProcess.getInstance().getTousLieux();
+        listLieux.addObserver(this);
         //this.monMVC.monUtilisateur.
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -83,6 +91,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         this.LabelPseudoConnecter.setText(this.monMVC.monControleurUtilisateur.getPseudo());
         update(lieux, null);
         update(listThemes, null);
+        update(listLieux, null);
     }
 
 //    public static ConsultationVue obtenirConsultation() {
@@ -104,7 +113,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         LabelCompte = new javax.swing.JLabel();
         LabelPseudoConnecter = new javax.swing.JLabel();
         imageLogin = new javax.swing.JLabel();
-        boutonDeconnexionUtilisateur = new javax.swing.JButton();
+        boutonEditionVue = new javax.swing.JButton();
         PanelBody = new javax.swing.JPanel();
         PanelPointInteret = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -129,6 +138,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         txtLieuPOI = new javax.swing.JTextField();
         labelThemePOI = new javax.swing.JLabel();
         txtThemePOI = new javax.swing.JTextField();
+        comboboxThemePOI = new javax.swing.JComboBox();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtDescriptionPOI = new javax.swing.JTextArea();
         boutonModifierPointInteret = new javax.swing.JButton();
@@ -157,9 +167,9 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         monCanvas.setMinimumSize(new Dimension(706, 734));
         monCanvas.setSize(1700, 890);
 
-        new SimpleMouseListener(monCanvas, lieux);
-        new MoveDrawableMouseListener(monCanvas, lieux);
-        new NonOverlapMoveAdapter(monCanvas, lieux);
+        simpleMouseListener = new SimpleMouseListener(monCanvas, lieux);
+        moveDrawableMouseListener = new MoveDrawableMouseListener(monCanvas, lieux);
+        nonOverlapMoveAdapter = new NonOverlapMoveAdapter(monCanvas, lieux);
 
         PanelCarte.add(monCanvas, BorderLayout.CENTER);
 
@@ -179,7 +189,13 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
         imageLogin.setIcon(new javax.swing.ImageIcon("src/fr/melysig/images/utilisateur.png")); // NOI18N
 
-        boutonDeconnexionUtilisateur.setText("Deconnexion");
+        boutonEditionVue.setText("Mode Edition");
+        boutonEditionVue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditionVue editionVue = new EditionVue(consultationVue, listLieux, listThemes);
+                editionVue.setVisible(true);
+            }
+        });
 
         javax.swing.GroupLayout PanelHeaderLayout = new javax.swing.GroupLayout(PanelHeader);
         PanelHeader.setLayout(PanelHeaderLayout);
@@ -196,7 +212,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
                                         .addComponent(LabelCompte)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(LabelPseudoConnecter, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(boutonDeconnexionUtilisateur, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(boutonEditionVue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())
         );
         PanelHeaderLayout.setVerticalGroup(
@@ -210,7 +226,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
                                                 .addComponent(LabelCompte)
                                                 .addComponent(LabelPseudoConnecter))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(boutonDeconnexionUtilisateur))
+                                        .addComponent(boutonEditionVue))
                                 .addComponent(logoConnexionUtilisateur))
                         .addContainerGap(11, Short.MAX_VALUE))
         );
@@ -259,6 +275,8 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
                 boutonPointInteretPrecedentActionPerformed(evt);
             }
         });
+        
+        
 
         boutonPointInteretSuivant.setText("Suivant");
 
@@ -354,6 +372,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         txtThemePOI.setForeground(new java.awt.Color(0, 155, 255));
         txtThemePOI.setToolTipText("");
         txtThemePOI.setSelectedTextColor(new java.awt.Color(51, 102, 255));
+        comboboxThemePOI.setModel(new javax.swing.DefaultComboBoxModel());
 
         txtDescriptionPOI.setEditable(true);
         txtDescriptionPOI.setColumns(20);
@@ -370,7 +389,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             public void actionPerformed(ActionEvent ae) {
                 PointsInterets pi = lieux.getPointInteretCourant();
                 pi.setLibelle(txtLibellePOI.getText());
-                pi.setTheme(ThemeProcess.getInstance().getTheme(txtThemePOI.getText()));
+                pi.setTheme(ThemeProcess.getInstance().chargerThemes(txtThemePOI.getText()));
                 pi.setDescription(txtDescriptionPOI.getText());
                 pi.setX(Integer.parseInt(txtXPOI.getText()));
                 pi.setY(Integer.parseInt(txtYPOI.getText()));
@@ -466,7 +485,30 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         labelRecherche.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelRecherche.setText("Recherche :");
 
-        ComboRecherche.setModel(new javax.swing.DefaultComboBoxModel(LieuProcess.getInstance().getListNomLieu().toArray()));
+        ComboRecherche.setModel(new javax.swing.DefaultComboBoxModel());
+        ComboRecherche.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent ie) {
+                
+                if (ie.getStateChange() == ItemEvent.SELECTED) {
+                   lieux.deleteObservers();
+                   lieux = LieuProcess.getInstance().chargerLieux(ie.getItem().toString());
+                   lieux.addObserver(consultationVue);
+                   monCanvas.setLieux(lieux);
+                   simpleMouseListener.setLieux(lieux);
+                   moveDrawableMouseListener.setLieux(lieux);
+                   nonOverlapMoveAdapter.setLieux(lieux);
+                   
+                   consultationVue.update(lieux, null);
+                   consultationVue.update(listThemes, null);
+                   
+                   //consultationVue.update(listLieux, null);
+                }
+            }
+
+          
+        });
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel1.setText("Résultat :");
@@ -754,7 +796,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel PanelParcours;
     private javax.swing.JPanel PanelPointInteret;
     private javax.swing.JPanel PanelRecherche;
-    private javax.swing.JButton boutonDeconnexionUtilisateur;
+    private javax.swing.JButton boutonEditionVue;
     private javax.swing.JButton boutonModifierPointInteret;
     private javax.swing.JButton boutonPointInteretPrecedent;
     private javax.swing.JButton boutonPointInteretSuivant;
@@ -789,6 +831,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     private javax.swing.JTextField txtLieuPOI;
     private javax.swing.JTextField txtRecherche;
     private javax.swing.JTextField txtThemePOI;
+    private javax.swing.JComboBox comboboxThemePOI;
     //private javax.swing.JTextField txtXPOI;
     //private javax.swing.JTextField txtYPOI;
     // End of variables declaration                   
@@ -807,7 +850,11 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             txtYPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getY());
             txtDescriptionPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getDescription());
             txtLibellePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLibelle());
-            txtThemePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getTheme());
+            txtThemePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getTheme().getLibelle());
+//            if(monPointInteret != null) {
+//                comboboxThemePOI.setSelectedItem(monPointInteret.getTheme().getLibelle());
+//            }
+            
             txtLieuPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLieu().getNom());
             
             // mise à jour des informations du parcour courant
@@ -875,6 +922,14 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             // list tous les themes et l'ajoute dans la combo box
             for (Themes theme : ((ListThemes)o).getList()) {
                 ComboboxListParcours.addItem(theme.getLibelle());
+                comboboxThemePOI.addItem(theme.getLibelle());
+            }
+        } else if (o instanceof ListLieux ) {
+            // clear de la comboBox
+            ((DefaultComboBoxModel)ComboRecherche.getModel()).removeAllElements();  
+            // list tous les themes et l'ajoute dans la combo box
+            for (Lieux lieu : ((ListLieux)o).getList()) {
+                ComboRecherche.addItem(lieu.getNom());
             }
         }
 

@@ -136,4 +136,14 @@ public class Themes {
         debug("Objet -> Identifiant : " + this.getId() + " | Libelle : " + this.getLibelle() + " | Description : " + this.getDescription());
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Themes) {
+            return o != null && ((Themes)o).getId() == getId();
+        }
+        return false;
+    }
+    
+    
 }

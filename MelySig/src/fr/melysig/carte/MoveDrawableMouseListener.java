@@ -24,7 +24,10 @@ public class MoveDrawableMouseListener extends JCanvasMouseAdapter {
         protected Lieux lieu;
         protected boolean drag = false;
 
-	
+	public void setLieux(Lieux lieu){
+            this.lieu = lieu;
+        }
+        
 	public MoveDrawableMouseListener(JCanvas canvas, Lieux lieu) {
 		super(canvas);
                 this.lieu = lieu;

@@ -16,21 +16,21 @@ import java.util.Observer;
  *
  * @author PoooK
  */
-public class ListThemes extends Observable {
+public class ListLieux extends Observable {
     
-    private List<Themes> themes = new ArrayList<Themes>();
+    private List<Lieux> lieux = new ArrayList<Lieux>();
     
-    public void add(Themes theme) {
-        this.themes.add(theme);
+    public void add(Lieux theme) {
+        this.lieux.add(theme);
         setChanged();
     }
     
-    public void delete(Themes theme) {
-        this.themes.remove(theme);
+    public void delete(Lieux theme) {
+        this.lieux.remove(theme);
         setChanged();
     }
     
-    public List<Themes> getList(){
-        return themes;
+    public List<Lieux> getList(){
+        return lieux;
     }
 }
