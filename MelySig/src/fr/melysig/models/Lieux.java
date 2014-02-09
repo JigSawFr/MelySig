@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Classe de <b>traitement des Parcours</b>
@@ -30,7 +31,7 @@ public class Lieux extends Observable{
     
     private PointsInterets pointInteretCourant;
     private Parcours parcourCourant;
-    private List<PointsInterets> pointsInterets;
+    private ListPointsInterets pointsInterets;
     
     /**
      * Identifiant Unique du lieux
@@ -67,7 +68,7 @@ public class Lieux extends Observable{
         this.description = null;
         this.idUtilisateur = 0;
         this.pointInteretCourant = null;
-        this.pointsInterets = new ArrayList();
+        this.pointsInterets = new ListPointsInterets();
     }
     
     /**
@@ -86,7 +87,7 @@ public class Lieux extends Observable{
         this.description = description;
         this.idUtilisateur = idUtilisateur;
         this.pointInteretCourant = null;
-        this.pointsInterets = new ArrayList<PointsInterets>();
+        this.pointsInterets = new ListPointsInterets();
                 
     }
  
@@ -215,7 +216,7 @@ public class Lieux extends Observable{
         
         //pointInteretCourant=new PointsInterets(1, x, y, "dffddf", "description", 1, 1, 1);
         // index de parcourt de la liste
-        Iterator<PointsInterets> i = pointsInterets.iterator();
+        Iterator<PointsInterets> i = pointsInterets.getList().iterator();
         boolean find = false;
         while(i.hasNext() && !find){
             PointsInterets point = i.next();
@@ -237,12 +238,8 @@ public class Lieux extends Observable{
         return pointInteretCourant;
     }
 
-    public List<PointsInterets> getPointsInterets() {
+    public ListPointsInterets getPointsInterets() {
         return pointsInterets;
-    }
-
-    public void setPointsInterets(List<PointsInterets> pointsInterets) {
-        this.pointsInterets = pointsInterets;
     }
 
      public void setCurrentParcour(Parcours parcour){
@@ -254,6 +251,7 @@ public class Lieux extends Observable{
         return parcourCourant;
     }
     
+    //indique que le lieu a ete modifier suite à la modification du parcourt courant
     public void setModificationParcourCourant() {
         setChanged();
     }
@@ -264,6 +262,18 @@ public class Lieux extends Observable{
            return o != null && ((Lieux)o).getId() == getId();
        }
        return false;
+    }
+
+    @Override
+    public synchronized void addObserver(Observer obsrvr) {
+        super.addObserver(obsrvr);
+        getPointsInterets().addObserver(obsrvr);
+    }
+
+    @Override
+    public synchronized void deleteObservers() {
+        super.deleteObservers();
+        getPointsInterets().deleteObservers();
     }
     
     

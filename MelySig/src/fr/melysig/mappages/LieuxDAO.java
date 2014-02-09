@@ -8,6 +8,7 @@ package fr.melysig.mappages;
 
 import fr.melysig.models.Lieux;
 import fr.melysig.models.ListLieux;
+import fr.melysig.models.PointsInterets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,7 +58,13 @@ public class LieuxDAO extends DAO<Lieux> {
                         resultats.getString("descriptionLieu"),
                         resultats.getInt("idUtilisateurLieu")
                 );
-                monLieux.setPointsInterets(PointsInteretsDAO.getInstance().listerPOILieux(monLieux));
+                List<PointsInterets> pointsInterets = PointsInteretsDAO.getInstance().listerPOILieux(monLieux);
+                for(PointsInterets point : pointsInterets){
+                    monLieux.getPointsInterets().delete(point);
+                }
+                for(PointsInterets point : pointsInterets){
+                    monLieux.getPointsInterets().add(point);
+                }
                 this.debug("Recherche -> Lieux localisé dans la base avec succès.");
             } else {
                 throw new SQLException("Aucun lieux ne correspond à l'identifiant n° " + id + " !");
@@ -89,7 +96,13 @@ public class LieuxDAO extends DAO<Lieux> {
                         resultats.getString("descriptionLieu"),
                         resultats.getInt("idUtilisateurLieu")
                 );
-                monLieux.setPointsInterets(PointsInteretsDAO.getInstance().listerPOILieux(monLieux));
+                List<PointsInterets> pointsInterets = PointsInteretsDAO.getInstance().listerPOILieux(monLieux);
+                for(PointsInterets point : pointsInterets){
+                    monLieux.getPointsInterets().delete(point);
+                }
+                for(PointsInterets point : pointsInterets){
+                    monLieux.getPointsInterets().add(point);
+                }
                 this.debug("Recherche -> Lieux localisé dans la base avec succès.");
             } else {
                 throw new SQLException("Aucun lieux ne correspond au libelle " + libelle + " !");

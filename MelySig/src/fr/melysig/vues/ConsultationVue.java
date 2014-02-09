@@ -15,6 +15,7 @@ import fr.melysig.carte.SimpleMouseListener;
 import fr.melysig.main.MVC;
 import fr.melysig.models.Lieux;
 import fr.melysig.models.ListLieux;
+import fr.melysig.models.ListPointsInterets;
 import fr.melysig.models.ListThemes;
 import fr.melysig.models.Parcours;
 import fr.melysig.models.PointsInterets;
@@ -76,6 +77,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
      */
     public ConsultationVue(Lieux lieux) {
         this.lieux = lieux;
+        
         monCanvas = new JCanvas(lieux);
         consultationVue = this;
         lieux.addObserver(this);
@@ -89,9 +91,11 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //JOptionPane.showMessageDialog(this, "DEBUG= " + this.monMVC.monUtilisateur.getPseudo());
         this.LabelPseudoConnecter.setText(this.monMVC.monControleurUtilisateur.getPseudo());
-        update(lieux, null);
+        
         update(listThemes, null);
         update(listLieux, null);
+        update(lieux.getPointsInterets(), null);
+        update(lieux, null);
     }
 
 //    public static ConsultationVue obtenirConsultation() {
@@ -500,8 +504,9 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
                    moveDrawableMouseListener.setLieux(lieux);
                    nonOverlapMoveAdapter.setLieux(lieux);
                    
-                   consultationVue.update(lieux, null);
                    consultationVue.update(listThemes, null);
+                   consultationVue.update(lieux.getPointsInterets(), null);
+                   consultationVue.update(lieux, null);
                    
                    //consultationVue.update(listLieux, null);
                 }
@@ -727,13 +732,12 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
     private void ListPointInteretValueChanged(javax.swing.event.ListSelectionEvent evt, JList list ) {                                              
         if (list != null && list.getModel()!= null && list.getModel().getSize() > 0 ) {
-            String poiSelect = (String) list.getModel().getElementAt(evt.getFirstIndex());
+            String poiSelect = (String) list.getSelectedValue();
             PointsInterets courant = lieux.getPointInteretCourant();
             if(  courant == null || poiSelect != null && !poiSelect.equals(courant.getLibelle())) {
                 LieuProcess.getInstance().setCurentPointInteret(lieux, poiSelect);
             }
         }
-        
     }
     
     private void txtLibelleParcoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLibelleParcoursActionPerformed
@@ -848,7 +852,8 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
                 //Verification dans le cas si le point interet est null
             txtXPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getX());
             txtYPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getY());
-            txtDescriptionPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getDescription());
+            txtDescriptionPOI.setText((monPointInteret == null || monPointInteret.getDescription() == null) ?
+                    "" : "" + monPointInteret.getDescription());
             txtLibellePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLibelle());
             txtThemePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getTheme().getLibelle());
             if(monPointInteret != null) {
@@ -866,30 +871,28 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             
   //          updateListModele((DefaultListModel) ListPointInteret.getModel(), lieux.getPointsInterets());
             
-            // clear de la JList de point d'interet
-            ((DefaultListModel)ListPointInteret.getModel()).clear();
+            
             // clear des points d'interet sur la map
             monCanvas.clear();
             
-            // clear de la JList de point d'interet
-            ((DefaultListModel)listPointsInteretsParcours.getModel()).clear();
-            
+            listPointsInteretsParcours.clearSelection();
+            ListPointInteret.clearSelection();
             // reconstruction des points d'interets dans la map et la jlist
-            for (PointsInterets point : lieux.getPointsInterets()) {
+            for (PointsInterets point : lieux.getPointsInterets().getList()) {
                 // si le point d'interet construit correspond au point d'interet courant on lui donne une couleur differente des points du parcours ou des autres points du lieu
                 if (point.equals(monPointInteret) ) {
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.BLUE));
-                } else if (monParcour != null && monParcour.getListPointsInterets().contains(point)){
+                    //selectionne le point dans la liste des point d'interet du parcourt courant si il existe
+                    if (monParcour != null && monParcour.getListPointsInterets().getList().contains(point)) {
+                        listPointsInteretsParcours.setSelectedValue(point.getLibelle(), true);
+                    }
+                    //selectionne le point dans la liste des point d'interet
+                    ListPointInteret.setSelectedValue(point.getLibelle(), true);
+                } else if (monParcour != null && monParcour.getListPointsInterets().getList().contains(point)){
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.GREEN));
                 } else {
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.RED));
                 }
-                // ajout du point d'interet dans la Jlist des parcours
-                if (monParcour != null && monParcour.getListPointsInterets().contains(point)) {
-                ((DefaultListModel)listPointsInteretsParcours.getModel()).addElement(point.getLibelle());
-                }
-                // ajout du point d'interet dans la Jlist
-                ((DefaultListModel)ListPointInteret.getModel()).addElement(point.getLibelle());
             }
             
             // recherche de l'index de la JList point d'interet correspondant au point d'interet courant
@@ -907,9 +910,23 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             //a verifier: permeet le rechargement graphique de la frame
             this.validate();
 
-        }
-        else if (o instanceof Utilisateurs)
-        {
+        } else if (o instanceof ListPointsInterets) {
+            // clear de la JList de point d'interet
+            ((DefaultListModel)ListPointInteret.getModel()).clear();
+            // clear de la JList de point d'interet
+            ((DefaultListModel)listPointsInteretsParcours.getModel()).clear();
+            // mise à jour des informations du parcour courant
+            Parcours monParcour = lieux.getParcourCourant();
+            // reconstruction des points d'interets dans la map et la jlist
+            for (PointsInterets point : lieux.getPointsInterets().getList()) {
+               // ajout du point d'interet dans la Jlist des parcours
+                if (monParcour != null && monParcour.getListPointsInterets().getList().contains(point)) {
+                    ((DefaultListModel)listPointsInteretsParcours.getModel()).addElement(point.getLibelle());
+                }
+                // ajout du point d'interet dans la Jlist
+                ((DefaultListModel)ListPointInteret.getModel()).addElement(point.getLibelle());
+            }
+        } else if (o instanceof Utilisateurs) {
             //this.monMVC = MVC.obtenirMVC();
             //this.monMVC.toString();
             //JOptionPane.showMessageDialog(this, "DEBUG= " + this.monMVC.monUtilisateur.getPseudo());

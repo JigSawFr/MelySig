@@ -80,7 +80,7 @@ public class LieuProcess {
     }
     
     public void setCurentPointInteret(Lieux lieu, String libelle) {
-        Iterator<PointsInterets> pois = lieu.getPointsInterets().iterator();
+        Iterator<PointsInterets> pois = lieu.getPointsInterets().getList().iterator();
         boolean find = false;
         while ( pois.hasNext() && !find) {
             PointsInterets poi = pois.next();
@@ -110,10 +110,12 @@ public class LieuProcess {
         
         Debug.obtenirGestionDebug().debug("MDL","Suppression du point courant" );
         PointsInterets pointCourant = lieux.getPointInteretCourant();
-        lieux.getPointsInterets().remove(pointCourant);
+        lieux.getPointsInterets().delete(pointCourant);
         lieux.setCurrentPointInteret(null);
         PointsInteretsDAO.getInstance().effacer(pointCourant);
+        lieux.getPointsInterets().notifyObservers();
         lieux.notifyObservers();
+        
     }
     
     public ListLieux getTousLieux() {

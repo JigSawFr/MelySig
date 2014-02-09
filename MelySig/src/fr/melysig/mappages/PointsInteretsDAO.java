@@ -132,7 +132,7 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
     public List<PointsInterets> listerPOILieux(Lieux lieux) {
 
         PreparedStatement requetePreparee;
-        List<PointsInterets> mesPointsInterets = new ArrayList<>();
+        List<PointsInterets> mesPointsInterets = new ArrayList<PointsInterets>();
         try {
             requetePreparee = this.connexion
                     .prepareStatement(

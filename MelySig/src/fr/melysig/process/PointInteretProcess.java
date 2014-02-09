@@ -13,6 +13,7 @@ import fr.melysig.mappages.LieuxDAO;
 import fr.melysig.mappages.PointsInteretsDAO;
 import fr.melysig.mappages.ThemesDAO;
 import fr.melysig.models.Lieux;
+import fr.melysig.models.ListPointsInterets;
 import fr.melysig.models.ListThemes;
 import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Themes;
@@ -50,11 +51,12 @@ public class PointInteretProcess {
        pointInteret.setUtilisateur(MVC.obtenirMVC().getIdUtilisateur());
        
        lieu.setCurrentPointInteret(pointInteret);
-       List<PointsInterets> pi = lieu.getPointsInterets();
+       ListPointsInterets pi = lieu.getPointsInterets();
        pi.add(pointInteret);
        
        PointsInteretsDAO.getInstance().creer(pointInteret);
        LieuProcess.getInstance().mettreAjourLieu(lieu);
+       pi.notifyObservers();
        lieu.notifyObservers();
    }
    
@@ -114,15 +116,5 @@ public class PointInteretProcess {
         return resultat;
     }
 
-    /**
-     * Permet de <b>supprimer un POI existant</b>
-     *
-     * @param monPointInteret objet PointsInterets contenant l'id du POI à supprimer
-     */
-    public void effacerPointInteret(PointsInterets monPointInteret) {
-
-        Debug.obtenirGestionDebug().debug("MDL","Suppression d'un point d'intérêt existant.");
-        PointsInteretsDAO.getInstance().effacer(monPointInteret);
-    }
     
 }

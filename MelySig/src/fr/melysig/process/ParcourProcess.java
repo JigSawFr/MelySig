@@ -11,7 +11,9 @@ import fr.melysig.main.Debug;
 import fr.melysig.mappages.ThemesDAO;
 import fr.melysig.models.Lieux;
 import fr.melysig.models.Parcours;
+import fr.melysig.models.PointsInterets;
 import fr.melysig.models.Themes;
+import java.util.List;
 import java.util.Observer;
 
 /**
@@ -34,11 +36,16 @@ public class ParcourProcess {
         Debug.obtenirGestionDebug().debug("MDL","Recherche d'un parcour existant...Chargement du parcour " + theme);
         Themes themeObject = ThemeProcess.getInstance().chargerThemes(theme);
         Parcours parcour = new Parcours();
+        parcour.getListPointsInterets().addObserver(observer);
         parcour.setDescription(themeObject.getDescription());
         parcour.setLibelle(themeObject.getLibelle());
-        parcour.setListPointInterets(ThemesDAO.getInstance().listerPointInteret(themeObject, lieu));
+        List<PointsInterets> pointsInterets = ThemesDAO.getInstance().listerPointInteret(themeObject, lieu);
+        for (PointsInterets point : pointsInterets) {
+            parcour.getListPointsInterets().add(point);
+        }
         lieu.setCurrentParcour(parcour);
         lieu.setModificationParcourCourant();
+        parcour.getListPointsInterets().notifyObservers();
         lieu.notifyObservers();
     }
     

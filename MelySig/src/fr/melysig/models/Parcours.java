@@ -39,7 +39,7 @@ public class Parcours{
     /**
      * Tableau contenant la liste des points d'intérêts d'un parcours
      */
-    private List<PointsInterets> listePointsInterets = new ArrayList<PointsInterets>();
+    private ListPointsInterets listePointsInterets = new ListPointsInterets();
 
     
     /**
@@ -178,11 +178,11 @@ public class Parcours{
         this.description = description;
     }
 
-    public void setListPointInterets(List<PointsInterets> pointInterets) {
+    public void setListPointInterets(ListPointsInterets pointInterets) {
         this.listePointsInterets = pointInterets;
     }
     
-    public List<PointsInterets> getListPointsInterets() {
+    public ListPointsInterets getListPointsInterets() {
         return listePointsInterets;
     }
     
