@@ -401,9 +401,9 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.showOpenDialog(editionVue);
                     File file = fileChooser.getSelectedFile();
-                    String path = file.getCanonicalPath();
-                    String chemin = path.replaceAll("\\\\", "/");
-                    txtCarteLieu.setText((path != null)? chemin : "");
+                    if(file != null){
+                        txtCarteLieu.setText( file.getCanonicalPath().replaceAll("\\\\", "/"));
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(EditionVue.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -425,7 +425,7 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
                 //mise à jour objet memoire
                 currentLieu.setDescription(txtDescriptionLieu.getText());
                 currentLieu.setNom(txtNomLieu.getText());
-                currentLieu.setCarte(txtCarteLieu.getText().replaceAll("\\\\","/"));
+                currentLieu.setCarte((txtCarteLieu.getText() != null) ? txtCarteLieu.getText().replaceAll("\\\\","/") : "");
                 
                 //mise à jour en base de donnée
                 currentLieu = LieuProcess.getInstance().mettreAjourLieu(currentLieu);
@@ -461,7 +461,7 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                 currentLieu = LieuProcess.getInstance().creerLieux(txtAjoutNomLieu.getText(), txtAjoutCarteLieu.getText().replaceAll("\\\\", "/") ,txtAJoutDescriptionLieu.getText(), MVC.obtenirMVC().getIdUtilisateur());
+                 currentLieu = LieuProcess.getInstance().creerLieux(txtAjoutNomLieu.getText(), txtAjoutCarteLieu.getText() != null ?  txtAjoutCarteLieu.getText().replaceAll("\\\\", "/") : "" ,txtAJoutDescriptionLieu.getText(), MVC.obtenirMVC().getIdUtilisateur());
                  listLieu.add(currentLieu);
                  String monLieu = currentLieu.getNom();
                  listLieu.notifyObservers();
@@ -481,7 +481,9 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.showOpenDialog(editionVue);
                     File path = fileChooser.getSelectedFile();
-                    txtAjoutCarteLieu.setText((path != null)? path.getCanonicalPath().replaceAll("\\\\", "/"): "");
+                    if(path != null){
+                        txtAjoutCarteLieu.setText( path.getCanonicalPath().replaceAll("\\\\", "/"));
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(EditionVue.class.getName()).log(Level.SEVERE, null, ex);
                 }

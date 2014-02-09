@@ -276,13 +276,26 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         boutonPointInteretPrecedent.setText("Précédent");
         boutonPointInteretPrecedent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonPointInteretPrecedentActionPerformed(evt);
+                int index = ListPointInteret.getSelectedIndex();
+                // si le premier element de la liste est selectionner on selectionne le dernier
+                index = (index == 0) ? ListPointInteret.getModel().getSize() -1 : index -1;
+                ListPointInteret.setSelectedIndex(index);
+                
             }
         });
         
         
 
         boutonPointInteretSuivant.setText("Suivant");
+        boutonPointInteretSuivant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                int index = ListPointInteret.getSelectedIndex();
+                // si le dernier element de la liste est selectionner on selectionne le premier
+                index = (index == ListPointInteret.getModel().getSize() -1) ? 0 : index +1;
+                ListPointInteret.setSelectedIndex(index);
+                
+            }
+        });
 
         javax.swing.GroupLayout PanelPointInteretLayout = new javax.swing.GroupLayout(PanelPointInteret);
         PanelPointInteret.setLayout(PanelPointInteretLayout);
