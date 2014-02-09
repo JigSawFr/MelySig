@@ -10,6 +10,7 @@ import fr.melysig.bdd.MaBase;
 import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +50,7 @@ public abstract class DAO<T> {
      * @param nb Nomre d'objets à lister
      * @return
      */
-    public abstract List<T> lister(int nb);
+    public abstract ArrayList<T> lister(int nb);
 
     /**
      * Permet de créer une nouvelle entrée dans la base de données vis à vis d'un objet

@@ -29,7 +29,7 @@ import java.util.Observable;
 public class Lieux extends Observable{
     
     private PointsInterets pointInteretCourant;
-    private List<PointsInterets> pointsInterets;
+    private ArrayList<PointsInterets> pointsInterets;
     
     /**
      * Identifiant Unique du lieux
@@ -66,7 +66,7 @@ public class Lieux extends Observable{
         this.description = null;
         this.idUtilisateur = 0;
         this.pointInteretCourant = null;
-        this.pointsInterets = new ArrayList();
+        this.pointsInterets = new ArrayList<>();
     }
     
     /**
@@ -240,7 +240,7 @@ public class Lieux extends Observable{
         return pointsInterets;
     }
 
-    public void setPointsInterets(List<PointsInterets> pointsInterets) {
+    public void setPointsInterets(ArrayList<PointsInterets> pointsInterets) {
         this.pointsInterets = pointsInterets;
     }
     

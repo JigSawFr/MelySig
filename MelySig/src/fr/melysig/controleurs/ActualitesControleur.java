@@ -7,6 +7,9 @@
 package fr.melysig.controleurs;
 
 import fr.melysig.models.Actualites;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 /**
  * Classe de <b>mise en relation de la vue et le modèle des Actualités</b>
@@ -21,7 +24,7 @@ public class ActualitesControleur {
     /**
      * Déclaration du modèle
      */
-    private Actualites modele;
+    public Actualites modele;
     /**
      * Déclaration de la vue
      */
@@ -32,9 +35,9 @@ public class ActualitesControleur {
      * @param modele
      * @param vue
      */
-    public ActualitesControleur(Actualites modele) {
+    public ActualitesControleur() {
 
-        this.modele = modele;
+        this.modele = new Actualites();
     }
 //    public ParcoursControleur() {
 //
@@ -52,6 +55,13 @@ public class ActualitesControleur {
         this.modele = modele.chargerActualite(id);
         return modele;
     }
+    
+    public ListModel<Actualites> listerActualites(int id) {
+        this.modele.notifyObservers();
+        this.modele.listeModeleActualites = modele.listerActualite(id);
+        return this.modele.listeModeleActualites;
+    }
+
 
     /**
      * Permet de créer une nouvelle actualité

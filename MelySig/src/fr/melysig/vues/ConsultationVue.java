@@ -40,7 +40,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
     IDrawable rect = new RectangleDrawable(Color.RED, new Point(10, 5), dim);
     private static JTextField txtXPOI = new javax.swing.JTextField();
     private static JTextField txtYPOI = new javax.swing.JTextField();
-    MVC monMVC = MVC.obtenirMVC();;
+    MVC monMVC = MVC.obtenirMVC();
 
 //    private static ConsultationVue gestionConsultation = null;
     /**
@@ -150,7 +150,8 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             }
         });
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconImage(Toolkit.getDefaultToolkit().getImage("./src/fr/melysig/images/MelySIG-Ico.png"));
         setTitle("Consultation - MelySIG");
         setMinimumSize(new java.awt.Dimension(1400, 934));
         setPreferredSize(new java.awt.Dimension(1400, 934));

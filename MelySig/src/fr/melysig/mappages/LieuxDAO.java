@@ -74,10 +74,10 @@ public class LieuxDAO extends DAO<Lieux> {
      * @return
      */
     @Override
-    public List<Lieux> lister(int nb) {
+    public ArrayList<Lieux> lister(int nb) {
         
         PreparedStatement requetePreparee;
-               List<Lieux> mesLieux = new ArrayList<>();
+               ArrayList<Lieux> mesLieux = new ArrayList<>();
                try {
                    requetePreparee = this.connexion
                            .prepareStatement(

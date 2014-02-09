@@ -6,20 +6,75 @@
  */
 package fr.melysig.vues;
 
-import java.awt.Graphics;
-import javax.swing.JPanel;
+//import java.awt.Graphics;
+import fr.melysig.main.Debug;
+import fr.melysig.main.Erreurs;
+import fr.melysig.main.MVC;
+import fr.melysig.models.*;
+import fr.melysig.models.Actualites.ListeModeleActualite;
+import java.awt.Toolkit;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+//import javax.swing.JPanel;
 
 /**
  *
  * @author Sébastien
  */
-public class ActualitesNew extends javax.swing.JFrame {
+public class ActualitesNew extends javax.swing.JFrame implements Observer {
+
+    MVC monMVC = MVC.obtenirMVC();
+    //UtilisateursControleur monControleurUtilisateur;
+    private final Debug gestionDebug;
+    private final Erreurs gestionErreurs;
 
     /**
      * Creates new form ActualitesNew
      */
     public ActualitesNew() {
+        this.gestionErreurs = Erreurs.obtenirGestionErreurs();
+        this.gestionDebug = Debug.obtenirGestionDebug();
+        this.gestionDebug.debug("VUE", "Accueil -> Initialisation du panel d'accueil...");
+        this.monMVC.monControleurUtilisateur.modele.addObserver((Observer) this);
+        this.monMVC.monControleurActualite.modele.addObserver((Observer) this);
         initComponents();
+    }
+
+    /**
+     * Permet de mettre à jour l'interface d'accueil.
+     *
+     * @param o
+     * @param arg
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        this.gestionDebug.debug("VUE", "Demande de mise à jour...");
+        if (o instanceof Utilisateurs) {
+            this.gestionDebug.debug("VUE", "Mise à jour effectuée !");
+            this.monTexteDeBienvenue.setText("Bienvenue " + this.monMVC.monControleurUtilisateur.getPseudo() + ", sur votre compte MelySIG !");
+            this.monUtilisateur.setText(this.monMVC.monControleurUtilisateur.getNom() + " " + this.monMVC.monControleurUtilisateur.getPrenom());
+            this.monMVC.monControleurActualite.listerActualites(10);
+        }
+        /*else if (o instanceof Actualites) {
+            this.gestionDebug.debug("VUE", "Mise à jour effectuée !");
+        } */else {
+        }
+
+    }
+    
+    private ListSelectionListener selectionActualite() {
+        ListSelectionListener listener = new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent lse) {
+                fr.melysig.models.Actualites actu = (fr.melysig.models.Actualites) maListeActualites.getSelectedValue();
+                monLibelleActualite.setText(actu.getLibelle());
+                maDescriptionActualite.setText(actu.getDescription());
+            }
+        };
+        return listener;
     }
 
     /**
@@ -30,11 +85,14 @@ public class ActualitesNew extends javax.swing.JFrame {
     private void initComponents() {
 
         panelHaut = new javax.swing.JPanel();
+        monLogoMelySIG = new javax.swing.JLabel();
+        monBoutonDeconnexion = new javax.swing.JButton();
+        monUtilisateur = new javax.swing.JLabel();
         panelContenu = new javax.swing.JPanel();
         monTexteDeBienvenue = new javax.swing.JLabel();
         monLabelActualiteSelectionne = new javax.swing.JLabel();
         monPanelDefilantActualites = new javax.swing.JScrollPane();
-        maListeActualites = new javax.swing.JList();
+        maListeActualites = new javax.swing.JList(this.monMVC.monControleurActualite.listerActualites(10));
         monLabelDernieresActualites = new javax.swing.JLabel();
         monPanelDefilantDescriptionActualite = new javax.swing.JScrollPane();
         maDescriptionActualite = new javax.swing.JTextArea();
@@ -44,36 +102,71 @@ public class ActualitesNew extends javax.swing.JFrame {
         monBoutonSupprimer = new javax.swing.JButton();
         monLabelStatistiques = new javax.swing.JLabel();
         mesStatistiques = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        mesNouveautes = new javax.swing.JLabel();
+        mesDerniersPOIs = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jLabel3 = new javax.swing.JLabel();
+        maListeDerniersPOIs = new javax.swing.JList();
+        mesDerniersParcours = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
-        jLabel4 = new javax.swing.JLabel();
+        maListeDerniersUtilisateurs = new javax.swing.JList();
+        mesDerniersUtilisateurs = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        maListeDerniersParcours = new javax.swing.JList();
+        monBoutonConsulterBDD = new javax.swing.JButton();
         panelFond = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setIconImage(Toolkit.getDefaultToolkit().getImage("./src/fr/melysig/images/MelySIG-Ico.png"));
         setMaximumSize(new java.awt.Dimension(900, 750));
         setPreferredSize(new java.awt.Dimension(900, 750));
+        setResizable(false);
         getContentPane().setLayout(null);
 
         panelHaut.setBackground(new java.awt.Color(204, 255, 102));
+
+        monLogoMelySIG.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fr/melysig/images/logo.png"))); // NOI18N
+
+        monBoutonDeconnexion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        monBoutonDeconnexion.setText("Déconnexion");
+        monBoutonDeconnexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monBoutonDeconnexionActionPerformed(evt);
+            }
+        });
+
+        monUtilisateur.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        monUtilisateur.setForeground(new java.awt.Color(102, 153, 0));
+        monUtilisateur.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        monUtilisateur.setText("Nom Prénom");
+        monUtilisateur.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        monUtilisateur.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout panelHautLayout = new javax.swing.GroupLayout(panelHaut);
         panelHaut.setLayout(panelHautLayout);
         panelHautLayout.setHorizontalGroup(
             panelHautLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+            .addGroup(panelHautLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(monLogoMelySIG)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 505, Short.MAX_VALUE)
+                .addGroup(panelHautLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(monBoutonDeconnexion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(monUtilisateur, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31))
         );
         panelHautLayout.setVerticalGroup(
             panelHautLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 70, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHautLayout.createSequentialGroup()
+                .addGroup(panelHautLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelHautLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(monLogoMelySIG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHautLayout.createSequentialGroup()
+                        .addComponent(monUtilisateur, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(monBoutonDeconnexion)
+                        .addGap(12, 12, 12)))
+                .addContainerGap())
         );
 
         getContentPane().add(panelHaut);
@@ -83,22 +176,17 @@ public class ActualitesNew extends javax.swing.JFrame {
 
         monTexteDeBienvenue.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         monTexteDeBienvenue.setForeground(new java.awt.Color(255, 255, 0));
-        monTexteDeBienvenue.setText("Bienvenue TheRainb0w, sur votre compte MelySIG !");
+        monTexteDeBienvenue.setText("Bienvenue Pseudo, sur votre compte MelySIG !");
 
         monLabelActualiteSelectionne.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         monLabelActualiteSelectionne.setForeground(new java.awt.Color(255, 255, 255));
         monLabelActualiteSelectionne.setText("Votre actualité en détail :");
 
         maListeActualites.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        maListeActualites.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Nouveau thème en place !", "Et un parcours de plus héhé", "Découvrez ce super POI !", "Les prostitués ont aussi leurs place dans notre base :-o", " " };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         maListeActualites.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         maListeActualites.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        maListeActualites.setSelectionBackground(new java.awt.Color(0, 0, 0));
         monPanelDefilantActualites.setViewportView(maListeActualites);
+        maListeActualites.addListSelectionListener(selectionActualite());
 
         monLabelDernieresActualites.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         monLabelDernieresActualites.setForeground(new java.awt.Color(255, 255, 255));
@@ -116,10 +204,25 @@ public class ActualitesNew extends javax.swing.JFrame {
         monLibelleActualite.setText("Nouveau thème en place !");
 
         monBoutonModifier.setText("Modifier");
+        monBoutonModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monBoutonModifierActionPerformed(evt);
+            }
+        });
 
         monBoutonAjouter.setText("Ajouter");
+        monBoutonAjouter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monBoutonAjouterActionPerformed(evt);
+            }
+        });
 
         monBoutonSupprimer.setText("Supprimer");
+        monBoutonSupprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monBoutonSupprimerActionPerformed(evt);
+            }
+        });
 
         monLabelStatistiques.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         monLabelStatistiques.setForeground(new java.awt.Color(255, 255, 255));
@@ -129,60 +232,62 @@ public class ActualitesNew extends javax.swing.JFrame {
         mesStatistiques.setForeground(new java.awt.Color(255, 255, 255));
         mesStatistiques.setText("52 Points d'intérêts, 21 Parcours, 5 Thèmes, 10 Actualités, 19 Utilisateurs & 1 Carte.");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Découvrez les dernières nouveautés de notre base :");
+        mesNouveautes.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
+        mesNouveautes.setForeground(new java.awt.Color(255, 255, 255));
+        mesNouveautes.setText("Découvrez les dernières nouveautés de notre base :");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Les derniers POIs :");
+        mesDerniersPOIs.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        mesDerniersPOIs.setForeground(new java.awt.Color(255, 255, 255));
+        mesDerniersPOIs.setText("Les derniers POIs :");
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        maListeDerniersPOIs.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Musée Lorrain", "Musée des beaux-arts", "Musée de l'École de Nancy", "MacDonald", "Made In France", "Quick", "UGC", "KinePolis", "Caméo" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList1.setFixedCellWidth(160);
-        jList1.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
-        jList1.setSelectionBackground(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setViewportView(jList1);
+        maListeDerniersPOIs.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        maListeDerniersPOIs.setFixedCellWidth(160);
+        maListeDerniersPOIs.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
+        jScrollPane1.setViewportView(maListeDerniersPOIs);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Les derniers Parcours :");
+        mesDerniersParcours.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        mesDerniersParcours.setForeground(new java.awt.Color(255, 255, 255));
+        mesDerniersParcours.setText("Les derniers Parcours :");
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
+        maListeDerniersUtilisateurs.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "TheRainb0w", "Coonax", "Poook", "Ezio", "Edge", "Psycho", "Paco", "Blondie", "Shinn", "BenPD", "Panzer", " " };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jList2.setFixedCellWidth(80);
-        jList2.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
-        jList2.setSelectionBackground(new java.awt.Color(0, 0, 0));
-        jScrollPane2.setViewportView(jList2);
+        maListeDerniersUtilisateurs.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        maListeDerniersUtilisateurs.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        maListeDerniersUtilisateurs.setFixedCellWidth(80);
+        maListeDerniersUtilisateurs.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
+        jScrollPane2.setViewportView(maListeDerniersUtilisateurs);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Les derniers Utilisateurs :");
+        mesDerniersUtilisateurs.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        mesDerniersUtilisateurs.setForeground(new java.awt.Color(255, 255, 255));
+        mesDerniersUtilisateurs.setText("Les derniers Utilisateurs :");
 
-        jList3.setModel(new javax.swing.AbstractListModel() {
+        maListeDerniersParcours.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Musées de Nancy", "FastFood de Nancy", "Commerces de Nancy", "Marché de Noël de Strasboug", "Fleuristes de Thionville", "Pompes Funèvres d'Epinal", "Prostituées de Nancy", "Garagistes de Metz", "Plombiers de Vandoeuvre", "Escort-Girls du Luxembourg", "Stations Essences de Tomblaine" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jList3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList3.setFixedCellHeight(16);
-        jList3.setFixedCellWidth(160);
-        jList3.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
-        jList3.setSelectionBackground(new java.awt.Color(0, 0, 0));
-        jScrollPane3.setViewportView(jList3);
+        maListeDerniersParcours.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        maListeDerniersParcours.setFixedCellHeight(16);
+        maListeDerniersParcours.setFixedCellWidth(160);
+        maListeDerniersParcours.setLayoutOrientation(javax.swing.JList.VERTICAL_WRAP);
+        jScrollPane3.setViewportView(maListeDerniersParcours);
 
-        jButton1.setText("Déconnexion de mon espace");
-
-        jButton2.setText("Consulter la base de données");
+        monBoutonConsulterBDD.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        monBoutonConsulterBDD.setText(">> Consulter la base de données <<");
+        monBoutonConsulterBDD.setBorderPainted(false);
+        monBoutonConsulterBDD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monBoutonConsulterBDDActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelContenuLayout = new javax.swing.GroupLayout(panelContenu);
         panelContenu.setLayout(panelContenuLayout);
@@ -213,47 +318,43 @@ public class ActualitesNew extends javax.swing.JFrame {
                             .addComponent(monLabelDernieresActualites, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(mesNouveautes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane1)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mesDerniersParcours, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mesDerniersUtilisateurs, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContenuLayout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(56, Short.MAX_VALUE))
+                            .addComponent(mesDerniersPOIs, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(monBoutonConsulterBDD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelContenuLayout.setVerticalGroup(
             panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelContenuLayout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(monLabelStatistiques, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(mesStatistiques, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addComponent(mesNouveautes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(monBoutonConsulterBDD)
                     .addComponent(monTexteDeBienvenue, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addGroup(panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(monLabelDernieresActualites, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(mesDerniersPOIs))
                 .addGap(1, 1, 1)
                 .addGroup(panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelContenuLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(3, 3, 3)
-                        .addComponent(jLabel3)
+                        .addComponent(mesDerniersParcours)
                         .addGap(6, 6, 6)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
+                        .addComponent(mesDerniersUtilisateurs)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelContenuLayout.createSequentialGroup()
@@ -265,11 +366,12 @@ public class ActualitesNew extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(monPanelDefilantDescriptionActualite, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(monBoutonModifier)
+                        .addGroup(panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(monBoutonAjouter)
-                            .addComponent(monBoutonSupprimer))))
-                .addContainerGap(37, Short.MAX_VALUE))
+                            .addGroup(panelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(monBoutonModifier)
+                                .addComponent(monBoutonSupprimer)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(panelContenu);
@@ -284,7 +386,53 @@ public class ActualitesNew extends javax.swing.JFrame {
         panelFond.setBounds(0, 70, 900, 680);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void monBoutonDeconnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monBoutonDeconnexionActionPerformed
+
+        this.setVisible(false);
+        this.monMVC.monPanelAuthentification.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_monBoutonDeconnexionActionPerformed
+
+    private void monBoutonConsulterBDDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monBoutonConsulterBDDActionPerformed
+
+        // TODO add your handling code here:
+        //this.setVisible(false);
+        this.monMVC.maConsultationVue.setVisible(true);
+    }//GEN-LAST:event_monBoutonConsulterBDDActionPerformed
+
+    private void monBoutonModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monBoutonModifierActionPerformed
+
+       fr.melysig.models.Actualites actu = (fr.melysig.models.Actualites)maListeActualites.getSelectedValue();
+       actu.setLibelle(this.monLibelleActualite.getText());
+       actu.setDescription(this.maDescriptionActualite.getText());
+       this.monMVC.monControleurActualite.setId(actu.getId());
+       this.monMVC.monControleurActualite.setLibelle(actu.getLibelle());
+       this.monMVC.monControleurActualite.setDescription(actu.getDescription());
+       this.monMVC.monControleurActualite.mettreAjourActualite();
+       
+    }//GEN-LAST:event_monBoutonModifierActionPerformed
+
+    private void monBoutonSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monBoutonSupprimerActionPerformed
+        fr.melysig.models.Actualites actu = (fr.melysig.models.Actualites)maListeActualites.getSelectedValue();
+        int index = maListeActualites.getSelectedIndex();
+        ((ListeModeleActualite)this.maListeActualites.getModel()).remove(this.maListeActualites, index);
+        this.monMVC.monControleurActualite.setId(actu.getId());
+        this.monMVC.monControleurActualite.effacerActualite();
+        this.monLibelleActualite.setText("");
+        this.maDescriptionActualite.setText("");
+        this.maListeActualites.revalidate();
+    }//GEN-LAST:event_monBoutonSupprimerActionPerformed
+
+    private void monBoutonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monBoutonAjouterActionPerformed
+
+        
+         fr.melysig.models.Actualites actu = this.monMVC.monControleurActualite.creerActualite(this.monLibelleActualite.getText(), this.maDescriptionActualite.getText(), this.monMVC.monControleurUtilisateur.getId());
+         ((ListeModeleActualite)this.maListeActualites.getModel()).add(this.maListeActualites, actu);
+         this.maListeActualites.revalidate();
+    }//GEN-LAST:event_monBoutonAjouterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -322,31 +470,33 @@ public class ActualitesNew extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
-    private javax.swing.JList jList3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea maDescriptionActualite;
     private javax.swing.JList maListeActualites;
+    private javax.swing.JList maListeDerniersPOIs;
+    private javax.swing.JList maListeDerniersParcours;
+    private javax.swing.JList maListeDerniersUtilisateurs;
+    private javax.swing.JLabel mesDerniersPOIs;
+    private javax.swing.JLabel mesDerniersParcours;
+    private javax.swing.JLabel mesDerniersUtilisateurs;
+    private javax.swing.JLabel mesNouveautes;
     private javax.swing.JLabel mesStatistiques;
     private javax.swing.JButton monBoutonAjouter;
+    private javax.swing.JButton monBoutonConsulterBDD;
+    private javax.swing.JButton monBoutonDeconnexion;
     private javax.swing.JButton monBoutonModifier;
     private javax.swing.JButton monBoutonSupprimer;
     private javax.swing.JLabel monLabelActualiteSelectionne;
     private javax.swing.JLabel monLabelDernieresActualites;
     private javax.swing.JLabel monLabelStatistiques;
     private javax.swing.JTextField monLibelleActualite;
+    private javax.swing.JLabel monLogoMelySIG;
     private javax.swing.JScrollPane monPanelDefilantActualites;
     private javax.swing.JScrollPane monPanelDefilantDescriptionActualite;
     private javax.swing.JLabel monTexteDeBienvenue;
+    private javax.swing.JLabel monUtilisateur;
     private javax.swing.JPanel panelContenu;
     private javax.swing.JLabel panelFond;
     private javax.swing.JPanel panelHaut;

@@ -6,6 +6,7 @@
  */
 package fr.melysig.main;
 
+import fr.melysig.controleurs.ActualitesControleur;
 import fr.melysig.controleurs.UtilisateursControleur;
 import fr.melysig.models.Lieux;
 import fr.melysig.process.LieuProcess;
@@ -36,7 +37,10 @@ public class MVC {
 
     private static MVC monMVC;
     public ConsultationVue maConsultationVue;
+    public ActualitesNew monPanelAccueil;
+    public PanelDeConnexion monPanelAuthentification;
     public UtilisateursControleur monControleurUtilisateur;
+    public ActualitesControleur monControleurActualite;
 
     public static MVC obtenirMVC() {
         if (monMVC == null) {
@@ -46,12 +50,20 @@ public class MVC {
         return monMVC;
     }
 
-    @Override
-    public String toString() {
-        return "MVC{" + "debug=" + debug + ", erreurs=" + erreurs + ", gestionDebug=" + gestionDebug + ", gestionErreurs=" + gestionErreurs + ", maConsultationVue=" + maConsultationVue.toString() + ", monUtilisateur=" + monControleurUtilisateur.toString() + '}';
+//    @Override
+//    public String toString() {
+//        return "MVC{" + "debug=" + debug + ", erreurs=" + erreurs + ", gestionDebug=" + gestionDebug + ", gestionErreurs=" + gestionErreurs + ", maConsultationVue=" + maConsultationVue.toString() + ", monUtilisateur=" + monControleurUtilisateur.toString() + '}';
+//    }
+    public void initialisationPanelAccueil() {
+//        this.gestionDebug.debug("MVC", "Initialisation de la fenêtre des actualités.");
+//        ActualitesNew monPanelAccueil = new ActualitesNew();
+//        monPanelAccueil.setVisible(true);
     }
 
-    
+    public void initialisationPanelConsultation() {
+
+    }
+
     /**
      * Déclaration des sous-controleurs
      */
@@ -78,7 +90,12 @@ public class MVC {
          * Instanciation des sous-controleurs
          */
         monControleurUtilisateur = new UtilisateursControleur();
-        PanelDeConnexion monPanel = new PanelDeConnexion();
+        monControleurActualite = new ActualitesControleur();
+        
+        this.gestionDebug.debug("MVC", "Initialisation de la fenêtre d'authentification.");
+        monPanelAuthentification = new PanelDeConnexion();
+        this.gestionDebug.debug("MVC", "Initialisation de la fenêtre des actualités.");
+        monPanelAccueil = new ActualitesNew();
 
         Lieux lieux = LieuProcess.getInstance().chargerLieux(1);
         // Appel de la vue.
@@ -107,7 +124,7 @@ public class MVC {
             this.gestionDebug.debug("SPS", "C'est parti !");
         } catch (InterruptedException e) {
         }
-        monPanel.setVisible(true);
+        monPanelAuthentification.setVisible(true);
     }
 
 }

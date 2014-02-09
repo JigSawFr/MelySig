@@ -53,14 +53,28 @@ public class UtilisateursControleur {
      * @return l'objet utilisateur contenant les données chargées
      */
     public Utilisateurs chargerUtilisateur(int id) {
-        this.modele = modele.chargerUtilisateur(id);
+        this.modele = modele.chargerUtilisateur(id); 
+        //this.modele.notifyObservers();
         return modele;
     }
 
     public boolean verifierUtilisateur(String identifiant, String motDePasse) {
-        boolean resultat = modele.verifierUtilisateur(identifiant, motDePasse);
-        this.modele.notifyObservers();
-        return resultat;
+        int resultat = modele.verifierUtilisateur(identifiant, motDePasse);
+        if(resultat > 0)
+        {
+            Utilisateurs monMembre = this.modele.chargerUtilisateur(resultat);
+            this.modele.setNom(monMembre.getNom());
+            this.modele.setPrenom(monMembre.getPrenom());
+            this.modele.setEmail(monMembre.getEmail());
+            this.modele.setPseudo(monMembre.getPseudo());
+            this.modele.setMotDePasse(monMembre.getMotDePasse());
+            this.modele.notifyObservers();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     } 
 
     /**
