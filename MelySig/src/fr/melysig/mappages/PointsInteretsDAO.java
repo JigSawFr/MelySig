@@ -126,10 +126,10 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
      * @return
      */
     @Override
-    public List<PointsInterets> lister(int nb) {
+    public ArrayList<PointsInterets> lister(int nb) {
 
         PreparedStatement requetePreparee;
-        List<PointsInterets> mesPointsInterets = new ArrayList<>();
+        ArrayList<PointsInterets> mesPointsInterets = new ArrayList<>();
         try {
             requetePreparee = this.connexion
                     .prepareStatement(

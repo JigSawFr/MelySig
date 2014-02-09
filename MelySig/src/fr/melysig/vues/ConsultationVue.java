@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -180,7 +181,8 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
         PanelCarte.add(monCanvas, BorderLayout.CENTER);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconImage(Toolkit.getDefaultToolkit().getImage("./src/fr/melysig/images/MelySIG-Ico.png"));
         setTitle("Consultation - MelySIG");
         setMinimumSize(new java.awt.Dimension(1400, 934));
         setPreferredSize(new java.awt.Dimension(1400, 934));

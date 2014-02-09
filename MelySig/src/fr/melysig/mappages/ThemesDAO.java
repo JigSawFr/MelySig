@@ -114,7 +114,7 @@ public class ThemesDAO extends DAO<Themes> {
      * @return
      */
     @Override
-    public List<Themes> lister(int nb) {
+    public ArrayList<Themes> lister(int nb) {
         /* A FAIRE */
         return null;
     }

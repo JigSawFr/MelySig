@@ -461,7 +461,11 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                 currentLieu = LieuProcess.getInstance().creerLieux(txtAjoutNomLieu.getText(), txtAjoutCarteLieu.getText() != null ?  txtAjoutCarteLieu.getText().replaceAll("\\\\", "/") : "" ,txtAJoutDescriptionLieu.getText(), MVC.obtenirMVC().getIdUtilisateur());
+                String nom = txtAjoutNomLieu.getText();
+                String carte = txtAjoutCarteLieu.getText() != null ?  txtAjoutCarteLieu.getText().replaceAll("\\\\", "/") : "";
+                String description = txtAJoutDescriptionLieu.getText();
+                int utilisateur = MVC.obtenirMVC().monControleurUtilisateur.getId();
+                currentLieu = LieuProcess.getInstance().creerLieux(nom, carte ,description,utilisateur );
                  listLieu.add(currentLieu);
                  String monLieu = currentLieu.getNom();
                  listLieu.notifyObservers();

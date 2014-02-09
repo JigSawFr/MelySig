@@ -71,10 +71,10 @@ public class ParcoursDAO extends DAO<Parcours> {
      * @return
      */
     @Override
-    public List<Parcours> lister(int nb) {
+    public ArrayList<Parcours> lister(int nb) {
         
         PreparedStatement requetePreparee;
-        List<Parcours> mesParcours = new ArrayList<>();
+        ArrayList<Parcours> mesParcours = new ArrayList<>();
         try {
             requetePreparee = this.connexion
                     .prepareStatement(

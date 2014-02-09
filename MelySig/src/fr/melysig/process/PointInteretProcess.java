@@ -48,7 +48,7 @@ public class PointInteretProcess {
        pointInteret.setY(y);
        pointInteret.setLieu(lieu);
        pointInteret.setTheme((themes.getList().size() > 0)? themes.getList().get(0) : null);
-       pointInteret.setUtilisateur(MVC.obtenirMVC().getIdUtilisateur());
+       pointInteret.setUtilisateur(MVC.obtenirMVC().monControleurUtilisateur.getId());
        
        lieu.setCurrentPointInteret(pointInteret);
        ListPointsInterets pi = lieu.getPointsInterets();
