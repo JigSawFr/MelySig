@@ -33,4 +33,9 @@ public class ListThemes extends Observable {
     public List<Themes> getList(){
         return themes;
     }
+
+    public void update() {
+        setChanged();
+        notifyObservers();
+    }
 }

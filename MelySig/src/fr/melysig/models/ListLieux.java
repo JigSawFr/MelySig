@@ -33,4 +33,9 @@ public class ListLieux extends Observable {
     public List<Lieux> getList(){
         return lieux;
     }
+    
+    public void update() {
+        setChanged();
+        notifyObservers();
+    }
 }

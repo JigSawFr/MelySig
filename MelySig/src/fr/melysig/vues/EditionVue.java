@@ -206,15 +206,17 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                //Supprimer l'ancien theme
-                listThemes.delete(currentThemes);
-                ThemeProcess.getInstance().effacerThemes(currentThemes);
-                //création d'un nouveau theme et récuperation des valeurs contenu dan les textfield
-                currentThemes = ThemeProcess.getInstance().creerTheme(txtLibelleTheme.getText(),txtDescriptionTheme.getText());
-                listThemes.add(currentThemes);
-                //On met à jour la combobox
+                
+                //mise à jour objet memoire
+                currentThemes.setDescription(txtDescriptionTheme.getText());
+                currentThemes.setLibelle(txtLibelleTheme.getText());
+                
+                //mise à jour en base de donnée
+                currentThemes = ThemeProcess.getInstance().mettreAjourThemes(currentThemes);
+                
+                //On force la mise à jour de la combobox
                 String monTheme = currentThemes.getLibelle();
-                listThemes.notifyObservers();
+                listThemes.update();
                 ComboboxSelectionTheme.getModel().setSelectedItem(monTheme);
                 JOptionPane.showMessageDialog(editionVue, "Votre thème a bien été modifié");
                
@@ -398,8 +400,10 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
                 try {
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.showOpenDialog(editionVue);
-                    File path = fileChooser.getSelectedFile();
-                    txtCarteLieu.setText((path != null)? path.getCanonicalPath(): "");
+                    File file = fileChooser.getSelectedFile();
+                    String path = file.getCanonicalPath();
+                    String chemin = path.replaceAll("\\\\", "/");
+                    txtCarteLieu.setText((path != null)? chemin : "");
                 } catch (IOException ex) {
                     Logger.getLogger(EditionVue.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -418,15 +422,17 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                //Supprimer l'ancien Lieu
-                listLieu.delete(currentLieu);
-                LieuProcess.getInstance().effacerLieu(currentLieu);
-                //création d'un nouveau lieu et récuperation des valeurs contenu dan les textfield
-                currentLieu = LieuProcess.getInstance().creerLieux(txtNomLieu.getText(),txtCarteLieu.getText(), txtDescriptionLieu.getText(), MVC.obtenirMVC().getIdUtilisateur());
-                listLieu.add(currentLieu);
-                //On met à jour la combobox
+                //mise à jour objet memoire
+                currentLieu.setDescription(txtDescriptionLieu.getText());
+                currentLieu.setNom(txtNomLieu.getText());
+                currentLieu.setCarte(txtCarteLieu.getText().replaceAll("\\\\","/"));
+                
+                //mise à jour en base de donnée
+                currentLieu = LieuProcess.getInstance().mettreAjourLieu(currentLieu);
+                
+                //On force la mise à jour de la combobox
                 String monLieu = currentLieu.getNom();
-                listLieu.notifyObservers();
+                listLieu.update();
                 ComboboxSelectionLieux.getModel().setSelectedItem(monLieu);
                 JOptionPane.showMessageDialog(editionVue, "Votre lieu a bien été modifié");
                
@@ -455,7 +461,7 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                 currentLieu = LieuProcess.getInstance().creerLieux(txtAjoutNomLieu.getText(), txtAjoutCarteLieu.getText() ,txtAJoutDescriptionLieu.getText(), MVC.obtenirMVC().getIdUtilisateur());
+                 currentLieu = LieuProcess.getInstance().creerLieux(txtAjoutNomLieu.getText(), txtAjoutCarteLieu.getText().replaceAll("\\\\", "/") ,txtAJoutDescriptionLieu.getText(), MVC.obtenirMVC().getIdUtilisateur());
                  listLieu.add(currentLieu);
                  String monLieu = currentLieu.getNom();
                  listLieu.notifyObservers();
@@ -475,7 +481,7 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.showOpenDialog(editionVue);
                     File path = fileChooser.getSelectedFile();
-                    txtAjoutCarteLieu.setText((path != null)? path.getCanonicalPath(): "");
+                    txtAjoutCarteLieu.setText((path != null)? path.getCanonicalPath().replaceAll("\\\\", "/"): "");
                 } catch (IOException ex) {
                     Logger.getLogger(EditionVue.class.getName()).log(Level.SEVERE, null, ex);
                 }
