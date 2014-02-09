@@ -80,6 +80,45 @@ public class PointsInteretsDAO extends DAO<PointsInterets> {
         return monPointInteret;
     }
 
+    public List<PointsInterets> chercherContenue(Lieux lieu, String recherche) {
+
+        PreparedStatement requetePreparee;
+        List<PointsInterets> mesPointsInterets = new ArrayList<PointsInterets>();
+        PointsInterets monPointInteret;
+        try {
+            requetePreparee = this.connexion
+                    .prepareStatement(
+                            "SELECT DISTINCT * FROM pointsInterets WHERE idLieuPointInteret = ? AND (libellePointInteret LIKE '%"+recherche+"%' OR descriptionPointInteret LIKE '%"+recherche+"%')",
+                            ResultSet.TYPE_SCROLL_INSENSITIVE, // Le curseur peut être déplacé dans les deux sens.
+                            ResultSet.CONCUR_READ_ONLY // Lecture Uniquement
+                    );
+            requetePreparee.setInt(1, lieu.getId());
+            
+            this.debug("Recherche -> Exécution de la requete SQL...");
+            ResultSet resultats = requetePreparee.executeQuery();
+
+            resultats.beforeFirst();
+            while (resultats.next()) {
+                monPointInteret = new PointsInterets(
+                        resultats.getInt("idPointInteret"),
+                        resultats.getInt("coordonneeXPointInteret"),
+                        resultats.getInt("coordonneeYPointInteret"),
+                        resultats.getString("libellePointInteret"),
+                        resultats.getString("descriptionPointInteret"),
+                        LieuxDAO.getInstance().chercher(resultats.getInt("idLieuPointInteret")),
+                        resultats.getInt("idUtilisateurPointInteret"),
+                        ThemesDAO.getInstance().chercher(resultats.getInt("idThemePointInteret"))
+                );
+                mesPointsInterets.add(monPointInteret);
+                this.debug("Recherche -> Point d'intérêt localisé dans la base avec succès.");
+            } 
+
+        } catch (SQLException erreur) {
+            this.erreur("Recherche -> Erreur SQL !", erreur);
+        }
+        return mesPointsInterets;
+    }
+    
     /**
      * Permet de lister différents POI
      *

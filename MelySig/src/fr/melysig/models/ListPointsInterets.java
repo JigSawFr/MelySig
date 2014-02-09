@@ -37,5 +37,7 @@ public class ListPointsInterets extends Observable{
         notifyObservers();
     }
     
-    
+    public void setChanged() {
+        super.setChanged();
+    }
 }

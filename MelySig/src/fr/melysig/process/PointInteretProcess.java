@@ -116,5 +116,14 @@ public class PointInteretProcess {
         return resultat;
     }
 
-    
+    public void filtre(Lieux lieu, String cherche) {
+        if( cherche == null || cherche.trim().equals("")){
+            lieu.setPointsInteretsFiltre(null);
+        }
+        List<PointsInterets> list = PointsInteretsDAO.getInstance().chercherContenue(lieu, cherche);
+        lieu.setPointsInteretsFiltre(list);
+                
+        lieu.getPointsInterets().notifyObservers();
+        lieu.notifyObservers();
+    }
 }

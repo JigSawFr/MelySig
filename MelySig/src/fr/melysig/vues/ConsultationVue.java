@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -189,6 +191,17 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
         LabelCompte.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelCompte.setText("Compte :");
+        
+        txtRecherche.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent fe) {}
+
+            @Override
+            public void focusLost(FocusEvent fe) {
+                PointInteretProcess.getInstance().filtre(lieux, txtRecherche.getText());
+            }
+        });
 
         LabelPseudoConnecter.setText("Pseudo");
 
@@ -530,7 +543,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         });
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        jLabel1.setText("Résultat :");
+        jLabel1.setText("Lieu :");
 
         javax.swing.GroupLayout PanelRechercheLayout = new javax.swing.GroupLayout(PanelRecherche);
         PanelRecherche.setLayout(PanelRechercheLayout);
@@ -891,8 +904,14 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             
             listPointsInteretsParcours.clearSelection();
             ListPointInteret.clearSelection();
+            
+            // si une recherche est en cours alors on affiche les points d'interet retourner par cette recherche
+            List<PointsInterets> liste = lieux.getPointsInterets().getList();
+            if (lieux.getPointsInteretsFiltre() != null ) {
+                liste = lieux.getPointsInteretsFiltre();
+            }
             // reconstruction des points d'interets dans la map et la jlist
-            for (PointsInterets point : lieux.getPointsInterets().getList()) {
+            for (PointsInterets point : liste) {
                 // si le point d'interet construit correspond au point d'interet courant on lui donne une couleur differente des points du parcours ou des autres points du lieu
                 if (point.equals(monPointInteret) ) {
                     monCanvas.addDrawable(monCanvas.createPoint(point.getX(), point.getY(), Color.BLUE));
@@ -931,8 +950,15 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             ((DefaultListModel)listPointsInteretsParcours.getModel()).clear();
             // mise à jour des informations du parcour courant
             Parcours monParcour = lieux.getParcourCourant();
+            
+            // si une recherche est en cours alors on affiche les points d'interet retourner par cette recherche
+            List<PointsInterets> liste = lieux.getPointsInterets().getList();
+            if (lieux.getPointsInteretsFiltre() != null ) {
+                liste = lieux.getPointsInteretsFiltre();
+            }
+
             // reconstruction des points d'interets dans la map et la jlist
-            for (PointsInterets point : lieux.getPointsInterets().getList()) {
+            for (PointsInterets point : liste) {
                // ajout du point d'interet dans la Jlist des parcours
                 if (monParcour != null && monParcour.getListPointsInterets().getList().contains(point)) {
                     ((DefaultListModel)listPointsInteretsParcours.getModel()).addElement(point.getLibelle());

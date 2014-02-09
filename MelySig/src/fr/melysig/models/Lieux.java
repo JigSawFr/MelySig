@@ -32,6 +32,7 @@ public class Lieux extends Observable{
     private PointsInterets pointInteretCourant;
     private Parcours parcourCourant;
     private ListPointsInterets pointsInterets;
+    private List<PointsInterets> pointsInteretsFiltre;
     
     /**
      * Identifiant Unique du lieux
@@ -89,6 +90,16 @@ public class Lieux extends Observable{
         this.pointInteretCourant = null;
         this.pointsInterets = new ListPointsInterets();
                 
+    }
+
+    public List<PointsInterets> getPointsInteretsFiltre() {
+        return pointsInteretsFiltre;
+    }
+
+    public void setPointsInteretsFiltre(List<PointsInterets> pointsInteretsFiltre) {
+        this.pointsInteretsFiltre = pointsInteretsFiltre;
+        this.setChanged();
+        pointsInterets.setChanged();
     }
  
      /**
