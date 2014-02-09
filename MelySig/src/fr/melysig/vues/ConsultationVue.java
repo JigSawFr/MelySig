@@ -82,6 +82,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         consultationVue = this;
         lieux.addObserver(this);
         this.monMVC.monControleurUtilisateur.modele.addObserver(this);
+        //Recuperation des themes existant
         listThemes = ThemeProcess.getInstance().getTousThemes();
         listThemes.addObserver(this);
         listLieux = LieuProcess.getInstance().getTousLieux();
