@@ -389,7 +389,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             public void actionPerformed(ActionEvent ae) {
                 PointsInterets pi = lieux.getPointInteretCourant();
                 pi.setLibelle(txtLibellePOI.getText());
-                pi.setTheme(ThemeProcess.getInstance().chargerThemes(txtThemePOI.getText()));
+                pi.setTheme(ThemeProcess.getInstance().chargerThemes((String)comboboxThemePOI.getSelectedItem()));
                 pi.setDescription(txtDescriptionPOI.getText());
                 pi.setX(Integer.parseInt(txtXPOI.getText()));
                 pi.setY(Integer.parseInt(txtYPOI.getText()));
@@ -424,7 +424,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
                                                         .addComponent(labelThemePOI)
                                                         .addGap(15, 15, 15)))
                                         .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(txtThemePOI, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                                                .addComponent(comboboxThemePOI, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                                                 .addComponent(txtLieuPOI, javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(txtLibellePOI, javax.swing.GroupLayout.Alignment.LEADING))
                                         .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -469,7 +469,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(labelThemePOI)
-                                .addComponent(txtThemePOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboboxThemePOI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(boutonModifierPointInteret))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                         .addGroup(PanelInformationPointInteretLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -851,9 +851,11 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             txtDescriptionPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getDescription());
             txtLibellePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLibelle());
             txtThemePOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getTheme().getLibelle());
-//            if(monPointInteret != null) {
-//                comboboxThemePOI.setSelectedItem(monPointInteret.getTheme().getLibelle());
-//            }
+            if(monPointInteret != null) {
+                comboboxThemePOI.setSelectedItem(monPointInteret.getTheme().getLibelle());
+            } else if (comboboxThemePOI.getItemCount() > 0){
+                comboboxThemePOI.setSelectedIndex(0);
+            }
             
             txtLieuPOI.setText((monPointInteret == null) ? "" : "" + monPointInteret.getLieu().getNom());
             
@@ -918,11 +920,19 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
             
         } else if (o instanceof ListThemes ) {
             // clear de la comboBox
-            ((DefaultComboBoxModel)ComboboxListParcours.getModel()).removeAllElements();  
+            ((DefaultComboBoxModel)ComboboxListParcours.getModel()).removeAllElements();
+            ((DefaultComboBoxModel)comboboxThemePOI.getModel()).removeAllElements(); 
             // list tous les themes et l'ajoute dans la combo box
             for (Themes theme : ((ListThemes)o).getList()) {
                 ComboboxListParcours.addItem(theme.getLibelle());
                 comboboxThemePOI.addItem(theme.getLibelle());
+            }
+            //récupération du point d'interet courant
+            PointsInterets monPointInteret = lieux.getPointInteretCourant();
+            if(monPointInteret != null) {
+                comboboxThemePOI.setSelectedItem(monPointInteret.getTheme().getLibelle());
+            } else if (comboboxThemePOI.getItemCount() > 0){
+                comboboxThemePOI.setSelectedIndex(0);
             }
         } else if (o instanceof ListLieux ) {
             // clear de la comboBox
