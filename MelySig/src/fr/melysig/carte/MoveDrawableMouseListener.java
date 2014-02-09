@@ -48,7 +48,9 @@ public class MoveDrawableMouseListener extends JCanvasMouseAdapter {
 		if (selectedDrawables.size() == 0)
 			return;
                 Point p = e.getPoint();
+                //Permet la selection du nouveau point courant et modification de la couleur
                 LieuProcess.getInstance().setCurentPointInteret(lieu, p.x, p.y);
+                //Suite au setCurentPointInteret la carte est referesh pour recuperer l'objet graphique de travail, on refait une recherche de celui-ci
                 selectedDrawables = canvas.findDrawables(e.getPoint());
 		drawable = (IMovableDrawable) selectedDrawables.get(0);
                
