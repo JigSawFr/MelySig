@@ -1,4 +1,5 @@
-##MelySig
+##![alt tag](https://imagizer.imageshack.us/v2/482x132q90/208/uzbm.png)
+
 ### Géolocalisation de points d'intérêts sur vos endroits favoris !
 
 **MelySig** est *système d'information géographique* qui animera vos découvertes du monde :)
