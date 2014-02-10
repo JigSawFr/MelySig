@@ -189,7 +189,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
         PanelHeader.setBackground(new java.awt.Color(204, 255, 102));
 
-        logoConnexionUtilisateur.setIcon(new javax.swing.ImageIcon("src/fr/melysig/images/logo.png")); // NOI18N
+        logoConnexionUtilisateur.setIcon(new javax.swing.ImageIcon("./src/fr/melysig/images/logo.png")); // NOI18N
 
         LabelCompte.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelCompte.setText("Compte :");
@@ -207,7 +207,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
         LabelPseudoConnecter.setText("Pseudo");
 
-        imageLogin.setIcon(new javax.swing.ImageIcon("src/fr/melysig/images/utilisateur.png")); // NOI18N
+        imageLogin.setIcon(new javax.swing.ImageIcon("./src/fr/melysig/images/utilisateur.png")); // NOI18N
 
         boutonEditionVue.setText("Mode Edition");
         boutonEditionVue.addActionListener(new java.awt.event.ActionListener() {
@@ -273,7 +273,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
 
         ListHistorique.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 153, 255)));
         ListHistorique.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
+            String[] strings = {"...A venir..."};
 
             public int getSize() {
                 return strings.length;
@@ -285,6 +285,7 @@ public class ConsultationVue extends javax.swing.JFrame implements Observer {
         });
         jScrollPane2.setViewportView(ListHistorique);
         ListHistorique.getAccessibleContext().setAccessibleParent(PanelPointInteret);
+        ListHistorique.setEnabled(false);
 
         labelNavigation.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         labelNavigation.setText("Navigation");

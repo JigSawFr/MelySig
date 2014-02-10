@@ -49,17 +49,7 @@ public class MVC {
         }
         return monMVC;
     }
-
-//    @Override
-//    public String toString() {
-//        return "MVC{" + "debug=" + debug + ", erreurs=" + erreurs + ", gestionDebug=" + gestionDebug + ", gestionErreurs=" + gestionErreurs + ", maConsultationVue=" + maConsultationVue.toString() + ", monUtilisateur=" + monControleurUtilisateur.toString() + '}';
-//    }
-    public void initialisationPanelAccueil() {
-//        this.gestionDebug.debug("MVC", "Initialisation de la fenêtre des actualités.");
-//        ActualitesNew monPanelAccueil = new ActualitesNew();
-//        monPanelAccueil.setVisible(true);
-    }
-
+    
     public void initialisationPanelConsultation() {
 
     }

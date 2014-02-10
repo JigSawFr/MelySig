@@ -135,7 +135,17 @@ public class EditionVue extends javax.swing.JDialog implements Observer{
         txtPrenomUtilisateur = new javax.swing.JTextField();
         labelEmailUtilisateur = new javax.swing.JLabel();
         txtEmailUtilisateur = new javax.swing.JTextField();
-
+        
+        txtEmailUtilisateur.setText(MVC.obtenirMVC().monControleurUtilisateur.getEmail());
+        txtEmailUtilisateur.setEditable(false);
+        txtNomUtilisateur.setText(MVC.obtenirMVC().monControleurUtilisateur.getNom());
+        txtNomUtilisateur.setEditable(false);
+        txtPrenomUtilisateur.setText(MVC.obtenirMVC().monControleurUtilisateur.getPrenom());
+        txtPrenomUtilisateur.setEditable(false);
+        txtPseudoUtilisateur.setText(MVC.obtenirMVC().monControleurUtilisateur.getPseudo());
+        txtPseudoUtilisateur.setEditable(false);
+        jButton2.setEnabled(false);
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         PanelHeader.setBackground(new java.awt.Color(204, 255, 102));
