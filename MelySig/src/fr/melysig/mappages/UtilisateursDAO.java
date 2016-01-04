@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class UtilisateursDAO extends DAO<Utilisateurs> {
      * @param motDePasse
      * @return
      */
-    public boolean verifier(String identifiant, String motDePasse) {
+    public int verifier(String identifiant, String motDePasse) {
 
         PreparedStatement requetePreparee;
         try {
@@ -47,17 +48,17 @@ public class UtilisateursDAO extends DAO<Utilisateurs> {
             ResultSet resultats = requetePreparee.executeQuery();
 
             if (resultats.first()) {
-                this.debug("Vérification -> Utilisateur localisé dans la base avec succès.");
-                return true;
+                this.debug("Vérification -> Utilisateur " + resultats.getInt("idUtilisateur") + " localisé dans la base avec succès.");
+                return resultats.getInt("idUtilisateur");
             } else {
                 this.debug("Vérification -> Login / Mot de passe erronnés.");
-                return false;
+                return 0;
             }
 
         } catch (SQLException erreur) {
             this.erreur("Vérification -> Erreur SQL !", erreur);
         }
-        return false;
+        return 0;
     }
 
     /**
@@ -109,12 +110,14 @@ public class UtilisateursDAO extends DAO<Utilisateurs> {
      * @param nb nombre d'utilisateurs de type <code>int</code>
      * @return
      */
+    
     @Override
-    public List<Utilisateurs> lister(int nb) {
+    public ArrayList<Utilisateurs> lister(int nb) {
         /* A FAIRE */
         return null;
     }
-
+//    @Override
+    
     /**
      * Permet de créer un nouvel utilisateur
      *

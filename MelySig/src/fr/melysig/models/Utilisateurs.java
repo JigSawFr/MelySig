@@ -92,6 +92,7 @@ public class Utilisateurs extends Observable {
         this.prenom = prenom;
         this.email = email;
         this.utilisateursDAO = new UtilisateursDAO();
+        this.accessDirectDAO = new UtilisateursDAO();
     }
 
     /**
@@ -101,13 +102,10 @@ public class Utilisateurs extends Observable {
      * @param motDePasse
      * @return vrai/faux <code>boolean</code>
      */
-    public boolean verifierUtilisateur(String identifiant, String motDePasse) {
+    public int verifierUtilisateur(String identifiant, String motDePasse) {
 
         debug("Vérification des accès de l'utilisateur " + identifiant + " avec le mot de passe : " + motDePasse);
-        boolean resultat = this.accessDirectDAO.verifier(identifiant, motDePasse);
-        
-        this.setPseudo(identifiant);
-        this.setMotDePasse(motDePasse);
+        int resultat = this.accessDirectDAO.verifier(identifiant, motDePasse);
         this.setChanged();
         return resultat;
     }
@@ -123,8 +121,10 @@ public class Utilisateurs extends Observable {
 
         debug("Recherche d'un utilisateur existant...Chargement du n° " + id);
         Utilisateurs resultat = this.utilisateursDAO.chercher(id);
+        this.setChanged();
         return resultat;
     }
+ 
 
     /**
      * Ajouter un <b>nouvel utilisateur</b> dans la base de données

@@ -10,6 +10,14 @@ import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.mappages.DAO;
 import fr.melysig.mappages.ActualitesDAO;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListModel;
+import javax.swing.event.ListDataListener;
 
 /**
  * Classe de <b>traitement des Actualités</b>
@@ -19,7 +27,7 @@ import fr.melysig.mappages.ActualitesDAO;
  * @since 0.4
  * @version 0.2
  */
-public class Actualites {
+public class Actualites extends Observable {
 
     /**
      * Identifiant Unique de l'actualité
@@ -40,12 +48,14 @@ public class Actualites {
     /**
      * Tableau contenant la liste des points d'intérêts d'un parcours
      */
-    //private ArrayList<Actualites> listeActualites = new ArrayList<Actualites>();
+    public ListModel<Actualites> listeModeleActualites = null;
+    private ArrayList<Actualites> listeActualites = new ArrayList<>();
 
     /**
      * Création de l'objet DAO pour les parcours
      */
     DAO<Actualites> actualitesDAO;
+    ActualitesDAO accessDirectDAO;
 
     private static final Debug gestionDebug = Debug.obtenirGestionDebug();
     private static final Erreurs gestionErreurs = Erreurs.obtenirGestionErreurs();
@@ -59,6 +69,7 @@ public class Actualites {
         this.description = null;
         this.utilisateur = 0;
         this.actualitesDAO = new ActualitesDAO();
+        this.accessDirectDAO = new ActualitesDAO();
     }
 
     /**
@@ -76,6 +87,7 @@ public class Actualites {
         this.utilisateur = utilisateur;
         /*this.listeActualites = listeActualites;*/
         this.actualitesDAO = new ActualitesDAO();
+        this.accessDirectDAO = new ActualitesDAO();
     }
 
     /**
@@ -90,6 +102,25 @@ public class Actualites {
         debug("Recherche d'une actualité existante...Chargement du n° " + id);
         Actualites resultat = this.actualitesDAO.chercher(id);
         return resultat;
+    }
+
+    /**
+     * Chargement des <b>informations concernant une actualité existante</b>
+     * dans la base de données
+     *
+     * @param id Identifiant <b>unique</b> de l'actualité
+     * @return objet de type <code>actualités</code>
+     */
+    public ListModel<Actualites> listerActualite(int nb) {
+
+        debug("Sélection des dernières actualités avec un maximum de " + id);
+        
+        ArrayList<Actualites> resultat = accessDirectDAO.listerObjets(nb);
+        ListModel<Actualites> listeModeleActualites = new ListeModeleActualite(resultat);
+ 
+        
+        this.setChanged();
+        return listeModeleActualites;
     }
 
     /**
@@ -161,6 +192,14 @@ public class Actualites {
         this.utilisateur = utilisateur;
     }
 
+    public ArrayList<Actualites> getListeActualites() {
+        return listeActualites;
+    }
+
+    public void setListeActualites(ArrayList<Actualites> listeActualites) {
+        this.listeActualites = listeActualites;
+    }
+
     /**
      * Affichage des erreurs en console
      *
@@ -188,7 +227,34 @@ public class Actualites {
     @Override
     public String toString() {
         debug("Objet -> Identifiant : " + this.getId() + " | Libellé : " + this.getLibelle() + " | Description : " + this.getDescription() + " | Utilisateur : " + this.getUtilisateur());
-        return null;
+        return libelle;
     }
+    public class ListeModeleActualite extends AbstractListModel<Actualites> {
+        List<Actualites> resultat;
+        public ListeModeleActualite (List<Actualites> actus) {
+            resultat = actus;
+        }
+    
+        @Override
+        public int getSize() {
+            return resultat.size();
+        
+        }
 
+        @Override
+        public Actualites getElementAt(int i) {
+            return resultat.get(i);
+        }
+        
+        public void remove(JList list, int i)
+        {
+            resultat.remove(i);
+            this.fireContentsChanged(list, 0, getSize());
+        }
+        
+        public void add(JList list, Actualites actu) {
+            resultat.add(actu);
+            this.fireContentsChanged(list, 0, getSize());
+        }
+    }
 }

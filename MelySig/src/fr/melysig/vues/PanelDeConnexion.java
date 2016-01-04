@@ -6,11 +6,11 @@
  */
 package fr.melysig.vues;
 
-import fr.melysig.controleurs.UtilisateursControleur;
 import fr.melysig.main.Debug;
 import fr.melysig.main.Erreurs;
 import fr.melysig.main.MVC;
 import java.awt.Desktop;
+import java.awt.Toolkit;
 import java.net.URL;
 import javax.swing.JOptionPane;
 
@@ -36,6 +36,7 @@ public class PanelDeConnexion extends javax.swing.JFrame {
         //monMVC = mvc;
         this.gestionErreurs = Erreurs.obtenirGestionErreurs();
         this.gestionDebug = Debug.obtenirGestionDebug();
+        this.gestionDebug.debug("VUE", "Authentification -> Initialisation du panel de connexion...");
     }
 
     /**
@@ -54,12 +55,14 @@ public class PanelDeConnexion extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         boutonNouveauCompte = new javax.swing.JButton();
         champsMotDePasse = new javax.swing.JPasswordField();
+        memorisation = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MelySIG - Authentification");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(java.awt.Color.white);
+        setIconImage(Toolkit.getDefaultToolkit().getImage("./src/fr/melysig/images/MelySIG-Ico.png"));
         setIconImages(null);
         setName("fenetreAuthentification"); // NOI18N
         setPreferredSize(new java.awt.Dimension(500, 350));
@@ -99,6 +102,15 @@ public class PanelDeConnexion extends javax.swing.JFrame {
             }
         });
 
+        memorisation.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        memorisation.setText("Mémoriser mes identifiants");
+        memorisation.setOpaque(false);
+        memorisation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                memorisationActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,19 +119,22 @@ public class PanelDeConnexion extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(boutonNouveauCompte, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(boutonNouveauCompte, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(champsIdentifiant)
                             .addComponent(boutonConnexion, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(champsMotDePasse))))
+                            .addComponent(champsMotDePasse)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(memorisation, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50))
         );
         jPanel1Layout.setVerticalGroup(
@@ -127,19 +142,21 @@ public class PanelDeConnexion extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(champsIdentifiant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(champsMotDePasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(champsMotDePasse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
+                .addComponent(memorisation)
+                .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(boutonConnexion)
                     .addComponent(boutonNouveauCompte))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
@@ -159,12 +176,16 @@ public class PanelDeConnexion extends javax.swing.JFrame {
 
         boolean auth = monMVC.monControleurUtilisateur.verifierUtilisateur(this.champsIdentifiant.getText(), String.valueOf(this.champsMotDePasse.getPassword()));
         if (auth == true) {
-            this.monMVC.monControleurUtilisateur.setPseudo(this.champsIdentifiant.getText());
+            //this.monMVC.monControleurUtilisateur.setPseudo(this.champsIdentifiant.getText());
             this.gestionDebug.debug("VUE", "Authentification -> Utilisateur authentifié avec succès.");
             this.setVisible(false);
-            this.monMVC.maConsultationVue.setVisible(true);
+            this.monMVC.monPanelAccueil.setVisible(true);
             this.monMVC.monControleurUtilisateur.toString();
             this.monMVC.toString();
+            if (!this.memorisation.isSelected()) {
+                this.champsIdentifiant.setText(null);
+                this.champsMotDePasse.setText(null);
+            }
         } else {
             this.gestionErreurs.erreur("VUE", "Authentification -> Authentification incorrecte !", null);
             JOptionPane.showMessageDialog(this, "Vos identifiants sont incorrects,\nMerci de rééssayer !");
@@ -173,12 +194,15 @@ public class PanelDeConnexion extends javax.swing.JFrame {
     }//GEN-LAST:event_boutonConnexionActionPerformed
 
     private void boutonNouveauCompteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonNouveauCompteActionPerformed
-        try 
-        {
+        try {
             Desktop.getDesktop().browse(new URL("http://melysig.exia-nancy.com").toURI());
-        }           
-        catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_boutonNouveauCompteActionPerformed
+
+    private void memorisationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memorisationActionPerformed
+        // TODO add your handling 
+    }//GEN-LAST:event_memorisationActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,5 +251,6 @@ public class PanelDeConnexion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JCheckBox memorisation;
     // End of variables declaration//GEN-END:variables
 }
